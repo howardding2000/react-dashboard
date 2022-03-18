@@ -18,6 +18,10 @@ The purpose of developing this project is to gain a deeper studying of the React
 ##  Summary Description
 
 react-dashboard is a dashboard SPA(single page application) developed with ReactJS,Express and Mongodb.
+It will be split into two parts, client side and server side.
+
+- react-dashboard: client side
+- react-dashboard-server: server side
 
 ## Features
 
