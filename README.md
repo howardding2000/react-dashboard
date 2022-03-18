@@ -23,7 +23,7 @@ react-dashboard is a dashboard SPA project with front and back separated. It's m
 - Modularly
 - Componentized
 - Engineering
-- 
+
 ## User Interface 
 
 
