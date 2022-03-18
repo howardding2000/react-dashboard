@@ -1,7 +1,5 @@
 # react-dashboard
 
-react-dashboard is a dashboard SPA project with front and back separated. It's mainly developed using React + Express + Mongodb.
-
 ## Index
 - [Summary Description](#Summary-Description)
 - [Features](#Features)
@@ -13,10 +11,9 @@ react-dashboard is a dashboard SPA project with front and back separated. It's m
 - [Documentation](#Documentation)
   - [Ant Design Theme configration](#ant-design-theme-configration)
 
-
-
-
 ##  Summary Description
+
+react-dashboard is a dashboard SPA project with front and back separated. It's mainly developed using React + Express + Mongodb.
 
 ## Features
 
