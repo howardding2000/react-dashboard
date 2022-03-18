@@ -52,18 +52,19 @@ react-dashboard is a dashboard SPA project with front and back separated. It's m
 - Commodity management
 - Authority management
 
-##  Ant Design Theme Configration
+## Documentation
+### Ant Design Theme Configration
 
 Ant Design is using Less as the development language for styling. 
 Unfortunately, React natively does not support less, so we have to manually import the dependencies and configure Webpack.
 
-### install `less` and `less-loader` to support less
+#### install `less` and `less-loader` to support less
 
 ```bash
 npm install less less-loader
 ```
 
-### install 3rd-part react webpack config tools
+#### install 3rd-part react webpack config tools
 
 ```bash
 npm install react-app-rewired customize-cra customize-cra-less-loader
@@ -76,7 +77,7 @@ I just want to go lightweight custom Webpack, so I chose an alternative that lik
 Here I use `customize-cra` + `customize-cra-less-loader`.
 *(At first, I wanted to use `carco`, which is officially recommended by Ant Design, but I found that the current `@carco/craco` is not fully support CRA V5, and I faced some issue when I was trying to install it)*
 
-### configrat Ant Design Less variables
+#### configrat Ant Design Less variables
 
  - The version of dependencies I used are below:
 
