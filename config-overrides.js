@@ -1,6 +1,5 @@
 const { override } = require("customize-cra");
 const addLessLoader = require("customize-cra-less-loader");
-// const { getThemeVariables } = require('antd/dist/theme');
 
 module.exports = override(
   addLessLoader({
