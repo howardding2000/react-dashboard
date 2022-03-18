@@ -10,7 +10,8 @@ react-dashboard is a dashboard SPA project with front and back separated. It's m
 - [Frontend framework](#Frontend-framework)
 - [Backend framework](#Backend-framework)
 - [Function module](#Function-module)
-- [Ant Design Theme configration](#ant-design-theme-configration)
+- [Documentation](#Documentation)
+  - [Ant Design Theme configration](#ant-design-theme-configration)
 
 
 
