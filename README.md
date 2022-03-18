@@ -3,7 +3,54 @@
 react-dashboard is a dashboard build on React
 
 ## Index
-- [Ant Design Theme configration](#ant-design-theme-configration) <br/>
+- [Summary Description](#Summary-Description)
+- [Features](#Features)
+- [User Interface ](#User-Interface )
+- [Routes](#Routes)
+- [Frontend framework](#Frontend-framework)
+- [Backend framework](#Backend-framework)
+- [Function module](#Function-module)
+- [Ant Design Theme configration](#ant-design-theme-configration)
+
+
+
+
+##  Summary Description
+
+## Features
+
+- Front and background separation
+- Modularly
+- Componentized
+- Engineering
+- 
+## User Interface 
+
+
+## Router 
+
+## Frontend framework
+
+- React
+- React-Redux,
+- React-Router
+- Antd
+- Axio
+- ES6
+- Webpac
+
+## Backend framework
+
+- Nodejs
+- ExpressJs
+- Mongodb
+
+## Function module
+
+- User management
+- Product classification management
+- Commodity management
+- Authority management
 
 ##  Ant Design Theme Configration
 
