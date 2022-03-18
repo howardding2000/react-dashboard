@@ -4,54 +4,7 @@ react-dashboard is a dashboard build on React
 
 ## Index
 - [Ant Design Theme configration](#ant-design-theme-configration) <br/>
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
-react-dashboard is a dashboard build on React
+
 ##  Ant Design Theme Configration
 
 Ant Design is using Less as the development language for styling. 
