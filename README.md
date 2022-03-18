@@ -1,6 +1,6 @@
 # react-dashboard
 
-react-dashboard is a dashboard build on React
+react-dashboard is a dashboard SPA project with front and back separated. It's mainly developed using React + Express + Mongodb.
 
 ## Index
 - [Summary Description](#Summary-Description)
@@ -31,9 +31,9 @@ react-dashboard is a dashboard build on React
 
 ## Frontend framework
 
-- React
-- React-Redux,
-- React-Router
+- react
+- react-redux, @reduxjs/toolkit
+- react-router-dom@5
 - Antd
 - Axio
 - ES6
