@@ -3,7 +3,7 @@
 react-dashboard is a dashboard build on React
 
 ## Index
-- [Ant Design Theme configration](<#antd-theme>) <br/>
+- [Ant Design Theme configration](#antd-theme) <br/>
 react-dashboard is a dashboard build on React
 react-dashboard is a dashboard build on React
 react-dashboard is a dashboard build on React
@@ -52,7 +52,7 @@ react-dashboard is a dashboard build on React
 react-dashboard is a dashboard build on React
 react-dashboard is a dashboard build on React
 react-dashboard is a dashboard build on React
-##  Ant Design Theme configration {#antd-theme}
+##  Ant Design Theme configration{#antd-theme}
 
 Ant Design is using Less as the development language for styling. 
 Unfortunately, React natively does not support less, so we have to manually import the dependencies and configure Webpack.
