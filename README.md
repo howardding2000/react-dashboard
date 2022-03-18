@@ -1,5 +1,9 @@
 # react-dashboard
 
+## Before Everything
+
+The purpose of developing this project is to gain a deeper studying of the React components,hooks and related frameworks in real projects. I hope this project could help those developers who are learning or using React as a beignner.I would like to share the knowledge learned in the development process, as well as some typical bug solving process. Hope you will like this project, and please feel free to me your feedback and suggestions anytime, thank you ver much!
+
 ## Index
 - [Summary Description](#Summary-Description)
 - [Features](#Features)
@@ -13,7 +17,7 @@
 
 ##  Summary Description
 
-react-dashboard is a dashboard SPA project with front and back separated. It's mainly developed using React + Express + Mongodb.
+react-dashboard is a dashboard SPA(single page application) developed with ReactJS,Express and Mongodb.
 
 ## Features
 
