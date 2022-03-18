@@ -2,29 +2,30 @@
 
 react-dashboard is a dashboard build on React
 
-## configration for Ant Design
+##  Ant Design Theme configration
 
 Ant Design is using Less as the development language for styling. 
-So for custemizing AntD theme, first of all we have to import the dependencies of less.
-Unfortunately, React natively does not support less, so we have to manually import the dependencies and configure Webpack.
+Unfortunately, React natively does not support less. So for custemizing Ant Design theme, we have to manually import the dependencies and configure Webpack.
 
-### less support dependencies
-- install `less` and `less-loader` to support less
+### install `less` and `less-loader` to support less
 ```bash
 npm install less less-loader
 ```
-### 3rd-part react webpack config  dependencies
-We can use `npm run eject`  to expose the WebPack configuration file,and config less options in webpack.config.js, **but** it's an one way operation. 
-I just want to go lightweight custom Webpack, some alternatives are  `react-app-rewired` + `customize-cra` and `@carco/craco` + `craco-less`.
+### install 3rd-part react webpack config tools
+We can use `npm run eject`  to expose the WebPack configuration file and config less in `webpack.config.js`, **but** it's an one way operation. If you don't really need to customize webPack to much, I recommend keeping it closed.
 
-Here I use `customize-cra`(At first, I wanted to use `carco`, which is officially recommended, but I found that the current `@carco/craco` is not fully support CRA V5) and `customize-cra-less-loader`.
+I just want to go lightweight custom Webpack, so I chose an alternative that likes  `react-app-rewired` + `customize-cra` or `@carco/craco` + `craco-less`.
+
+Here I use `customize-cra` and `customize-cra-less-loader`.
+(At first, I wanted to use `carco`, which is officially recommended by Ant Design, but I found that the current `@carco/craco` is not fully support CRA V5, and I faced some issue when I was trying to install it) 
 
 - install `react-app-rewired` `customize-cra` `customize-cra-less-loader`
 ```bash
 npm install react-app-rewired customize-cra customize-cra-less-loader
 ```
-### configration of Ant Design Less variables
- the version of dependencies I used are here:
+### configrat Ant Design Less variables
+ - The version of dependencies I used are below:
+
 ```js
    "devDependencies": {
     "customize-cra": "^1.0.0",
@@ -38,7 +39,7 @@ I import `customize-cra-less-loader` to support latest version of `less-loader`.
 
 **Attention**:`addLessLoader` in `customize-cra-less-loader` is a little different of `addLessLoader` in `customize-cra`. **We should wrappe `lessOptions` into `lessLoaderOptions`!**
 
-so the final configration will be like this :
+So the final configration will be like this :
 
 config-overrides.js
 ```js
