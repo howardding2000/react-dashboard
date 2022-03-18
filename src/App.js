@@ -1,9 +1,5 @@
 import React from 'react';
 import { Button, message } from 'antd';
-import './App.css';
-import { Router } from 'react-router-dom';
-import { Switch } from 'react-router-dom';
-import { Route } from 'react-router-dom';
 
 const App = () => {
   const clickHandler = (e) => {
