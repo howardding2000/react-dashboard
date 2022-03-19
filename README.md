@@ -2,18 +2,24 @@
 
 ## Before Everything
 
-The purpose of developing this project is to gain a deeper studying of the React components,hooks and related frameworks in real projects. I hope this project could help those developers who are learning or using React as a beignner.I would like to share the knowledge learned in the development process, as well as some typical bug solving process. Hope you will like this project, and please feel free to me your feedback and suggestions anytime, thank you ver much!
+The purpose of developing this project is to gain a deeper studying of the React components,hooks and related frameworks in real projects. I hope this project could help those developers who are learning or using React as a beignner.I would like to share the knowledge learned in the development process, as well as some typical bug solving process. Hope you will like this project, and please feel free to me your feedback and suggestions anytime. Thank you ver much!
 
 ## Index
-- [Summary Description](#Summary-Description)
-- [Features](#Features)
-- [User Interface ](#User-Interface )
-- [Routes](#Routes)
-- [Frontend framework](#Frontend-framework)
-- [Backend framework](#Backend-framework)
-- [Function module](#Function-module)
-- [Documentation](#Documentation)
-  - [Ant Design Theme configration](#ant-design-theme-configration)
+- [react-dashboard](#react-dashboard)
+  - [Before Everything](#before-everything)
+  - [Index](#index)
+  - [Summary Description](#summary-description)
+  - [Features](#features)
+  - [User Interface](#user-interface)
+  - [Router](#router)
+  - [Frontend framework](#frontend-framework)
+  - [Backend framework](#backend-framework)
+  - [Function module](#function-module)
+  - [Documentation](#documentation)
+    - [Ant Design Theme Configration](#ant-design-theme-configration)
+      - [install `less` and `less-loader` to support less](#install-less-and-less-loader-to-support-less)
+      - [install 3rd-part react webpack config tools](#install-3rd-part-react-webpack-config-tools)
+      - [configrat Ant Design Less variables](#configrat-ant-design-less-variables)
 
 ##  Summary Description
 
@@ -37,13 +43,13 @@ It will be split into two parts, client side and server side.
 
 ## Frontend framework
 
-- react
-- react-redux, @reduxjs/toolkit
-- react-router-dom@5
-- Antd
+- `react` 17.0.2
+- `react-redux`, 7.2.6 `@reduxjs/toolkit` 1.8.0
+- `react-router-dom` 6.2.2
+- `antd` 4.19.2
 - Axio
 - ES6
-- Webpac
+- Webpack
 
 ## Backend framework
 

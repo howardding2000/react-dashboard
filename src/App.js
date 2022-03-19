@@ -1,14 +1,14 @@
 import React from 'react';
-import { Button, message } from 'antd';
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/login/login';
+import Dashboard from './pages/dashboard/Dashboard';
 
 const App = () => {
-  const clickHandler = (e) => {
-    message.success('Login successfully!');
-  };
   return (
-    <Button type='primary' onClick={clickHandler}>
-      Primary
-    </Button>
+    <Routes>
+      <Route path='/login' element={<Login />}></Route>
+      <Route path='/' element={<Dashboard />}></Route>
+    </Routes>
   );
 };
 
