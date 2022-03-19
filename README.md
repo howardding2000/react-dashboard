@@ -44,10 +44,10 @@ It will be split into two parts, client side and server side.
  - / & /dashboard
 ## Frontend framework
 
-- `react` 17.0.2
-- `react-redux`, 7.2.6 `@reduxjs/toolkit` 1.8.0
-- `react-router-dom` 6.2.2
-- `antd` 4.19.2
+- `react` v17.0.2
+- `react-redux` v7.2.6 `@reduxjs/toolkit` v1.8.0
+- `react-router-dom` v6.2.2
+- `antd` v4.19.2
 - Axio
 - ES6
 - Webpack
