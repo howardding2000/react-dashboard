@@ -83,7 +83,7 @@ npm install less less-loader
 npm install react-app-rewired customize-cra customize-cra-less-loader
 ```
 
-*We can use `npm run eject`  to expose the WebPack configuration file and config less in `webpack.config.js`, **but** it's an one way operation. If you don't really need to customize webPack to much, I recommend keeping it closed.*
+*We can use `npm run eject`  to expose the WebPack configuration file and config less in `webpack.config.js`, **but it's a one way operation**. So if you don't really need to customize webPack to much, I recommend keeping it closed.*
 
 I just want to go lightweight custom Webpack, so I chose an alternative that likes  `react-app-rewired` + `customize-cra` or `@carco/craco` + `craco-less`.
 
