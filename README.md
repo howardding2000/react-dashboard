@@ -90,6 +90,22 @@ I just want to go lightweight custom Webpack, so I chose an alternative that lik
 Here I use `customize-cra` + `customize-cra-less-loader`.
 *(At first, I wanted to use `carco`, which is officially recommended by Ant Design, but I found that the current `@carco/craco` is not fully support CRA V5, and I faced some issue when I was trying to install it)*
 
+Don't forget to change the script commands, because from now on, we'll compile the code via `react-app-rewired` not `react-scripts`.
+
+```js
+ "scripts": {   
+    // "start": "react-scripts start",
+    // "build": "react-scripts build",
+    // "test": "react-scripts test",
+    // "eject": "react-scripts eject"
+
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  ```
+
 #### configrat Ant Design Less variables
 
  - The version of dependencies I used are below:
