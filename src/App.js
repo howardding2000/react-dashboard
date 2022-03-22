@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/login/login';
 import Dashboard from './pages/dashboard/dashboard';
-import Header from './compoments/Header';
+import Header from './compoments/widget/Header';
 const App = () => {
   return (
     <>

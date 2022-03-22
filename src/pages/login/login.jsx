@@ -1,12 +1,21 @@
-import React from 'react';
-import { Form, Input, Checkbox, Button, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import classes from './login.module.less';
-// import { useForm } from 'antd/lib/form/Form';
-import { reqLogin } from '../../api/index';
+import React, { useState, useContext, useEffect } from "react";
+import { Form, Input, Checkbox, Button, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import classes from "./login.module.less";
+import { AuthContext } from "../../store/auth-context";
+import { reqLogin } from "../../api/index";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
   // const [form] = useForm();
+  const [isLogin, setIsLogin] = useState(false);
+  const { loggedInUser, onLogin } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setIsLogin(true);
+    }
+  }, [loggedInUser]);
 
   const onFinish = async ({ username, password }) => {
     // console.log('send request to service', values);
@@ -19,12 +28,13 @@ const Login = () => {
 
     const { data: result } = await reqLogin(username, password);
     if (result.status === 0) {
-      message.success('Login successful!');
+      message.success("Login successful!");
+      onLogin(username);
+      setIsLogin(true);
     }
     if (result.status === 1) {
       message.error(result.msg);
     }
-
     // .then((response) => console.log('success:', response.data))
     // .catch((err) => console.log('error:', err));
   };
@@ -39,13 +49,13 @@ const Login = () => {
   // Custom validation for password
   const validatePwd = (_, value) => {
     if (!value) {
-      return Promise.reject(new Error('Please input your password!'));
+      return Promise.reject(new Error("Please input your password!"));
     } else if (value.length < 4) {
       return Promise.reject(
-        new Error('Password is too short: password should >= 4.')
+        new Error("Password is too short: password should >= 4.")
       );
     } else if (value.length > 12) {
-      return Promise.reject(new Error('Password is too long: password <= 12.'));
+      return Promise.reject(new Error("Password is too long: password <= 12."));
     } else if (!/^\w+$/.test(value)) {
       return Promise.reject(
         new Error('Password must contain only "a-z","A-Z" and "_"')
@@ -56,73 +66,77 @@ const Login = () => {
   };
 
   return (
-    <div className={classes.login}>
-      <div className={classes.login__card}>
-        <Form
-          className={classes.login__form}
-          // form={form}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <div className={classes.login__form__fixHeight}>
-            <Form.Item
-              name='username'
-              initialValue='admin'
-              // Declarative validation
-              rules={[
-                { required: true, message: 'Please input your username!' },
-                { min: 4, message: 'Username is too short: username >= 4.' },
-                {
-                  max: 12,
-                  message: 'Username is too long, username =< 12.',
-                },
-                {
-                  pattern: /^\w+$/,
-                  message: 'Username must contain only "a-z","A-Z" and "_"',
-                },
-              ]}
-            >
-              <Input
-                size='large'
-                placeholder='Username'
-                prefix={<UserOutlined style={{ color: '#A0AEC0' }} />}
-              />
+    <>
+      {console.log("isLogin", isLogin)}
+      {isLogin && <Navigate to="/" />}
+      <div className={classes.login}>
+        <div className={classes.login__card}>
+          <Form
+            className={classes.login__form}
+            // form={form}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
+            <div className={classes.login__form__fixHeight}>
+              <Form.Item
+                name="username"
+                initialValue="admin"
+                // Declarative validation
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                  { min: 4, message: "Username is too short: username >= 4." },
+                  {
+                    max: 12,
+                    message: "Username is too long, username =< 12.",
+                  },
+                  {
+                    pattern: /^\w+$/,
+                    message: 'Username must contain only "a-z","A-Z" and "_"',
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  placeholder="Username"
+                  prefix={<UserOutlined style={{ color: "#A0AEC0" }} />}
+                />
+              </Form.Item>
+            </div>
+            <div className={classes.login__form__fixHeight}>
+              <Form.Item
+                name="password"
+                rules={[
+                  // { required: true, message: 'Please input your password!' },
+                  // Custom verification
+                  {
+                    validator: validatePwd,
+                  },
+                ]}
+              >
+                <Input.Password
+                  size="large"
+                  placeholder="Password"
+                  prefix={<LockOutlined style={{ color: "#A0AEC0" }} />}
+                />
+              </Form.Item>
+            </div>
+            <Form.Item name="remenber" valuePropName="checked">
+              <Checkbox>Remember me</Checkbox>
             </Form.Item>
-          </div>
-          <div className={classes.login__form__fixHeight}>
-            <Form.Item
-              name='password'
-              rules={[
-                // { required: true, message: 'Please input your password!' },
-                // Custom verification
-                {
-                  validator: validatePwd,
-                },
-              ]}
-            >
-              <Input.Password
-                size='large'
-                placeholder='Password'
-                prefix={<LockOutlined style={{ color: '#A0AEC0' }} />}
-              />
-            </Form.Item>
-          </div>
-          <Form.Item name='remenber' valuePropName='checked'>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
 
-          <Form.Item>
-            <Button
-              type='primary'
-              htmlType='submit'
-              className={classes.login__form__button}
-            >
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={classes.login__form__button}
+              >
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
