@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Input, Checkbox, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import classes from "./login.module.less";
@@ -10,12 +10,6 @@ const Login = () => {
   // const [form] = useForm();
   const [isLogin, setIsLogin] = useState(false);
   const { loggedInUser, onLogin } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (loggedInUser) {
-      setIsLogin(true);
-    }
-  }, [loggedInUser]);
 
   const onFinish = async ({ username, password }) => {
     // console.log('send request to service', values);
@@ -68,7 +62,7 @@ const Login = () => {
   return (
     <>
       {console.log("isLogin", isLogin)}
-      {isLogin && <Navigate to="/" />}
+      {(isLogin || loggedInUser)&& <Navigate to='/' />}
       <div className={classes.login}>
         <div className={classes.login__card}>
           <Form
@@ -79,8 +73,8 @@ const Login = () => {
           >
             <div className={classes.login__form__fixHeight}>
               <Form.Item
-                name="username"
-                initialValue="admin"
+                name='username'
+                initialValue='admin'
                 // Declarative validation
                 rules={[
                   { required: true, message: "Please input your username!" },
@@ -96,15 +90,15 @@ const Login = () => {
                 ]}
               >
                 <Input
-                  size="large"
-                  placeholder="Username"
+                  size='large'
+                  placeholder='Username'
                   prefix={<UserOutlined style={{ color: "#A0AEC0" }} />}
                 />
               </Form.Item>
             </div>
             <div className={classes.login__form__fixHeight}>
               <Form.Item
-                name="password"
+                name='password'
                 rules={[
                   // { required: true, message: 'Please input your password!' },
                   // Custom verification
@@ -114,20 +108,20 @@ const Login = () => {
                 ]}
               >
                 <Input.Password
-                  size="large"
-                  placeholder="Password"
+                  size='large'
+                  placeholder='Password'
                   prefix={<LockOutlined style={{ color: "#A0AEC0" }} />}
                 />
               </Form.Item>
             </div>
-            <Form.Item name="remenber" valuePropName="checked">
+            <Form.Item name='remenber' valuePropName='checked'>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
             <Form.Item>
               <Button
-                type="primary"
-                htmlType="submit"
+                type='primary'
+                htmlType='submit'
                 className={classes.login__form__button}
               >
                 Submit
