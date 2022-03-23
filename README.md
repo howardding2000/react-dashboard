@@ -63,8 +63,8 @@ It will be split into two parts, client side and server side.
 ## Function module
 
 - User management
-- Product classification management
-- Commodity management
+- Product categories management
+- Products management
 - Authority management
 
 ## Documentation
