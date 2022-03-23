@@ -1,15 +1,19 @@
 import React from "react";
 
-import classes from "./DbHeader.module.less";
+import "./DbHeader.less";
 const DbHeader = ({ loggedInUser, onLogout }) => {
   const clickHander = () => {
     onLogout();
   };
   return (
-    <div className={classes.db__header}>
-      <div className={classes.db__welcome}>
+    <div className='db__header'>
+      <div className='db__welcome'>
         <span>Welcome {loggedInUser} !</span>
-        <a onClick={clickHander} className={classes.button} href='javascrip:;'>
+        <a
+          onClick={clickHander}
+          className='db__welcome__button'
+          href='javascrip:;'
+        >
           Logout
         </a>
       </div>

@@ -12,7 +12,7 @@ import {
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import classes from "./LeftNav.module.less";
+import "./LeftNav.less";
 
 const LeftNav = ({ broken }) => {
   const [current, setCurrent] = useState(1);
@@ -24,8 +24,8 @@ const LeftNav = ({ broken }) => {
   };
 
   return (
-    <div className={classes.left__nav}>
-      <header className={classes.left__nav__header}>
+    <div className='left__nav'>
+      <header className='left__nav__header'>
         <Link to='/'>
           <h1>{broken ? "R-D" : "React-dashboard"}</h1>
         </Link>
@@ -35,6 +35,7 @@ const LeftNav = ({ broken }) => {
         defaultOpenKeys={["home"]}
         selectedKeys={[current]}
         mode='inline'
+        theme='light'
       >
         <Menu.Item key='home' icon={<HomeOutlined />}>
           <Link to='/home'>Home</Link>

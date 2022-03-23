@@ -25,8 +25,10 @@ const Dashboard = () => {
       <Layout className={classes.db__layout}>
         <Sider
           className={classes.db__sider}
+          theme='light'
           breakpoint='lg'
           onBreakpoint={brokenHandler}
+          width='14rem'
         >
           <LeftNav broken={broken} />
         </Sider>
