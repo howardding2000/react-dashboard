@@ -222,5 +222,5 @@ const DbContent = () => {
   );
 };
 ```
-A \<link to='/users\> will render `<Users />` to relpace `<Outlet /\`.
+A \<link to='/users\> will render `<Users />` to relpace `<Outlet />`.
 
