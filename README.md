@@ -21,6 +21,8 @@ The purpose of developing this project is to gain a deeper studying of the React
       - [install `less` and `less-loader` to support less](#install-less-and-less-loader-to-support-less)
       - [install 3rd-part react webpack config tools](#install-3rd-part-react-webpack-config-tools)
       - [configrat Ant Design Less variables](#configrat-ant-design-less-variables)
+    - [React Router V6](#react-router-v6)
+      - [\<Outlet\> Usage](#outlet-usage)
 
 ## Summary Description
 
@@ -163,13 +165,13 @@ module.exports = override(
 );
 ```
 
-## React Router
+## React Router V6
 
-### <Outlet> Usage
+### \<Outlet\> Usage
 
-> An `<Outlet`> should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
+> An `<Outlet>` should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
 
-This is a handy Component that lets us return response route element anywhere under the parent element.I have an example in `DbContent` to show you how to use it.
+`Outlet` is a handy Component that lets us return response route element anywhere under the parent element.I have an example in `DbContent` to show you how to use it.
 
 App.js
 
@@ -221,4 +223,8 @@ const DbContent = () => {
 };
 ```
 
+<<<<<<< HEAD
  A `<link to='/users'`> will trigger `<Users /`> to relpace `<Outlet /`>.
+=======
+ A \<link to='/users\> will render `<Users />` to relpace `<Outlet /\`.
+>>>>>>> origin/dev
