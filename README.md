@@ -222,9 +222,5 @@ const DbContent = () => {
   );
 };
 ```
+A \<link to='/users\> will render `<Users />` to relpace `<Outlet /\`.
 
-<<<<<<< HEAD
- A `<link to='/users'`> will trigger `<Users /`> to relpace `<Outlet /`>.
-=======
- A \<link to='/users\> will render `<Users />` to relpace `<Outlet /\`.
->>>>>>> origin/dev
