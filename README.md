@@ -18,9 +18,6 @@ The purpose of developing this project is to gain a deeper studying of the React
   - [Function module](#function-module)
   - [Documentation](#documentation)
     - [Ant Design Theme Configration](#ant-design-theme-configration)
-      - [install `less` and `less-loader` to support less](#install-less-and-less-loader-to-support-less)
-      - [install 3rd-part react webpack config tools](#install-3rd-part-react-webpack-config-tools)
-      - [configrat Ant Design Less variables](#configrat-ant-design-less-variables)
     - [React Router V6](#react-router-v6)
       - [\<Outlet\> Usage](#outlet-usage)
 
