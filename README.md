@@ -184,25 +184,16 @@ Dashboard.jsx
 
 ```js
 return (
-  <>
     <Layout>
-      <Sider>
-       ...
-      </Sider>
-      <Layout>
-        <Header>
-          ...
-        </Header>
+      ...
+        ...
         <Content>
           //`DbContent` is a compoment inside of `Dashboard`.
           <DbContent />
         </Content>
-        <Footer>
-          ...
-        </Footer>
-      </Layout>
+        ...
+      ...  
     </Layout>
-  </>
 );
 ```
 
