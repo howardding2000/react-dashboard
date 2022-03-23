@@ -167,7 +167,7 @@ module.exports = override(
 
 ### <Outlet> Usage
 
-> An <Outlet> should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
+> An `<Outlet`> should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
 
 This is a handy Component that lets us return response route element anywhere under the parent element.I have an example in `DbContent` to show you how to use it.
 
@@ -195,4 +195,4 @@ const DbContent = () => {
   );
 };
 ```
-`DbContent` is a compoment inside of  `Dashboard`. A <link to='/users'> will trigger <Users /> to relpace <Outlet />.
+`DbContent` is a compoment inside of  `Dashboard`. A `<link to='/users'`> will trigger `<Users /`> to relpace `<Outlet /`>.
