@@ -21,6 +21,8 @@ The purpose of developing this project is to gain a deeper studying of the React
       - [install `less` and `less-loader` to support less](#install-less-and-less-loader-to-support-less)
       - [install 3rd-part react webpack config tools](#install-3rd-part-react-webpack-config-tools)
       - [configrat Ant Design Less variables](#configrat-ant-design-less-variables)
+    - [React Router V6](#react-router-v6)
+      - [\<Outlet\> Usage](#outlet-usage)
 
 ## Summary Description
 
@@ -163,7 +165,7 @@ module.exports = override(
 );
 ```
 
-## React Router
+## React Router V6
 
 ### \<Outlet\> Usage
 
