@@ -165,34 +165,60 @@ module.exports = override(
 
 ## React Router
 
-### `<Outlet`> Usage
+### \<Outlet\> Usage
 
-> An `<Outlet`> should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
+> An `<Outlet>` should be used in parent route elements to render their child route elements. This allows nested UI to show up when child routes are rendered. If the parent route matched exactly, it will render a child index route or nothing if there is no index route.
 
-This is a handy Component that lets us return response route element anywhere under the parent element.I have an example in `DbContent` to show you how to use it.
+`Outlet` is a handy Component that lets us return response route element anywhere under the parent element.I have an example in `DbContent` to show you how to use it.
 
 App.js
+
 ```js
 <Route path='/' element={<Dashboard />}>
   // sub route of '/'
-  <Route path='home' element={<Home />} />
-  <Route path='categories' element={<Categories />} />
-  <Route path='products' element={<Products />} />
+  ...
   <Route path='users' element={<Users />} />
-  <Route path='roles' element={<Roles />} />
-  <Route path='charts' element={<Charts />} />
+  ...
 </Route>
 ```
 
+Dashboard.jsx
+
+```js
+return (
+  <>
+    <Layout>
+      <Sider>
+       ...
+      </Sider>
+      <Layout>
+        <Header>
+          ...
+        </Header>
+        <Content>
+          //`DbContent` is a compoment inside of `Dashboard`.
+          <DbContent />
+        </Content>
+        <Footer>
+          ...
+        </Footer>
+      </Layout>
+    </Layout>
+  </>
+);
+```
+
 DbContent.jsx
+
 ```js
 const DbContent = () => {
   return (
     <div>
-      // Outlet: a placeholder of sub route element.
+      // Outlet is a placeholder of sub route element.
       <Outlet />
     </div>
   );
 };
 ```
-`DbContent` is a compoment inside of  `Dashboard`. A `<link to='/users'`> will trigger `<Users /`> to relpace `<Outlet /`>.
+
+ A \<link to='/users\> will render `<Users />` to relpace `<Outlet /\`.
