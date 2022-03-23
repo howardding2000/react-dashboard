@@ -43,8 +43,6 @@ It will be split into two parts, client side and server side.
 
 ## Router
 
-- /login
-- / & /dashboard
 
 ## Frontend framework
 
