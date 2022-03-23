@@ -172,27 +172,53 @@ module.exports = override(
 This is a handy Component that lets us return response route element anywhere under the parent element.I have an example in `DbContent` to show you how to use it.
 
 App.js
+
 ```js
 <Route path='/' element={<Dashboard />}>
   // sub route of '/'
-  <Route path='home' element={<Home />} />
-  <Route path='categories' element={<Categories />} />
-  <Route path='products' element={<Products />} />
+  ...
   <Route path='users' element={<Users />} />
-  <Route path='roles' element={<Roles />} />
-  <Route path='charts' element={<Charts />} />
+  ...
 </Route>
 ```
 
+Dashboard.jsx
+
+```js
+return (
+  <>
+    <Layout>
+      <Sider>
+       ...
+      </Sider>
+      <Layout>
+        <Header>
+          ...
+        </Header>
+        <Content>
+          //`DbContent` is a compoment inside of `Dashboard`.
+          <DbContent />
+        </Content>
+        <Footer>
+          ...
+        </Footer>
+      </Layout>
+    </Layout>
+  </>
+);
+```
+
 DbContent.jsx
+
 ```js
 const DbContent = () => {
   return (
     <div>
-      // Outlet: a placeholder of sub route element.
+      // Outlet is a placeholder of sub route element.
       <Outlet />
     </div>
   );
 };
 ```
-`DbContent` is a compoment inside of  `Dashboard`. A `<link to='/users'`> will trigger `<Users /`> to relpace `<Outlet /`>.
+
+ A `<link to='/users'`> will trigger `<Users /`> to relpace `<Outlet /`>.
