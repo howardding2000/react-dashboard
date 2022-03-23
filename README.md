@@ -24,6 +24,7 @@ The purpose of developing this project is to gain a deeper studying of the React
     - [React Router V6](#react-router-v6)
       - [\<Outlet\> Usage](#outlet-usage)
 
+
 ## Summary Description
 
 react-dashboard is a dashboard SPA(single page application) developed with ReactJS,Express and Mongodb.
