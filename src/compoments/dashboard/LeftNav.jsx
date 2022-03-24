@@ -1,30 +1,37 @@
 import { Menu } from "antd";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useMemo, useCallback, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import menuList from "../../config/menu-config";
 import "./LeftNav.less";
 
-const LeftNav = ({ broken, location }) => {
+const LeftNav = ({ broken }) => {
   // const [current, setCurrent] = useState(1);
   const { pathname } = useLocation();
+  const activedKeyRef = useRef({
+    openKey: null,
+    selectedKey: null,
+    pathname: pathname,
+  });
+
+  if (activedKeyRef.current.openKey) {
+  }
   const { SubMenu } = Menu;
 
-  const handleClick = (e) => {
-    // console.log('click ', e);
-    // setCurrent(e.key);
-  };
+  // const handleClick = (e) => {
+  //   console.log("click ", e);
+  //   setCurrent(e.key);
+  // };
 
-  let openKey;
-  let selectedKey;
-
-  const getMenuNodes = (menuList) => {
-    console.log("getMenuNodes");
+  const getMenuNodes = useCallback((menuList) => {
+    console.log("into getMenuNodes");
     return menuList.map((item) => {
       if (item.children) {
-        const cItem = item.children.find((cItem) => cItem.key === pathname);
+        const cItem = item.children.find(
+          (cItem) => cItem.key === activedKeyRef.current.pathname
+        );
         if (cItem) {
-          openKey = item.key;
+          activedKeyRef.current.openKey = item.key;
         }
         return (
           <SubMenu key={item.key} icon={item.icon} title={item.title}>
@@ -32,8 +39,8 @@ const LeftNav = ({ broken, location }) => {
           </SubMenu>
         );
       } else {
-        if (item.key === pathname) {
-          selectedKey = item.key;
+        if (item.key === activedKeyRef.current.pathname) {
+          activedKeyRef.current.selectedKey = item.key;
         }
         return (
           <Menu.Item key={item.key} icon={item.icon}>
@@ -42,9 +49,10 @@ const LeftNav = ({ broken, location }) => {
         );
       }
     });
-  };
+  }, []);
 
-  let currentMenuList = getMenuNodes(menuList);
+  //
+  const currentMenuList = useMemo(() => getMenuNodes(menuList), [getMenuNodes]);
 
   return (
     <div className='left__nav'>
@@ -53,11 +61,12 @@ const LeftNav = ({ broken, location }) => {
           <h1>{broken ? "R-D" : "React-dashboard"}</h1>
         </Link>
       </header>
-      {console.log("defaultOpenKeys", openKey, selectedKey)}
       <Menu
-        onClick={handleClick}
-        defaultOpenKeys={[openKey]}
-        defaultSelectedKeys={[selectedKey]}
+        // onClick={handleClick}
+        // defaultOpenKeys: Array with the keys of default opened sub menus
+        defaultOpenKeys={[activedKeyRef.current.openKey]}
+        // defaultSelectedKeys: Array with the keys of default selected menu items
+        defaultSelectedKeys={[activedKeyRef.current.selectedKey]}
         mode='inline'
         theme='light'
       >
