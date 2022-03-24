@@ -9,8 +9,6 @@ import { Navigate } from "react-router-dom";
 const Login = () => {
   const { loggedInUser, onLogin } = useContext(AuthContext);
   
-  console.log("login loggedInUser", loggedInUser);
-
   const onFinish = async ({ username, password }) => {
     /**
      * * async & await
