@@ -8,7 +8,7 @@ import { Navigate } from "react-router-dom";
 
 const Login = () => {
   const { loggedInUser, onLogin } = useContext(AuthContext);
-  
+
   const onFinish = async ({ username, password }) => {
     /**
      * * async & await
@@ -17,16 +17,24 @@ const Login = () => {
      * 3. position of async: The left side of the function definition where the await is used.
      */
 
-    const { data: result } = await reqLogin(username, password);
-    if (result.status === 0) {
+    // for offline developement
+    const withoutProxy = true;
+    
+    if (withoutProxy) {
       message.success("Login successful!");
       onLogin(username);
+    } else {
+      const { data: result } = await reqLogin(username, password);
+      if (result.status === 0) {
+        message.success("Login successful!");
+        onLogin(username);
+      }
+      if (result.status === 1) {
+        message.error(result.msg);
+      }
+      // .then((response) => console.log('success:', response.data))
+      // .catch((err) => console.log('error:', err));
     }
-    if (result.status === 1) {
-      message.error(result.msg);
-    }
-    // .then((response) => console.log('success:', response.data))
-    // .catch((err) => console.log('error:', err));
   };
 
   const onFinishFailed = ({ errorFields }) => {
