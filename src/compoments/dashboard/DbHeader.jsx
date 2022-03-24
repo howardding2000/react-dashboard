@@ -1,7 +1,8 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import { AuthContext } from "../../store/auth-context";
 import "./DbHeader.less";
-const DbHeader = ({ loggedInUser, onLogout }) => {
+const DbHeader = () => {
+  const { loggedInUser, onLogout } = useContext(AuthContext);
   const clickHander = () => {
     onLogout();
   };
@@ -9,13 +10,9 @@ const DbHeader = ({ loggedInUser, onLogout }) => {
     <div className='db__header'>
       <div className='db__welcome'>
         <span>Welcome {loggedInUser} !</span>
-        <a
-          onClick={clickHander}
-          className='db__welcome__button'
-          href='javascrip:;'
-        >
+        <span onClick={clickHander} className='db__welcome__button'>
           Logout
-        </a>
+        </span>
       </div>
     </div>
   );

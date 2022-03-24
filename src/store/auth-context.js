@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import store from "store";
 
 export const AuthContext = React.createContext({
@@ -8,14 +8,9 @@ export const AuthContext = React.createContext({
 });
 
 const AuthContextProvider = (props) => {
-  const [loggedInUser, setLoggedInUser] = useState(false);
+  const storedLoggedInUser = store.get("user");
 
-  useEffect(() => {
-    const storedLoggedInUser = store.get("user");
-    if (storedLoggedInUser) {
-      setLoggedInUser(storedLoggedInUser);
-    }
-  }, []);
+  const [loggedInUser, setLoggedInUser] = useState(storedLoggedInUser);
 
   const loginHandler = (username) => {
     setLoggedInUser(username);

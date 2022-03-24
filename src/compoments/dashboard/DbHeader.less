@@ -1,6 +1,12 @@
 .db__header {
   position: relative;
   height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(221, 107, 32, 1) 0%,
+    rgba(231, 147, 84, 1) 41%,
+    rgba(251, 211, 141, 1) 100%
+  );
   .db__welcome {
     position: absolute;
     color: @primary-color;
@@ -14,9 +20,15 @@
     }
     
     .db__welcome__button {
-      outline: 1px solid;
+      border: 2px solid @primary-color;
       padding: 0.2rem;
       font-weight: bold;
+      transition: all 0.3s ease;
+      &:hover{
+        cursor: pointer;
+        color:rgb(251, 211, 141);
+        background-color: @primary-color;
+      }
     }
   }
 }
