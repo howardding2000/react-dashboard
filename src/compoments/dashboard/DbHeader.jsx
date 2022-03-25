@@ -6,7 +6,7 @@ import LinkButton from "../ui/LinkButton";
 import TimeAndWeather from "./header/TimeAndWeather";
 
 
-const DbHeader = (props) => {
+const DbHeader = ({title}) => {
   const { loggedInUser, onLogout } = useContext(AuthContext);
   const logoutHander = () => {
     onLogout();
@@ -21,7 +21,7 @@ const DbHeader = (props) => {
       </div>
       <div className='db__header__bottom'>
         <div className='db__header__bottom__title'>
-          <h1>Home</h1>
+          <h1>{title}</h1>
         </div>
         <div className='db__header__bottom__widget'>
           <TimeAndWeather />

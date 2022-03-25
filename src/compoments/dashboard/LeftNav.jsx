@@ -1,30 +1,28 @@
 import { Menu } from "antd";
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import menuList from "../../config/menu-config";
 import "./LeftNav.less";
 
-const LeftNav = ({ broken }) => {
-  // const [current, setCurrent] = useState(1);
+const LeftNav = ({ broken, setTitle }) => {
+  const { SubMenu } = Menu;
   const { pathname } = useLocation();
   const activedKeyRef = useRef({
     openKey: null,
     selectedKey: null,
     pathname: pathname,
   });
+  const titleMapRef = useRef(new Map());
 
-  if (activedKeyRef.current.openKey) {
-  }
-  const { SubMenu } = Menu;
+  const handleClick = (e) => {};
 
-  // const handleClick = (e) => {
-  //   console.log("click ", e);
-  //   setCurrent(e.key);
-  // };
+  useEffect(() => {
+    // change title according to the path,
+    setTitle(titleMapRef.current.get(pathname) || "Home");
+  }, [setTitle, pathname]);
 
   const getMenuNodes = useCallback((menuList) => {
-    console.log("into getMenuNodes");
     return menuList.map((item) => {
       if (item.children) {
         const cItem = item.children.find(
@@ -39,6 +37,8 @@ const LeftNav = ({ broken }) => {
           </SubMenu>
         );
       } else {
+        titleMapRef.current.set(item.key, item.title);
+
         if (item.key === activedKeyRef.current.pathname) {
           activedKeyRef.current.selectedKey = item.key;
         }
@@ -62,7 +62,7 @@ const LeftNav = ({ broken }) => {
         </Link>
       </header>
       <Menu
-        // onClick={handleClick}
+        onClick={handleClick}
         // defaultOpenKeys: Array with the keys of default opened sub menus
         defaultOpenKeys={[activedKeyRef.current.openKey]}
         // defaultSelectedKeys: Array with the keys of default selected menu items

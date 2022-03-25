@@ -4,20 +4,15 @@ import "./TimeAndWeather.less";
 
 const TimeAndWeather = () => {
   const [weather, setWeather] = useState();
-
   const formatDate = new Date().toDateString();
 
   useEffect(() => {
-    reqWeather("montreal")
-      .then((date) => {
-        if (date) {
-          console.log(date);
-          setWeather(date);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // fetch weather information
+    const getWeather = async () => {
+      const data = await reqWeather();
+      setWeather(data);
+    };
+    getWeather();
   }, []);
 
   return (

@@ -12,6 +12,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const Dashboard = () => {
   const [broken, setBrokent] = useState(false);
+  const [title, setTitle] = useState('Home');
 
   const brokenHandler = (broken) => {
     setBrokent(broken);
@@ -25,11 +26,11 @@ const Dashboard = () => {
         onBreakpoint={brokenHandler}
         // width='12rem'
       >
-        <LeftNav broken={broken} />
+        <LeftNav broken={broken} setTitle={setTitle}/>
       </Sider>
       <Layout>
         <Header className='db__header'>
-          <DbHeader />
+          <DbHeader title={title}/>
         </Header>
         <Content className='db__content'>
           <DbContent />
