@@ -1,3 +1,4 @@
+import { resolveOnChange } from "antd/lib/input/Input";
 import ajax from "./ajax";
 
 /**
@@ -8,8 +9,7 @@ import ajax from "./ajax";
 // const BASE = 'http://localhost:5000';
 
 const BASE = "";
-const weatherApiCall =
-  "http://api.openweathermap.org/data/2.5/forecast?q=Montreal&appid=acbf2e0264d41b340e9712fe534b96b1&units=metric";
+
 // login
 export const reqLogin = (username, password) =>
   ajax(BASE + "/login", { username, password }, "POST");
@@ -18,4 +18,27 @@ export const reqLogin = (username, password) =>
 export const reqAddUser = (user) =>
   ajax(BASE + "/manage/user/add", user, "POST");
 
-export const reqWeather = () => ajax(weatherApiCall);
+export const reqWeather = (city) => {
+  const token = "acbf2e0264d41b340e9712fe534b96b1";
+  const units = "metric";
+  const weatherApiCall = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${token}&units=${units}`;
+  console.log("weatherApiCall", weatherApiCall);
+  return ajax(weatherApiCall)
+    .then((response) => {
+      if (response) {
+        
+        const icon = response.data.weather[0].icon;        
+        const imgSrc = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+        
+        return {
+          city: response.data.name,
+          desc: response.data.weather[0].main,
+          icon: imgSrc,
+          temp: response.data.main.temp,
+        };
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

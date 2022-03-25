@@ -14,16 +14,16 @@ const DbHeader = (props) => {
   return (
     <div className='db__header'>
       <div className='db__header__top'>
-        <div>
+        <div className="db__header__top__welcome">
           <span>Welcome, {loggedInUser} !</span>
           <LinkButton onClick={logoutHander}>Logout</LinkButton>
         </div>
       </div>
-      <div className='db__header_bottom'>
-        <div className='db__header_bottom__title'>
+      <div className='db__header__bottom'>
+        <div className='db__header__bottom__title'>
           <h1>Home</h1>
         </div>
-        <div className='db__header_bottom__widget'>
+        <div className='db__header__bottom__widget'>
           <TimeAndWeather />
         </div>
       </div>
