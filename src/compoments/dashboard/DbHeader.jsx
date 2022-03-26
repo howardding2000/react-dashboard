@@ -1,20 +1,34 @@
-import "./DbHeader.less";
-
 import React, { useContext } from "react";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { AuthContext } from "../../store/auth-context";
 import LinkButton from "../ui/LinkButton";
 import TimeAndWeather from "./header/TimeAndWeather";
 
-
-const DbHeader = ({title}) => {
+import "./DbHeader.less";
+const DbHeader = ({ title }) => {
   const { loggedInUser, onLogout } = useContext(AuthContext);
+  const { confirm } = Modal;
+
   const logoutHander = () => {
-    onLogout();
+    confirm({
+      title: "Do you want to log out?",
+      icon: <ExclamationCircleOutlined />,
+      // content: "Some descriptions",
+      centered: true,
+      onOk() {
+        onLogout();
+      },
+      onCancel() {
+        // console.log('Cancel');
+      },
+    });
   };
+
   return (
     <div className='db__header'>
       <div className='db__header__top'>
-        <div className="db__header__top__welcome">
+        <div className='db__header__top__welcome'>
           <span>Welcome, {loggedInUser} !</span>
           <LinkButton onClick={logoutHander}>Logout</LinkButton>
         </div>
