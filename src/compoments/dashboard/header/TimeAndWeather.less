@@ -1,6 +1,26 @@
-.time_weather {
+.time__weather {
   display: flex;
   align-items: center;
   line-height: 3rem;
-  gap:1rem
+  gap:1rem;
+  .time__weather__weather{
+    img {
+      height:2rem;
+      width: 2rem;
+    }
+  }
+}
+
+@media all and (max-width: 576px) {
+  .time__weather {
+    .time__weather__date{
+      display: none;
+    }
+  }
+}
+
+@media all and (max-width: 480px) {
+  .time__weather {
+    display: none;
+  }
 }

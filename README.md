@@ -17,10 +17,13 @@ The purpose of developing this project is to gain a deeper studying of the React
   - [Backend framework](#backend-framework)
   - [Function module](#function-module)
   - [Documentation](#documentation)
+    - [Theme](#theme)
     - [Ant Design Theme Configration](#ant-design-theme-configration)
-    - [React Router V6](#react-router-v6)
-      - [\<Outlet\> Usage](#outlet-usage)
-
+      - [install `less` and `less-loader` to support less](#install-less-and-less-loader-to-support-less)
+      - [install 3rd-part react webpack config tools](#install-3rd-part-react-webpack-config-tools)
+      - [configrat Ant Design Less variables](#configrat-ant-design-less-variables)
+  - [React Router V6](#react-router-v6)
+    - [\<Outlet\> Usage](#outlet-usage)
 
 ## Summary Description
 
@@ -40,7 +43,6 @@ It will be split into two parts, client side and server side.
 ## User Interface
 
 ## Router
-
 
 ## Frontend framework
 
@@ -67,7 +69,9 @@ It will be split into two parts, client side and server side.
 
 ## Documentation
 
-### Breakpoint Width
+### Theme
+
+- Breakpoint Width
 
 ```json
 {
@@ -78,6 +82,12 @@ It will be split into two parts, client side and server side.
   "xl": "1200px",
   "xxl": "1600px"
 }
+```
+
+- Color
+
+```js
+'@primary-color': '#DD6B20'
 ```
 
 ### Ant Design Theme Configration
@@ -173,8 +183,7 @@ App.js
 
 ```js
 <Route path='/' element={<Dashboard />}>
-  // sub route of '/'
-  ...
+  // sub route of '/' ...
   <Route path='users' element={<Users />} />
   ...
 </Route>
@@ -184,16 +193,14 @@ Dashboard.jsx
 
 ```js
 return (
-    <Layout>
-      ...
-        ...
-        <Content>
-          //`DbContent` is a compoment inside of `Dashboard`.
-          <DbContent />
-        </Content>
-        ...
-      ...  
-    </Layout>
+  <Layout>
+    ... ...
+    <Content>
+      //`DbContent` is a compoment inside of `Dashboard`.
+      <DbContent />
+    </Content>
+    ... ...
+  </Layout>
 );
 ```
 
@@ -209,5 +216,5 @@ const DbContent = () => {
   );
 };
 ```
-A \<link to='/users\> will render `<Users />` to relpace `<Outlet />`.
 
+A \<link to='/users\> will render `<Users />` to relpace `<Outlet />`.

@@ -16,14 +16,13 @@ const TimeAndWeather = () => {
   }, []);
 
   return (
-    <div className='time_weather'>
-      <div>{formatDate}</div>
-      <div>
+    <div className='time__weather'>
+      <div className='time__weather__date'>{formatDate}</div>
+      <div className='time__weather__weather'>
         {weather && (
           <>
             {`${weather.city} ${weather.temp}`} &#8451;
             <img
-              style={{ height: "2rem", width: "2rem" }}
               alt={weather.desc}
               src={weather.icon}
             ></img>
