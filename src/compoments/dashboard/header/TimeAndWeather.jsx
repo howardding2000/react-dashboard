@@ -6,12 +6,13 @@ const TimeAndWeather = () => {
   const [weather, setWeather] = useState();
   const formatDate = new Date().toDateString();
 
+  // fetch weather information
+  const getWeather = async () => {
+    const data = await reqWeather();
+    setWeather(data);
+  };
+console.log("TimeAndWeather");
   useEffect(() => {
-    // fetch weather information
-    const getWeather = async () => {
-      const data = await reqWeather();
-      setWeather(data);
-    };
     getWeather();
   }, []);
 
@@ -22,10 +23,7 @@ const TimeAndWeather = () => {
         {weather && (
           <>
             {`${weather.city} ${weather.temp}`} &#8451;
-            <img
-              alt={weather.desc}
-              src={weather.icon}
-            ></img>
+            <img alt={weather.desc} src={weather.icon}></img>
           </>
         )}
       </div>
@@ -33,4 +31,4 @@ const TimeAndWeather = () => {
   );
 };
 
-export default TimeAndWeather;
+export default React.memo(TimeAndWeather);

@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React from "react";
+import "./home.less";
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+  return <div className='pages__home'>Welcome to use React-Dashboard</div>;
+};
 
-export default Home
+export default Home;

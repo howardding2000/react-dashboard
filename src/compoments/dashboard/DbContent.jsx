@@ -9,9 +9,9 @@ import { Outlet } from "react-router-dom";
  */
 const DbContent = () => {
   return (
-    <div>
+    <>
       <Outlet />
-    </div>
+    </>
   );
 };
 

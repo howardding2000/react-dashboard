@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import socialLinks from "../../config/social-config";
 
 import "./DbFooter.less";
 const DbFooter = () => {
   const socialList = socialLinks.map((item) => (
-    <a href={item.link} target='_blank' rel='noreferrer'>{item.title}</a>
+    <a key={item.title} href={item.link} target='_blank' rel='noreferrer'>{item.title}</a>
   ));
   // const socialIconList = socialLinks.map((item) => (
   //   <a href={item.link}>{item.icon}</a>
