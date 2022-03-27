@@ -10,7 +10,7 @@ const Category = () => {
   const [categories, setCategories] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const columnsRef = useRef();
-  const title = "Category title";
+  const title = "First level category list";
   const extra = (
     <Button>
       <PlusOutlined />
@@ -66,6 +66,7 @@ const Category = () => {
       <Table
         dataSource={categories}
         columns={columnsRef.current}
+        loading={isLoading}
         bordered
         pagination={{ defaultPageSize: 10, showQuickJumper: true }}
       />

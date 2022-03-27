@@ -17,14 +17,20 @@ const Login = () => {
      * 3. position of async: The left side of the function definition where the await is used.
      */
 
-    // for offline developement
-    const withoutProxy = true;
+    /**
+     * ! For developement without service: 
+     *   1. set withoutService to true; 
+     *   2. remove "proxy": "http://localhost:5000" in package.json
+     *  
+     * */ 
+
+    const withoutProxy = false;
     
     if (withoutProxy) {
       message.success("Login successful!");
       onLogin(username);
     } else {
-      const { data: result } = await reqLogin(username, password);
+      const result = await reqLogin(username, password);
       if (result.status === 0) {
         message.success("Login successful!");
         onLogin(username);
@@ -32,8 +38,6 @@ const Login = () => {
       if (result.status === 1) {
         message.error(result.msg);
       }
-      // .then((response) => console.log('success:', response.data))
-      // .catch((err) => console.log('error:', err));
     }
   };
 
