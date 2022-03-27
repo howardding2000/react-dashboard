@@ -25,7 +25,7 @@ export default function ajax(url, data = {}, method = 'GET') {
     promise
       .then((response) => {
         // 1.2 If success, call resolve(value)
-        resolve(response);
+        resolve(response.data);
       })
       .catch((error) => {
         // 1.3 If fail, do not call reject(reason) but alert error message.

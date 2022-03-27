@@ -18,17 +18,21 @@ export const reqLogin = (username, password) =>
 export const reqAddUser = (user) =>
   ajax(BASE + "/manage/user/add", user, "POST");
 
-// get category
-export const reqCategory = (parentId) =>
-  ajax(BASE + "/manage/category/list", { parentId: parentId }, "GET");
+// get categories or sub categories
+export const reqCategories = (parentId) =>
+  ajax(BASE + "/manage/category/list", { parentId });
 
 // add category
-export const reqAddCategory = () =>
-  ajax(BASE + "/manage/user/add", null, "POST");
+export const reqAddCategory = (categoryName, parentId) =>
+  ajax(BASE + "/manage/category/add", { categoryName, parentId }, "POST");
+
+// update category
+export const reqUpdateCategory = ({ categoryId, categoryName }) =>
+  ajax(BASE + "/manage/user/update", { categoryId, categoryName }, "POST");
 
 // delete category
 export const reqDelCategory = () =>
-  ajax(BASE + "/manage/user/add", null, "POST");
+  ajax(BASE + "/manage/user/delete", null, "POST");
 
 /**
  * fetch weather information from OpenWeatherMap

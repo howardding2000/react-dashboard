@@ -17,7 +17,7 @@ const Dashboard = () => {
     setBrokent(broken);
   };
   return (
-    <Layout className='db__layout'>
+    <Layout className='db__layout' style={{minHeight:'100%'}}>
       <Sider
         className='db__sider'
         theme='light'
