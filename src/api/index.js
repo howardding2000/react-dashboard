@@ -18,6 +18,18 @@ export const reqLogin = (username, password) =>
 export const reqAddUser = (user) =>
   ajax(BASE + "/manage/user/add", user, "POST");
 
+// get category
+export const reqCategory = (parentId) =>
+  ajax(BASE + "/manage/category/list", { parentId: parentId }, "GET");
+
+// add category
+export const reqAddCategory = () =>
+  ajax(BASE + "/manage/user/add", null, "POST");
+
+// delete category
+export const reqDelCategory = () =>
+  ajax(BASE + "/manage/user/add", null, "POST");
+
 /**
  * fetch weather information from OpenWeatherMap
  * @param {*} city : The name of the city whose weather needs to be displayed

@@ -47,6 +47,6 @@
     "less": "^3.13.1",
     "less-loader": "^7.3.0",
     "react-app-rewired": "^2.2.1"
-  }
-
+  },
+  "proxy": "http://localhost:5000"
 }
