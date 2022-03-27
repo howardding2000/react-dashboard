@@ -1,9 +1,8 @@
 import { Layout } from "antd";
 import React, { useState } from "react";
-
+import { Outlet } from "react-router-dom";
 import LeftNav from "../../compoments/dashboard/LeftNav";
 import DbHeader from "../../compoments/dashboard/DbHeader";
-import DbContent from "../../compoments/dashboard/DbContent";
 import DbFooter from "../../compoments/dashboard/DbFooter";
 
 import "./dashboard.less";
@@ -12,7 +11,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const Dashboard = () => {
   const [broken, setBrokent] = useState(false);
-  const [title, setTitle] = useState('Home');
+  const [title, setTitle] = useState("Home");
 
   const brokenHandler = (broken) => {
     setBrokent(broken);
@@ -26,14 +25,21 @@ const Dashboard = () => {
         onBreakpoint={brokenHandler}
         // width='12rem'
       >
-        <LeftNav broken={broken} setTitle={setTitle}/>
+        <LeftNav broken={broken} setTitle={setTitle} />
       </Sider>
       <Layout>
         <Header className='db__header'>
-          <DbHeader title={title}/>
+          <DbHeader title={title} />
         </Header>
         <Content className='db__content'>
-          <DbContent />
+          {/*
+            * An <Outlet> should be used in parent route elements to render their child
+            * route elements. This allows nested UI to show up when child routes are
+            * rendered. If the parent route matched exactly, it will render a child
+            * index route or nothing if there is no index route.
+            *
+          */ }
+          <Outlet />
         </Content>
         <Footer className='db__footer'>
           <DbFooter />

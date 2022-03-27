@@ -58,7 +58,7 @@ const LeftNav = ({ broken, setTitle }) => {
     <div className='left__nav'>
       <header className='left__nav__header'>
         <Link to='/'>
-          <h1>{broken ? "R-D" : "React-dashboard"}</h1>
+          <h1>{broken ? "R-D" : "React-Dashboard"}</h1>
         </Link>
       </header>
       <Menu
