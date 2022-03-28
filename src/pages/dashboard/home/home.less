@@ -3,27 +3,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
   justify-content: center;
   height: 100%;
   width: 100%;
   font-size: 2.5rem;
-  // font-weight: bold;
   color: @primary-color;
   text-align: center;
-  img{
-    max-width:28rem;
-    margin-bottom: 2rem;
+  img {
+    width: 28rem;
   }
 }
 
+// md
 @media all and (max-width: 768px) {
   .pages__home {
     font-size: 2rem;
+    img {
+      width: 20rem;
+    }
+  }
+}
+// sm
+@media all and (max-width: 576px) {
+  .pages__home {
+    font-size: 1.5rem;
+    img {
+      width: 14rem;
+    }
   }
 }
 
-@media all and (max-width: 576px) {
-    .pages__home {
-      font-size: 1.5rem;
+//xs
+@media all and (max-width: 480px) {
+  .pages__home {
+    font-size: 1.2rem;
+    img {
+      width: 10rem;
     }
   }
+}
