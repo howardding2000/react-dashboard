@@ -11,7 +11,6 @@ const TimeAndWeather = () => {
     const data = await reqWeather();
     setWeather(data);
   };
-console.log("TimeAndWeather");
   useEffect(() => {
     getWeather();
   }, []);

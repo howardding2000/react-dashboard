@@ -47,7 +47,6 @@ export const reqWeather = async () => {
 
   try {
     const { lat, lon } = await reqCoordinates();
-    console.log(lat);
     if (lat) {
       response = await axios.get(
         `${weatherApiPrefix}lat=${lat}&lon=${lon}&appid=${token}&units=${units}`
