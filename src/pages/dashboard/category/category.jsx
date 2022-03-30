@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Card, Button, Table, Space, message, Modal } from "antd";
-import { ArrowRightOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  ArrowRightOutlined,
+  PlusOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import LinkButton from "../../../compoments/ui/LinkButton";
 import AddCategoryForm from "../../../compoments/dashboard/content/AddCategoryForm";
 import UpdateCategoryForm from "../../../compoments/dashboard/content/UpdateCategoryForm";
@@ -78,11 +82,42 @@ const Category = () => {
   // Modal handler
   const openAddModal = () => setShowModalStatus(1);
 
-  const showUpateModal = useCallback((category) => {
+  const showUpate = useCallback((category) => {
     // store category id and name for updating Modal
     selectedCategory.current = category;
     setShowModalStatus(2);
   }, []);
+
+  const showDelete = async (id) => {
+    // check if category has sub categories
+    if (id) {
+      const result = await reqCategories(id);
+      if (result.status === 0) {
+        console.log(result.data);
+        let title;
+        let content;
+        if (result.data.length !== 0) {
+          title = "This item has sub categories!";
+          content = "Deleting this item will LOST ALL sub categories under it";
+        } else {
+          title = "Do you want to delete this category?";
+          content = "OK to confirm";
+        }
+
+        Modal.confirm({
+          title: title,
+          icon: <ExclamationCircleOutlined />,
+          content: content,
+          onOk() {
+            console.log("OK");
+          },
+          onCancel() {
+            console.log("Cancel");
+          },
+        });
+      }
+    }
+  };
 
   // add Category to Parent
   const addCategory = () => {
@@ -148,8 +183,9 @@ const Category = () => {
         key: "action",
         render: (category) => (
           <Space size='middle'>
-            <LinkButton onClick={() => showUpateModal(category)}>
-              Update
+            <LinkButton onClick={() => showUpate(category)}>Update</LinkButton>
+            <LinkButton onClick={() => showDelete(category._id)}>
+              Delete
             </LinkButton>
             {/* how to pass param to event function */}
             {/* only show 'Sub category' in First Level */}
@@ -164,7 +200,7 @@ const Category = () => {
     ];
 
     getCategory(parentId);
-  }, [parentId, showUpateModal, getCategory]);
+  }, [parentId, showUpate, getCategory]);
 
   // Card title and extra setup
   const title = parentName ? (
