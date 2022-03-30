@@ -12,6 +12,7 @@ import {
   reqCategories,
   reqUpdateCategory,
   reqAddCategory,
+  reqDelCategory,
 } from "../../../api/index";
 
 import "./category.less";
@@ -97,23 +98,27 @@ const Category = () => {
         let title;
         let content;
         if (result.data.length !== 0) {
-          title = "This item has sub categories!";
-          content = "Deleting this item will LOST ALL sub categories under it";
+          title = "This category has sub categories!";
+          content = "Deleting it will LOST all categories under it!!!";
         } else {
           title = "Do you want to delete this category?";
-          content = "OK to confirm";
+          // content = "OK to confirm";
         }
 
         Modal.confirm({
           title: title,
           icon: <ExclamationCircleOutlined />,
           content: content,
-          onOk() {
-            console.log("OK");
+          async onOk() {
+            const result = await reqDelCategory(id);
+            if(result.status === 0 ){
+              message.success("Delete successfully!");
+              getCategory(parentId);
+            }else{
+
+            }
           },
-          onCancel() {
-            console.log("Cancel");
-          },
+          onCancel() {},
         });
       }
     }

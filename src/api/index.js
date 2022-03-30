@@ -31,8 +31,8 @@ export const reqUpdateCategory = ({ categoryId, categoryName }) =>
   ajax(BASE + "/manage/category/update", { categoryId, categoryName }, "POST");
 
 // delete category
-export const reqDelCategory = () =>
-  ajax(BASE + "/manage/category/delete", null, "POST");
+export const reqDelCategory = (categoryId) =>
+  ajax(BASE + "/manage/category/delete", {categoryId}, "POST");
 
 /**
  * fetch weather information from OpenWeatherMap
