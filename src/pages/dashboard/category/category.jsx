@@ -22,8 +22,7 @@ const Category = () => {
   });
   // showModalStatus: 0 = not show ,1 = show 'Add Category',2 = show 'Update Category'
   const [showModalStatus, setShowModalStatus] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState();
-  const catRef = useRef();
+  const selectedCategory = useRef();
   const columnsRef = useRef();
   const formRef = React.createRef();
 
@@ -39,33 +38,94 @@ const Category = () => {
     setParent({ parentId: category._id, parentName: category.name });
   };
 
+  // fetch category list
+  const getCategory = useCallback(
+    async (id) => {
+      setIsLoading(true);
+      id = id || parentId;
+      // send request and get result
+      const result = await reqCategories(id);
+
+      setIsLoading(false);
+
+      if (result.status === 0) {
+        const categories = result.data;
+
+        // store first level category list
+        if (id === "0") {
+          setCategories(
+            categories.map((item) => {
+              item.key = item._id;
+              return { ...item, key: item._id };
+            })
+          );
+        } else {
+          // store sub category list
+          setSubCategories(
+            categories.map((item) => {
+              item.key = item._id;
+              return { ...item, key: item._id };
+            })
+          );
+        }
+      } else {
+        message.error("Fetch categories error!");
+      }
+    },
+    [parentId]
+  );
+
   // Modal handler
   const openAddModal = () => setShowModalStatus(1);
 
   const showUpateModal = useCallback((category) => {
     // store category id and name for updating Modal
-    setSelectedCategory(category);
+    selectedCategory.current = category;
     setShowModalStatus(2);
   }, []);
 
-
+  // add Category to Parent
   const addCategory = () => {
-    setShowModalStatus(0);
+    // Form validation
+    formRef.current
+      .validateFields()
+      .then(async (values) => {
+        setShowModalStatus(0);
+
+        const { categoryName, parentId: storedParentId } = values;
+
+        const result = await reqAddCategory(categoryName, storedParentId);
+        if (result.status === 0) {
+          console.log(result.data);
+          message.success("Add successfully!");
+          //refresh categories
+          if (storedParentId === parentId) {
+            getCategory(parentId);
+          }
+        }
+      })
+      .catch((err) => {});
   };
 
   // update Category's name
-  const updateCategory = async (e) => {
-    setShowModalStatus(0);
+  const updateCategory = (e) => {
+    // Form validation
+    formRef.current
+      .validateFields()
+      .then(async (values) => {
+        setShowModalStatus(0);
 
-    const categoryId = selectedCategory._id;
-    const categoryName = formRef.current.getFieldValue("cat_name");
+        const categoryId = selectedCategory.current._id;
+        const { categoryName } = values;
 
-    const result = await reqUpdateCategory({ categoryId, categoryName });
-    if (result.status === 0) {
-      message.info("Update successfully!");
-      //reflesh categories
-      showCategories();
-    }
+        const result = await reqUpdateCategory({ categoryId, categoryName });
+        if (result.status === 0) {
+          message.success("Update successfully!");
+          //reflesh categories
+          getCategory(parentId);
+        }
+      })
+      .catch((err) => {});
   };
 
   // handle Modal cancel event
@@ -75,8 +135,7 @@ const Category = () => {
 
   // load Category data and Initialize the Table
   useEffect(() => {
-    
-  // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
+    // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
     columnsRef.current = [
       {
         title: "Name",
@@ -104,43 +163,8 @@ const Category = () => {
       },
     ];
 
-    // fetch category list
-    const getCategory = async (id) => {
-      setIsLoading(true);
-
-      // send request and get result
-      const result = await reqCategories(id);
-
-      setIsLoading(false);
-
-      if (result.status === 0) {
-        const categories = result.data;
-
-        // store first level category list
-        if (parentId === "0") {
-          setCategories(
-            categories.map((item) => {
-              item.key = item._id;
-              return { ...item, key: item._id };
-            })
-          );
-        } else {
-          // store sub category list
-          setSubCategories(
-            categories.map((item) => {
-              item.key = item._id;
-              return { ...item, key: item._id };
-            })
-          );
-        }
-      } else {
-        message.error("Fetch categories error!");
-      }
-    };
-
     getCategory(parentId);
-    
-  }, [parentId]);
+  }, [parentId, showUpateModal, getCategory]);
 
   // Card title and extra setup
   const title = parentName ? (
@@ -180,7 +204,11 @@ const Category = () => {
         onCancel={handleCancel}
         destroyOnClose={true}
       >
-        <AddCategoryForm categories={categories} parentId={parentId} />
+        <AddCategoryForm
+          ref={formRef}
+          categories={categories}
+          parentId={parentId}
+        />
       </Modal>
 
       <Modal
@@ -192,7 +220,9 @@ const Category = () => {
       >
         <UpdateCategoryForm
           ref={formRef}
-          categoryName={selectedCategory ? selectedCategory.name : ""}
+          categoryName={
+            selectedCategory.current ? selectedCategory.current.name : ""
+          }
         />
       </Modal>
     </Card>

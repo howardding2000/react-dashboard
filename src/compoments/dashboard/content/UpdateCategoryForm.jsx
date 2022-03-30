@@ -8,8 +8,11 @@ const UpdateCategoryForm = React.forwardRef(({categoryName}, ref) => {
   ref.current = form;
 
   return (
-    <Form form={form} initialValues={{ cat_name: categoryName }}>
-      <Item name='cat_name'>
+    <Form form={form} initialValues={{ categoryName: categoryName }}>
+      <Item 
+      name='categoryName'
+      rules={[{required: true, message:'Please enter category name.'}]}
+      >
         <Input/>
       </Item>
     </Form>

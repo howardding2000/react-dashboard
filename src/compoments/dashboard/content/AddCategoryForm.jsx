@@ -3,11 +3,14 @@ import { Form, Select, Input } from "antd";
 
 const Item = Form.Item;
 const Opton = Select.Option;
-const AddCategoryForm = ({ categories, parentId }) => {
+const AddCategoryForm = React.forwardRef(({ categories, parentId }, ref) => {
+  const [form] = Form.useForm();
+  ref.current = form;
+
   return (
-    <Form>
-      <Item>
-        <Select defaultValue={parentId}>
+    <Form form={form} initialValues={{ parentId: parentId }}>
+      <Item name='parentId'>
+        <Select>
           <Opton value='0'>First Level category</Opton>
           {categories.map((cat) => (
             <Opton key={cat._id} value={cat._id}>
@@ -17,11 +20,14 @@ const AddCategoryForm = ({ categories, parentId }) => {
           ))}
         </Select>
       </Item>
-      <Item>
+      <Item
+        name='categoryName'
+        rules={[{ required: true, message: "Please enter category name." }]}
+      >
         <Input placeholder='Please enter category name...' />
       </Item>
     </Form>
   );
-};
+});
 
 export default AddCategoryForm;
