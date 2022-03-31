@@ -19,7 +19,7 @@ const ProductHome = () => {
   const Search = Input.Search;
   const Item = Form.Item;
 
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = 10;
 
   const getProducts = useCallback(async (pageNum) => {
     setIsLoading(true);
