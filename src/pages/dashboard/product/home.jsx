@@ -12,8 +12,8 @@ const ProductHome = () => {
 
   const [form] = Form.useForm();
 
-  //   const showDetial = (product) => {};
-  //   const showUpdate = (product) => {};
+    const showDetial = (product) => {};
+    const showUpdate = (product) => {};
 
   const Option = Select.Option;
   const Search = Input.Search;
