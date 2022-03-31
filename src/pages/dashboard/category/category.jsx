@@ -83,47 +83,6 @@ const Category = () => {
   // Modal handler
   const openAddModal = () => setShowModalStatus(1);
 
-  const showUpate = useCallback((category) => {
-    // store category id and name for updating Modal
-    selectedCategory.current = category;
-    setShowModalStatus(2);
-  }, []);
-
-  const showDelete = async (id) => {
-    // check if category has sub categories
-    if (id) {
-      const result = await reqCategories(id);
-      if (result.status === 0) {
-        console.log(result.data);
-        let title;
-        let content;
-        if (result.data.length !== 0) {
-          title = "This category has sub categories!";
-          content = "Deleting it will LOST all categories under it!!!";
-        } else {
-          title = "Do you want to delete this category?";
-          // content = "OK to confirm";
-        }
-
-        Modal.confirm({
-          title: title,
-          icon: <ExclamationCircleOutlined />,
-          content: content,
-          async onOk() {
-            const result = await reqDelCategory(id);
-            if(result.status === 0 ){
-              message.success("Delete successfully!");
-              getCategory(parentId);
-            }else{
-
-            }
-          },
-          onCancel() {},
-        });
-      }
-    }
-  };
-
   // add Category to Parent
   const addCategory = () => {
     // Form validation
@@ -136,7 +95,6 @@ const Category = () => {
 
         const result = await reqAddCategory(categoryName, storedParentId);
         if (result.status === 0) {
-          console.log(result.data);
           message.success("Add successfully!");
           //refresh categories
           if (storedParentId === parentId) {
@@ -148,7 +106,7 @@ const Category = () => {
   };
 
   // update Category's name
-  const updateCategory = (e) => {
+  const updateCategory = () => {
     // Form validation
     formRef.current
       .validateFields()
@@ -168,11 +126,59 @@ const Category = () => {
       .catch((err) => {});
   };
 
+  // delete category and it's sub categories by id
+  const deleteCategory = useCallback(
+    async (id) => {
+      const result = await reqDelCategory(id);
+      if (result.status === 0) {
+        message.success("Delete successfully!");
+        getCategory(parentId);
+      } else {
+      }
+    },
+    [getCategory, parentId]
+  );
+
   // handle Modal cancel event
   const handleCancel = () => {
     setShowModalStatus(0);
   };
+  const showUpate = useCallback((category) => {
+    // store category id and name for updating Modal
+    selectedCategory.current = category;
+    setShowModalStatus(2);
+  }, []);
 
+  const showDelete = useCallback(
+    async (id) => {
+      // check if category has sub categories
+      if (id) {
+        const result = await reqCategories(id);
+        if (result.status === 0) {
+          let title;
+          let content;
+          if (result.data.length !== 0) {
+            title = "This category has sub categories!";
+            content = "Deleting it will LOST all categories under it!!!";
+          } else {
+            title = "Do you want to delete this category?";
+            // content = "OK to confirm";
+          }
+
+          Modal.confirm({
+            title: title,
+            icon: <ExclamationCircleOutlined />,
+            content: content,
+            onOk() {
+              deleteCategory(id);
+            },
+            onCancel() {},
+          });
+        }
+      }
+    },
+    [deleteCategory]
+  );
   // load Category data and Initialize the Table
   useEffect(() => {
     // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
@@ -205,7 +211,7 @@ const Category = () => {
     ];
 
     getCategory(parentId);
-  }, [parentId, showUpate, getCategory]);
+  }, [parentId, showUpate, showDelete, getCategory]);
 
   // Card title and extra setup
   const title = parentName ? (

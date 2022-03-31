@@ -32,7 +32,27 @@ export const reqUpdateCategory = ({ categoryId, categoryName }) =>
 
 // delete category
 export const reqDelCategory = (categoryId) =>
-  ajax(BASE + "/manage/category/delete", {categoryId}, "POST");
+  ajax(BASE + "/manage/category/delete", { categoryId }, "POST");
+
+// get products
+export const reqProducts = (pageNum, pageSize) =>
+  ajax(BASE + "/manage/product/list", { pageNum, pageSize });
+
+// add product
+export const reqAddProduect = (product) =>
+  ajax(BASE + "/manage/product/add", { product }, "POST");
+
+// update produect
+export const reqUpdateProduect = ({ product }) =>
+  ajax(BASE + "/manage/product/update", { product }, "POST");
+
+// search produect, searchType: productName or productDesc
+export const reqSearchProduects = ({ pageNum, pageSize, searchName, searchType }) =>
+  ajax(BASE + "/manage/product/search", {
+    pageNum,
+    pageSize,
+    [searchType]: searchName,
+  });
 
 /**
  * fetch weather information from OpenWeatherMap

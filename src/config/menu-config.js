@@ -23,12 +23,12 @@ const menuList = [
     children: [
       {
         title: "Category",
-        key: "/products/category",
+        key: "/category",
         icon: <TagsOutlined />,
       },
       {
         title: "Product",
-        key: "/products/product",
+        key: "/product",
         icon: <BarsOutlined />,
       },
     ],

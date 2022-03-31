@@ -12,6 +12,9 @@ import { AuthContext } from "./store/auth-context";
 import BarChart from "./pages/dashboard/charts/bar-chart";
 import PieChart from "./pages/dashboard/charts/pie-chart";
 import LineChart from "./pages/dashboard/charts/line-chart";
+import ProductHome from "./pages/dashboard/product/home";
+import ProductDetail from "./pages/dashboard/product/detail";
+import ProductAddUpdate from "./pages/dashboard/product/add-update";
 
 const App = () => {
   const { loggedInUser } = useContext(AuthContext);
@@ -23,8 +26,12 @@ const App = () => {
         {loggedInUser && (
           <Route path='/*' element={<Dashboard />}>
             <Route path='home' element={<Home />} />
-            <Route path='products/category' element={<Category />} />
-            <Route path='products/product' element={<Product />} />
+            <Route path='category' element={<Category />} />
+            <Route path='product' element={<Product />}>
+              <Route path='add-update' element={<ProductAddUpdate />} />
+              <Route path='detail' element={<ProductDetail />} />
+              <Route path='*' element={<ProductHome />} />
+            </Route>
             <Route path='users' element={<Users />} />
             <Route path='roles' element={<Roles />} />
             <Route path='charts/bar-chart' element={<BarChart />} />
