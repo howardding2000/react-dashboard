@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Card, Select, Input, Button, Table, message, Form } from "antd";
 import LinkButton from "../../../compoments/ui/LinkButton";
 import { reqProducts, reqSearchProduects } from "../../../api/index";
+
 import "./home.less";
 
 const ProductHome = () => {
@@ -10,8 +11,9 @@ const ProductHome = () => {
   const columnsRef = useRef();
 
   const [form] = Form.useForm();
-  const showDetial = (product) => {};
-  const showUpdate = (product) => {};
+
+  //   const showDetial = (product) => {};
+  //   const showUpdate = (product) => {};
 
   const Option = Select.Option;
   const Search = Input.Search;
