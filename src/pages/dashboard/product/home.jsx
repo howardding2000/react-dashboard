@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Card, Select, Input, Button, Table, message, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import LinkButton from "../../../compoments/ui/LinkButton";
+import LinkButton from "../../../components/ui/LinkButton";
 import { reqProducts, reqSearchProduects } from "../../../api/index";
 
 const ProductHome = () => {

@@ -5,15 +5,15 @@ import {
   PlusOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import LinkButton from "../../../compoments/ui/LinkButton";
-import AddCategoryForm from "../../../compoments/dashboard/content/AddCategoryForm";
-import UpdateCategoryForm from "../../../compoments/dashboard/content/UpdateCategoryForm";
+import LinkButton from "components/ui/LinkButton";
+import AddCategoryForm from "components/category/AddCategoryForm";
+import UpdateCategoryForm from "components/category/UpdateCategoryForm";
 import {
   reqCategories,
   reqUpdateCategory,
   reqAddCategory,
   reqDelCategory,
-} from "../../../api/index";
+} from "api/index";
 
 import "./category.less";
 

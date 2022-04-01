@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { reqWeather } from "../../../api";
+import { reqWeather } from "../../api";
 import "./TimeAndWeather.less";
 
 const TimeAndWeather = () => {

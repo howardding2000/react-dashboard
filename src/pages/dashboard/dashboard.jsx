@@ -1,9 +1,9 @@
 import { Layout } from "antd";
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import LeftNav from "../../compoments/dashboard/LeftNav";
-import DbHeader from "../../compoments/dashboard/DbHeader";
-import DbFooter from "../../compoments/dashboard/DbFooter";
+import LeftNav from "../../components/dashboard/LeftNav";
+import DbHeader from "../../components/dashboard/DbHeader";
+import DbFooter from "../../components/dashboard/DbFooter";
 
 import "./dashboard.less";
 
