@@ -2,18 +2,28 @@
   display: flex;
   align-items: center;
   line-height: 3rem;
-  gap:1rem;
-  .time__weather__weather{
+  gap: 1rem;
+  background-color: #CBD5E0;
+  color: #4A5568;
+  font-weight: bold;
+  padding: 0 1rem;
+  .time__weather__weather {
+    position: relative;
+    height: 100%;
+    width: 2.5rem;
     img {
-      height:2rem;
-      width: 2rem;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 2.5rem;
     }
   }
 }
 
 @media all and (max-width: 576px) {
   .time__weather {
-    .time__weather__date{
+    .time__weather__date {
       display: none;
     }
   }

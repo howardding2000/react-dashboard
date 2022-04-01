@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Card, Select, Input, Button, Table, message, Form } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import LinkButton from "../../../compoments/ui/LinkButton";
 import { reqProducts, reqSearchProduects } from "../../../api/index";
 
@@ -8,12 +9,13 @@ import "./home.less";
 const ProductHome = () => {
   const [produces, setProduces] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [showReturn, setShowReturn] = useState(false);
   const columnsRef = useRef();
 
   const [form] = Form.useForm();
 
-    const showDetial = (product) => {};
-    const showUpdate = (product) => {};
+  const showDetial = (product) => {};
+  const showUpdate = (product) => {};
 
   const Option = Select.Option;
   const Search = Input.Search;
@@ -46,9 +48,15 @@ const ProductHome = () => {
     setIsLoading(false);
     if (reslut.status === 0) {
       setProduces(reslut.data);
+      setShowReturn(true);
     } else {
       message.error("Search products fail!");
     }
+  };
+
+  const backToProduct = () => {
+    getProducts(1);
+    setShowReturn(false);
   };
 
   useEffect(() => {
@@ -66,6 +74,7 @@ const ProductHome = () => {
       {
         title: "Price",
         dataIndex: "price",
+        sorter: (a, b) => a.price - b.price,
         render: (price) => `$ ${price}`,
         // key: "price",
       },
@@ -139,10 +148,21 @@ const ProductHome = () => {
           onSearch={() => searchProduct()}
         />
       </Item>
+      {showReturn && (
+        <Item name='backToProduct' noStyle>
+          <LinkButton onClick={backToProduct}>Back to Product</LinkButton>
+        </Item>
+      )}
     </Form>
   );
 
-  const extra = "";
+  const extra = (
+    <Button onClick={{}}>
+      <PlusOutlined />
+      Add
+    </Button>
+  );
+
   return (
     <Card title={title} extra={extra}>
       <Table

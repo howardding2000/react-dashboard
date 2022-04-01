@@ -47,7 +47,12 @@ export const reqUpdateProduect = ({ product }) =>
   ajax(BASE + "/manage/product/update", { product }, "POST");
 
 // search produect, searchType: productName or productDesc
-export const reqSearchProduects = ({ pageNum, pageSize, searchName, searchType }) =>
+export const reqSearchProduects = ({
+  pageNum,
+  pageSize,
+  searchName,
+  searchType,
+}) =>
   ajax(BASE + "/manage/product/search", {
     pageNum,
     pageSize,
@@ -65,28 +70,25 @@ export const reqWeather = async () => {
   const weatherApiPrefix = "https://api.openweathermap.org/data/2.5/weather?";
   let response;
 
-  try {
-    const { lat, lon } = await reqCoordinates();
-    if (lat) {
-      response = await axios.get(
-        `${weatherApiPrefix}lat=${lat}&lon=${lon}&appid=${token}&units=${units}`
-      );
-    } else {
-      const city = "montreal";
-      response = await axios.get(
-        `${weatherApiPrefix}q=${city}&appid=${token}&units=${units}`
-      );
-    }
-
-    return {
-      city: response.data.name,
-      desc: response.data.weather[0].main,
-      icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
-      temp: response.data.main.temp,
-    };
-  } catch (error) {
-    message.error("Fetch weather request error: " + error.message);
+  const result = await reqCoordinates();
+  if (result) {
+    response = await axios.get(
+      `${weatherApiPrefix}lat=${result.lat}&lon=${result.lon}&appid=${token}&units=${units}`
+    );
+  } else {
+    const city = "montreal";
+    response = await axios.get(
+      `${weatherApiPrefix}q=${city}&appid=${token}&units=${units}`
+    );
+    
   }
+
+  return {
+    city: response.data.name,
+    desc: response.data.weather[0].main,
+    icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+    temp: response.data.main.temp,
+  };
 };
 
 const reqCoordinates = async () => {
@@ -98,10 +100,14 @@ const reqCoordinates = async () => {
   };
   try {
     const position = await getCoordinates();
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
-    return { lat, lon };
+    if (position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      return { lat, lon };
+    }
   } catch (error) {
-    message.error("Fetch location request error: " + error.message);
+    message.info(
+      "Montreal is the default location if there is no location information"
+    );
   }
 };

@@ -8,8 +8,9 @@ const TimeAndWeather = () => {
 
   // fetch weather information
   const getWeather = async () => {
-    const data = await reqWeather();
-    setWeather(data);
+    const result = await reqWeather();
+    console.log(result);
+    setWeather(result);
   };
   useEffect(() => {
     getWeather();
@@ -18,14 +19,15 @@ const TimeAndWeather = () => {
   return (
     <div className='time__weather'>
       <div className='time__weather__date'>{formatDate}</div>
-      <div className='time__weather__weather'>
-        {weather && (
-          <>
-            {`${weather.city} ${weather.temp}`} &#8451;
-            <img alt={weather.desc} src={weather.icon}></img>
-          </>
-        )}
-      </div>
+      {weather && (
+        <>
+          {`${weather.city} ${weather.temp}`} &#8451;
+          <div className='time__weather__weather'>
+            <img alt={weather.desc} src={weather.icon} />
+          </div>
+          {` ${weather.desc}`}
+        </>
+      )}
     </div>
   );
 };
