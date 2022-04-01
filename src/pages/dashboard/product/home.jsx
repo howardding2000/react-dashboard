@@ -4,8 +4,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import LinkButton from "../../../compoments/ui/LinkButton";
 import { reqProducts, reqSearchProduects } from "../../../api/index";
 
-import "./home.less";
-
 const ProductHome = () => {
   const [produces, setProduces] = useState();
   const [isLoading, setIsLoading] = useState(false);
