@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { AuthContext } from "../../store/auth-context";
-import LinkButton from "../ui/LinkButton";
+import { AuthContext } from "store/auth-context";
+import LinkButton from "components/ui/LinkButton";
 import TimeAndWeather from "./TimeAndWeather";
 
 import "./DbHeader.less";

@@ -2,31 +2,38 @@ import { Menu } from "antd";
 import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import menuList from "../../config/menu-config";
+import menuList from "config/menu-config";
 import "./LeftNav.less";
 
 const LeftNav = ({ broken, setTitle }) => {
   const { SubMenu } = Menu;
   const { pathname } = useLocation();
+
+  //get top path from full path
+  const re = /(\/\w*)/;
+  const rootPathname = pathname.split(re).filter((item) => item)[0];
+
   const activedKeyRef = useRef({
     openKey: null,
     selectedKey: null,
-    pathname: pathname,
+    rootPathname: rootPathname,
   });
+
   const titleMapRef = useRef(new Map());
 
   const handleClick = (e) => {};
 
   useEffect(() => {
     // change title according to the path,
-    setTitle(titleMapRef.current.get(pathname) || "Home");
-  }, [setTitle, pathname]);
+    setTitle(titleMapRef.current.get(rootPathname) || "Home");
+  }, [setTitle, rootPathname]);
 
   const getMenuNodes = useCallback((menuList) => {
+    console.log(activedKeyRef.current);
     return menuList.map((item) => {
       if (item.children) {
         const cItem = item.children.find(
-          (cItem) => cItem.key === activedKeyRef.current.pathname
+          (cItem) => cItem.key === activedKeyRef.current.rootPathname
         );
         if (cItem) {
           activedKeyRef.current.openKey = item.key;
@@ -39,7 +46,7 @@ const LeftNav = ({ broken, setTitle }) => {
       } else {
         titleMapRef.current.set(item.key, item.title);
 
-        if (item.key === activedKeyRef.current.pathname) {
+        if (item.key === activedKeyRef.current.rootPathname) {
           activedKeyRef.current.selectedKey = item.key;
         }
         return (
@@ -53,7 +60,6 @@ const LeftNav = ({ broken, setTitle }) => {
 
   //
   const currentMenuList = useMemo(() => getMenuNodes(menuList), [getMenuNodes]);
-
   return (
     <div className='left__nav'>
       <header className='left__nav__header'>

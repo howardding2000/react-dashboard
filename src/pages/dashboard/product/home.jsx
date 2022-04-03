@@ -1,30 +1,43 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Card, Select, Input, Button, Table, message, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import LinkButton from "../../../components/ui/LinkButton";
-import { reqProducts, reqSearchProduects } from "../../../api/index";
+import LinkButton from "components/ui/LinkButton";
+import {
+  reqProducts,
+  reqSearchProduects,
+  reqUpdateProduectStatus,
+} from "api/index";
+import { useNavigate } from "react-router-dom";
+import { PAGE_SIZE } from "utils/constants";
 
 const ProductHome = () => {
   const [produces, setProduces] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [showReturn, setShowReturn] = useState(false);
+  const navigate = useNavigate();
   const columnsRef = useRef();
-
+  const pageNumRef = useRef(1);
   const [form] = Form.useForm();
 
-  const showDetial = (product) => {};
+  const showDetial = (product) => {
+    // pass product to Detail page
+    navigate("detail", { replace: true, state: { product } });
+  };
   const showUpdate = (product) => {};
 
   const Option = Select.Option;
   const Search = Input.Search;
   const Item = Form.Item;
 
-  const PAGE_SIZE = 10;
-
   const getProducts = useCallback(async (pageNum) => {
+    pageNumRef.current = pageNum;
+
     setIsLoading(true);
+
     const reslut = await reqProducts(pageNum, PAGE_SIZE);
+
     setIsLoading(false);
+
     if (reslut.status === 0) {
       setProduces(reslut.data);
     } else {
@@ -34,16 +47,18 @@ const ProductHome = () => {
 
   const searchProduct = async () => {
     const { searchType, searchName } = form.getFieldsValue();
-    console.log(searchType, searchName);
+
     setIsLoading(true);
 
     const reslut = await reqSearchProduects({
       pageNum: produces.pageNum,
-      pageSize: produces.pageSize,
+      pageSize: PAGE_SIZE,
       searchName,
       searchType,
     });
+
     setIsLoading(false);
+
     if (reslut.status === 0) {
       setProduces(reslut.data);
       setShowReturn(true);
@@ -52,75 +67,74 @@ const ProductHome = () => {
     }
   };
 
+  const updateProductStatus = async (productId, status) => {
+    const newStatus = status === 1 ? 2 : 1;
+    const result = await reqUpdateProduectStatus(productId, newStatus);
+
+    if (result.status === 0) {
+      message.success("Prodect Status updated!");
+      getProducts(pageNumRef.current);
+    }
+  };
+
   const backToProduct = () => {
     getProducts(1);
     setShowReturn(false);
   };
 
-  useEffect(() => {
-    columnsRef.current = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        // key: "name",
-      },
-      {
-        title: "Description",
-        dataIndex: "desc",
-        // key: "desc",
-      },
-      {
-        title: "Price",
-        dataIndex: "price",
-        sorter: (a, b) => a.price - b.price,
-        render: (price) => `$ ${price}`,
-        // key: "price",
-      },
-      {
-        title: "Status",
-        dataIndex: "status",
-        width: 100,
-        align: "center",
-        render: (status) => {
-          // status : 1=> On Sale, 2=> Sold Out
-          if (status === 1) {
-            return (
-              <>
-                <Button>Sold Out</Button>
-                <span>On sale</span>
-              </>
-            );
-          }
-          if (status === 2) {
-            return (
-              <>
-                <Button>On sale</Button>
-                <div>Sold Out</div>
-              </>
-            );
-          }
-        },
-      },
-      {
-        title: "Option",
-        width: 50,
-        render: (product) => (
+  columnsRef.current = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      // key: "name",
+    },
+    {
+      title: "Description",
+      dataIndex: "desc",
+      // key: "desc",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      // sorter: (a, b) => a.price - b.price,
+      render: (price) => `$ ${price}`,
+      // key: "price",
+    },
+    {
+      title: "Status",
+      // dataIndex: "status",
+      width: 100,
+      align: "center",
+      render: (product) => {
+        // status : 1=> On Sale, 2=> Sold Out
+        const { status, _id } = product;
+        return (
           <>
-            <div>
-              <LinkButton onClick={() => showDetial(product)}>
-                Detail
-              </LinkButton>
-            </div>
-            <div>
-              <LinkButton onClick={() => showUpdate(product)}>
-                Update
-              </LinkButton>
-            </div>
+            <Button onClick={() => updateProductStatus(_id, status)}>
+              {status === 1 ? "Sold Out" : "On Sale"}
+            </Button>
+            <span>{status === 1 ? "On Sale" : "Sold Out"}</span>
           </>
-        ),
+        );
       },
-    ];
+    },
+    {
+      title: "Option",
+      width: 50,
+      render: (product) => (
+        <>
+          <div>
+            <LinkButton onClick={() => showDetial(product)}>Detail</LinkButton>
+          </div>
+          <div>
+            <LinkButton onClick={() => showUpdate(product)}>Update</LinkButton>
+          </div>
+        </>
+      ),
+    },
+  ];
 
+  useEffect(() => {
     getProducts(1);
   }, [getProducts]);
 
@@ -155,7 +169,7 @@ const ProductHome = () => {
   );
 
   const extra = (
-    <Button onClick={{}}>
+    <Button onClick={()=>navigate("addupdate", { replace: true})}>
       <PlusOutlined />
       Add
     </Button>

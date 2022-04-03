@@ -14,7 +14,7 @@ import {
   reqAddCategory,
   reqDelCategory,
 } from "api/index";
-
+import { PAGE_SIZE } from "utils/constants";
 import "./category.less";
 
 const Category = () => {
@@ -241,7 +241,7 @@ const Category = () => {
         columns={columnsRef.current}
         loading={isLoading}
         bordered
-        pagination={{ defaultPageSize: 10, showQuickJumper: true }}
+        pagination={{ defaultPageSize: PAGE_SIZE , showQuickJumper: true }}
       />
 
       <Modal

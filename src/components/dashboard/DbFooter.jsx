@@ -1,5 +1,5 @@
 import React from "react";
-import socialLinks from "../../config/social-config";
+import socialLinks from "config/social-config";
 
 import "./DbFooter.less";
 const DbFooter = () => {

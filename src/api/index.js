@@ -22,6 +22,10 @@ export const reqAddUser = (user) =>
 export const reqCategories = (parentId) =>
   ajax(BASE + "/manage/category/list", { parentId });
 
+// get category by id
+export const reqCategory = (categoryId) =>
+  ajax(BASE + "/manage/category/info", { categoryId });
+
 // add category
 export const reqAddCategory = (categoryName, parentId) =>
   ajax(BASE + "/manage/category/add", { categoryName, parentId }, "POST");
@@ -45,6 +49,10 @@ export const reqAddProduect = (product) =>
 // update produect
 export const reqUpdateProduect = ({ product }) =>
   ajax(BASE + "/manage/product/update", { product }, "POST");
+
+// update produect status
+export const reqUpdateProduectStatus = (productId, status) =>
+  ajax(BASE + "/manage/product/updateStatus", { productId, status }, "POST");
 
 // search produect, searchType: productName or productDesc
 export const reqSearchProduects = ({
@@ -80,7 +88,6 @@ export const reqWeather = async () => {
     response = await axios.get(
       `${weatherApiPrefix}q=${city}&appid=${token}&units=${units}`
     );
-    
   }
 
   return {

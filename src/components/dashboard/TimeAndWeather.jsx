@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { reqWeather } from "../../api";
+import { reqWeather } from "api/index";
 import "./TimeAndWeather.less";
 
 const TimeAndWeather = () => {
@@ -9,7 +9,6 @@ const TimeAndWeather = () => {
   // fetch weather information
   const getWeather = async () => {
     const result = await reqWeather();
-    console.log(result);
     setWeather(result);
   };
   useEffect(() => {
@@ -18,14 +17,14 @@ const TimeAndWeather = () => {
 
   return (
     <div className='time__weather'>
-      <div className='time__weather__date'>{formatDate}</div>
+      <span className='time__weather__date'>{formatDate}</span>
       {weather && (
         <>
           {`${weather.city} ${weather.temp}`} &#8451;
-          <div className='time__weather__weather'>
+          <span className='time__weather__weather'>
             <img alt={weather.desc} src={weather.icon} />
-          </div>
-          {` ${weather.desc}`}
+          </span>
+          <span className='time__weather__text'>{` ${weather.desc}`}</span>
         </>
       )}
     </div>
