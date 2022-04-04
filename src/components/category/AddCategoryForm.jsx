@@ -14,7 +14,6 @@ const AddCategoryForm = React.forwardRef(({ categories, parentId }, ref) => {
           <Opton value='0'>First Level category</Opton>
           {categories.map((cat) => (
             <Opton key={cat._id} value={cat._id}>
-              {console.log(cat._id)}
               {cat.name}
             </Opton>
           ))}
