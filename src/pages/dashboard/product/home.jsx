@@ -23,7 +23,9 @@ const ProductHome = () => {
     // pass product to Detail page
     navigate("detail", { replace: true, state: { product } });
   };
-  const showUpdate = (product) => {};
+  const showUpdate = (product) => {
+    navigate("addupdate", { replace: true, state: { product } });
+  };
 
   const Option = Select.Option;
   const Search = Input.Search;
@@ -169,7 +171,7 @@ const ProductHome = () => {
   );
 
   const extra = (
-    <Button onClick={()=>navigate("addupdate", { replace: true})}>
+    <Button onClick={() => navigate("addupdate", { replace: true })}>
       <PlusOutlined />
       Add
     </Button>

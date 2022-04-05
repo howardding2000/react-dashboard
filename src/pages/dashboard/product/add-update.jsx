@@ -2,22 +2,34 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Card, Form, Input, Cascader, Upload, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
-import { useNavigate } from "react-router-dom";
-import { reqCategories } from "api";
+import { useNavigate, useLocation } from "react-router-dom";
+import { reqCategories, reqCategory } from "api";
 
 const ProductAddUpdate = () => {
   const { Item } = Form;
   const { TextArea } = Input;
   const navigate = useNavigate();
 
+  // get product from location.state
+  const location = useLocation();
+  const product = location.state?.product;
   const [categoryOptions, setCategoryOptions] = useState();
+
+  const initialValues = {
+    name: product?.name,
+    desc: product?.desc,
+    price: product?.price,
+    category: product && [product?.pCategoryId, product?.categoryId],
+  };
 
   const title = (
     <span>
       <LinkButton onClick={() => navigate("/product")}>
         <ArrowLeftOutlined />
       </LinkButton>
-      <span style={{ marginLeft: "0.5rem" }}>Add Product</span>
+      <span style={{ marginLeft: "0.5rem" }}>
+        {product ? "Update Product" : "Add Product"}
+      </span>
     </span>
   );
 
@@ -40,13 +52,28 @@ const ProductAddUpdate = () => {
   };
 
   // set top options
-  const initOptions = (categories) => {
+  const initOptions = async (categories) => {
     // turn categories to options
     const options = categories.map((c) => ({
       value: c._id,
       label: c.name,
       isLeaf: false,
     }));
+
+    if (product && product.pCategoryId !== 0) {
+
+      const targetOption = options.find((o) => o.value === product.pCategoryId);
+
+      // fetch sub categories
+      const subCategories = await getCategories(product.pCategoryId);
+      const subOptions = subCategories.map((c) => ({
+        value: c._id,
+        label: c.name,
+        isLeaf: true,
+      }));
+
+      targetOption.children = subOptions;
+    }
     setCategoryOptions(options);
   };
 
@@ -56,8 +83,10 @@ const ProductAddUpdate = () => {
     if (result.status === 0) {
       const categories = result.data;
       if (parentId === "0") {
+        // setup top categories
         initOptions(categories);
       } else {
+        // return sub categories
         return categories;
       }
     }
@@ -71,8 +100,7 @@ const ProductAddUpdate = () => {
     // fetch sub categories
     const subCategories = await getCategories(targetOption.value);
 
-    targetOption.loading = false;
-
+    
     // turn categories to options
     if (subCategories && subCategories.length > 0) {
       const subOptions = subCategories.map((c) => ({
@@ -81,6 +109,8 @@ const ProductAddUpdate = () => {
         isLeaf: true,
       }));
       targetOption.children = subOptions;
+      
+      targetOption.loading = false;
     } else {
       targetOption.isLeaf = true;
     }
@@ -107,6 +137,7 @@ const ProductAddUpdate = () => {
         {...formItemLayout}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        initialValues={initialValues}
       >
         <Item
           name='name'
