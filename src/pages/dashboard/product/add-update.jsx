@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, Form, Input, Cascader, Upload, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
 import { useNavigate } from "react-router-dom";
+import { reqCategories } from "api";
 
 const ProductAddUpdate = () => {
   const { Item } = Form;
   const { TextArea } = Input;
-
   const navigate = useNavigate();
+
+  const [categoryOptions, setCategoryOptions] = useState();
 
   const title = (
     <span>
@@ -29,12 +31,61 @@ const ProductAddUpdate = () => {
     },
   };
 
-  const validatePrice = (rule, value, callback) => {
-    console.log(value);
+  const validatePrice = (rule, value) => {
     if (value > 0) {
+      return Promise.resolve();
     } else {
-      callback("Price should greater than $0.00");
+      return Promise.reject(new Error("Price should greater than $0.00"));
     }
+  };
+
+  // set top options
+  const initOptions = (categories) => {
+    // turn categories to options
+    const options = categories.map((c) => ({
+      value: c._id,
+      label: c.name,
+      isLeaf: false,
+    }));
+    setCategoryOptions(options);
+  };
+
+  const getCategories = useCallback(async (parentId) => {
+    const result = await reqCategories(parentId);
+
+    if (result.status === 0) {
+      const categories = result.data;
+      if (parentId === "0") {
+        initOptions(categories);
+      } else {
+        return categories;
+      }
+    }
+  }, []);
+
+  // load sub options
+  const onLoadData = async (selectedOptions) => {
+    const targetOption = selectedOptions[0];
+
+    targetOption.loading = true;
+    // fetch sub categories
+    const subCategories = await getCategories(targetOption.value);
+
+    targetOption.loading = false;
+
+    // turn categories to options
+    if (subCategories && subCategories.length > 0) {
+      const subOptions = subCategories.map((c) => ({
+        value: c._id,
+        label: c.name,
+        isLeaf: true,
+      }));
+      targetOption.children = subOptions;
+    } else {
+      targetOption.isLeaf = true;
+    }
+
+    setCategoryOptions([...categoryOptions]);
   };
 
   const onFinish = (values) => {
@@ -45,9 +96,14 @@ const ProductAddUpdate = () => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(() => {
+    getCategories("0");
+  }, [getCategories]);
+
   return (
     <Card title={title}>
       <Form
+        name='addupdate'
         {...formItemLayout}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -89,17 +145,32 @@ const ProductAddUpdate = () => {
             placeholder='Please enter the price...'
           />
         </Item>
-        <Item name='category' label='Category' required>
-          <Cascader></Cascader>
+        <Item
+          name='category'
+          label='Category'
+          required
+          rules={[
+            { required: true, message: "Category can not be empty." },
+            // { validator: validatePrice },
+          ]}
+        >
+          <Cascader
+            options={categoryOptions}
+            loadData={onLoadData}
+            placeholder='Please select'
+            changeOnSelect
+          />
         </Item>
-        <Item label='image'>{/* <Upload></Upload> */}</Item>
-        <Item label='Detail'>{/* <Upload></Upload> */}</Item>
+        {/* <Item name='image' label='Image'>
+        </Item>
+        <Item name='detail' label='Detail'>
+        </Item> */}
         <Item
           wrapperCol={{
             xxl: { span: 8 },
             xl: { offset: 3, span: 10 },
             md: { offset: 5, span: 12 },
-            sm:{offset: 7},
+            sm: { offset: 7 },
             // offset: 7,
             span: 16,
           }}
