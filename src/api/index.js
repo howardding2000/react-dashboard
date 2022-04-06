@@ -67,6 +67,10 @@ export const reqSearchProduects = ({
     [searchType]: searchName,
   });
 
+// delete image
+export const reqDeleteImage = (name) =>
+  ajax(BASE + "/manage/img/delete", { name }, "POST");
+
 /**
  * fetch weather information from OpenWeatherMap
  * @param {*} city : The name of the city whose weather needs to be displayed

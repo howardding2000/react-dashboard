@@ -29,7 +29,6 @@ const LeftNav = ({ broken, setTitle }) => {
   }, [setTitle, rootPathname]);
 
   const getMenuNodes = useCallback((menuList) => {
-    console.log(activedKeyRef.current);
     return menuList.map((item) => {
       if (item.children) {
         const cItem = item.children.find(

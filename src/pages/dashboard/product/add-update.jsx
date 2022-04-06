@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Card, Form, Input, Cascader, Upload, Button } from "antd";
+import React, { useState } from "react";
+import { Card, Form, Input, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
 import { useNavigate, useLocation } from "react-router-dom";
-import { reqCategories, reqCategory } from "api";
+import PicturesWall from "components/product/PicturesWall";
+import CategoriesOption from "components/product/CategoriesOption";
 
 const ProductAddUpdate = () => {
   const { Item } = Form;
   const { TextArea } = Input;
   const navigate = useNavigate();
+  const [iamgesList, setImagesList] = useState([]);
 
   // get product from location.state
   const location = useLocation();
   const product = location.state?.product;
-  const [categoryOptions, setCategoryOptions] = useState();
 
   const initialValues = {
     name: product?.name,
@@ -51,84 +52,13 @@ const ProductAddUpdate = () => {
     }
   };
 
-  // set top options
-  const initOptions = async (categories) => {
-    // turn categories to options
-    const options = categories.map((c) => ({
-      value: c._id,
-      label: c.name,
-      isLeaf: false,
-    }));
-
-    if (product && product.pCategoryId !== 0) {
-
-      const targetOption = options.find((o) => o.value === product.pCategoryId);
-
-      // fetch sub categories
-      const subCategories = await getCategories(product.pCategoryId);
-      const subOptions = subCategories.map((c) => ({
-        value: c._id,
-        label: c.name,
-        isLeaf: true,
-      }));
-
-      targetOption.children = subOptions;
-    }
-    setCategoryOptions(options);
-  };
-
-  const getCategories = useCallback(async (parentId) => {
-    const result = await reqCategories(parentId);
-
-    if (result.status === 0) {
-      const categories = result.data;
-      if (parentId === "0") {
-        // setup top categories
-        initOptions(categories);
-      } else {
-        // return sub categories
-        return categories;
-      }
-    }
-  }, []);
-
-  // load sub options
-  const onLoadData = async (selectedOptions) => {
-    const targetOption = selectedOptions[0];
-
-    targetOption.loading = true;
-    // fetch sub categories
-    const subCategories = await getCategories(targetOption.value);
-
-    
-    // turn categories to options
-    if (subCategories && subCategories.length > 0) {
-      const subOptions = subCategories.map((c) => ({
-        value: c._id,
-        label: c.name,
-        isLeaf: true,
-      }));
-      targetOption.children = subOptions;
-      
-      targetOption.loading = false;
-    } else {
-      targetOption.isLeaf = true;
-    }
-
-    setCategoryOptions([...categoryOptions]);
-  };
-
   const onFinish = (values) => {
-    console.log("Success:", values);
+    console.log("Success:", values, iamgesList);
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  useEffect(() => {
-    getCategories("0");
-  }, [getCategories]);
 
   return (
     <Card title={title}>
@@ -180,21 +110,14 @@ const ProductAddUpdate = () => {
           name='category'
           label='Category'
           required
-          rules={[
-            { required: true, message: "Category can not be empty." },
-            // { validator: validatePrice },
-          ]}
+          rules={[{ required: true, message: "Category can not be empty." }]}
         >
-          <Cascader
-            options={categoryOptions}
-            loadData={onLoadData}
-            placeholder='Please select'
-            changeOnSelect
-          />
+          <CategoriesOption product={product} />
         </Item>
-        {/* <Item name='image' label='Image'>
+        <Item name='image' label='Image'>
+          <PicturesWall setImagesList={setImagesList} />
         </Item>
-        <Item name='detail' label='Detail'>
+        {/* <Item name='detail' label='Detail'>
         </Item> */}
         <Item
           wrapperCol={{
