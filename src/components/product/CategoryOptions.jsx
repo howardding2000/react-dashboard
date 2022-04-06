@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Cascader } from "antd";
 import { reqCategories } from "api";
 
-const CategoriesOption = (props) => {
+
+// Dynamic loading options
+const CategoryOptions = (props) => {
   const [categoryOptions, setCategoryOptions] = useState();
   const product = props?.product;
 
@@ -96,4 +98,4 @@ const CategoriesOption = (props) => {
   );
 };
 
-export default CategoriesOption;
+export default CategoryOptions;

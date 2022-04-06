@@ -3,7 +3,6 @@ import { Upload, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import { reqDeleteImage } from "api";
-import { remove } from "store";
 
 const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -14,7 +13,7 @@ const getBase64 = (file) => {
   });
 };
 
-const PicturesWall = ({ setImagesList }) => {
+const PicturesWall = React.forwardRef((props, ref) => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -30,9 +29,9 @@ const PicturesWall = ({ setImagesList }) => {
   const handleChange = async ({ file, fileList }) => {
     if (file.status === "removed") {
       const result = await reqDeleteImage(file.name);
-      console.log('removed', result)
-      if(result.status===0){
-          message.success("Image removed!")
+      console.log("removed", result);
+      if (result.status === 0) {
+        message.success("Image removed!");
       }
     }
 
@@ -66,6 +65,7 @@ const PicturesWall = ({ setImagesList }) => {
   return (
     <>
       <Upload
+        ref={ref}
         action='/manage/img/upload'
         accept='image/*'
         listType='picture-card'
@@ -86,6 +86,6 @@ const PicturesWall = ({ setImagesList }) => {
       </Modal>
     </>
   );
-};
+});
 
 export default PicturesWall;

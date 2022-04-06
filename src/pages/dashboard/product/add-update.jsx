@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { Card, Form, Input, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
 import { useNavigate, useLocation } from "react-router-dom";
 import PicturesWall from "components/product/PicturesWall";
-import CategoriesOption from "components/product/CategoriesOption";
+import CategoryStaticOptions from "components/product/CategoryStaticOptions";
 
 const ProductAddUpdate = () => {
   const { Item } = Form;
   const { TextArea } = Input;
   const navigate = useNavigate();
-  const [iamgesList, setImagesList] = useState([]);
+  const imgsRef = useRef();
 
-  // get product from location.state
+
+  // initialize the values for update page
   const location = useLocation();
   const product = location.state?.product;
 
@@ -23,6 +24,7 @@ const ProductAddUpdate = () => {
     category: product && [product?.pCategoryId, product?.categoryId],
   };
 
+  
   const title = (
     <span>
       <LinkButton onClick={() => navigate("/product")}>
@@ -53,7 +55,7 @@ const ProductAddUpdate = () => {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values, iamgesList);
+    console.log("Success:", values, imgsRef.current);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -112,10 +114,10 @@ const ProductAddUpdate = () => {
           required
           rules={[{ required: true, message: "Category can not be empty." }]}
         >
-          <CategoriesOption product={product} />
+          <CategoryStaticOptions />
         </Item>
         <Item name='image' label='Image'>
-          <PicturesWall setImagesList={setImagesList} />
+          <PicturesWall ref={imgsRef} />
         </Item>
         {/* <Item name='detail' label='Detail'>
         </Item> */}
