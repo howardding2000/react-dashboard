@@ -21,7 +21,7 @@ const PicturesWall = React.forwardRef(({ imgs }, ref) => {
   let initFileList = [];
   if (imgs && imgs.length > 0) {
     initFileList = imgs.map((img, index) => ({
-      uid: -index,
+      uid: -(index+1),
       name: img,
       status: "done",
       url: BASE_IMG_URL + img,
@@ -87,11 +87,11 @@ const PicturesWall = React.forwardRef(({ imgs }, ref) => {
       </Upload>
       <Modal
         visible={previewVisible}
-        title={preview.previewTitle}
+        title={preview?.previewTitle}
         footer={null}
         onCancel={() => setPreviewVisible(false)}
       >
-        <img alt='example' style={{ width: "100%" }} src={preview.previewImage} />
+        <img alt='example' style={{ width: "100%" }} src={preview?.previewImage} />
       </Modal>
     </>
   );
