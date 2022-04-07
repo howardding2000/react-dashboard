@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Upload, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
+import { BASE_IMG_URL } from "utils/constants";
 import { reqDeleteImage } from "api";
 
 const getBase64 = (file) => {
@@ -13,11 +13,23 @@ const getBase64 = (file) => {
   });
 };
 
-const PicturesWall = React.forwardRef((props, ref) => {
+const PicturesWall = React.forwardRef(({ imgs }, ref) => {
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
+  const [preview, setPreview] = useState();
+
+  // load the existing images for update product
+  let initFileList = [];
+  if (imgs && imgs.length > 0) {
+    initFileList = imgs.map((img, index) => ({
+      uid: -index,
+      name: img,
+      status: "done",
+      url: BASE_IMG_URL + img,
+    }));
+  }
+  
+  console.log(initFileList);
+  const [fileList, setFileList] = useState(initFileList);
 
   const uploadButton = (
     <div>
@@ -29,7 +41,6 @@ const PicturesWall = React.forwardRef((props, ref) => {
   const handleChange = async ({ file, fileList }) => {
     if (file.status === "removed") {
       const result = await reqDeleteImage(file.name);
-      console.log("removed", result);
       if (result.status === 0) {
         message.success("Image removed!");
       }
@@ -46,7 +57,6 @@ const PicturesWall = React.forwardRef((props, ref) => {
         message.error("Image upload fail!");
       }
     }
-    console.log(file, file.status, fileList);
     setFileList(fileList);
     // setImagesList(fileList);
   };
@@ -54,12 +64,11 @@ const PicturesWall = React.forwardRef((props, ref) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-
-    setPreviewImage(file.url || file.preview);
+    const previewImage = file.url || file.preview
+    const previewTitle = file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    setPreview({previewImage,previewTitle});
     setPreviewVisible(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
+
   };
 
   return (
@@ -78,11 +87,11 @@ const PicturesWall = React.forwardRef((props, ref) => {
       </Upload>
       <Modal
         visible={previewVisible}
-        title={previewTitle}
+        title={preview.previewTitle}
         footer={null}
         onCancel={() => setPreviewVisible(false)}
       >
-        <img alt='example' style={{ width: "100%" }} src={previewImage} />
+        <img alt='example' style={{ width: "100%" }} src={preview.previewImage} />
       </Modal>
     </>
   );

@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
-import { Card, Form, Input, Button } from "antd";
+import { Card, Form, Input, Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
 import { useNavigate, useLocation } from "react-router-dom";
 import PicturesWall from "components/product/PicturesWall";
 import CategoryStaticOptions from "components/product/CategoryStaticOptions";
+import { reqAddProduct, reqUpdateProduct } from "api";
 
 const ProductAddUpdate = () => {
   const { Item } = Form;
@@ -12,19 +13,17 @@ const ProductAddUpdate = () => {
   const navigate = useNavigate();
   const imgsRef = useRef();
 
-
   // initialize the values for update page
   const location = useLocation();
   const product = location.state?.product;
 
-  const initialValues = {
+  let initialValues = {
     name: product?.name,
     desc: product?.desc,
     price: product?.price,
     category: product && [product?.pCategoryId, product?.categoryId],
   };
 
-  
   const title = (
     <span>
       <LinkButton onClick={() => navigate("/product")}>
@@ -54,8 +53,36 @@ const ProductAddUpdate = () => {
     }
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Success:", values, imgsRef.current);
+    const { name, desc, price, category } = values;
+    const imgs = imgsRef.current?.fileList.map((item) => item.name);
+    const status = product?.status || "1";
+    const updatedProduct = {
+      categoryId: category[1],
+      desc,
+      detail: "",
+      imgs,
+      name,
+      pCategoryId: category[0],
+      price,
+      status,
+      __v: 0,
+      _id: product?._id,
+    };
+
+    const result = product
+      ? await reqUpdateProduct(updatedProduct)
+      : await reqAddProduct(updatedProduct);
+
+    const text = product ? "update" : "add";
+
+    if (result.status === 0) {
+      message.success(`Product ${text} successfully!`);
+      navigate("/product");
+    } else {
+      message.error(`Product ${text} failed!`);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -117,7 +144,7 @@ const ProductAddUpdate = () => {
           <CategoryStaticOptions />
         </Item>
         <Item name='image' label='Image'>
-          <PicturesWall ref={imgsRef} />
+          <PicturesWall ref={imgsRef} imgs={product?.imgs}/>
         </Item>
         {/* <Item name='detail' label='Detail'>
         </Item> */}

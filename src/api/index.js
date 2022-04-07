@@ -43,11 +43,11 @@ export const reqProducts = (pageNum, pageSize) =>
   ajax(BASE + "/manage/product/list", { pageNum, pageSize });
 
 // add product
-export const reqAddProduect = (product) =>
+export const reqAddProduct = (product) =>
   ajax(BASE + "/manage/product/add", { product }, "POST");
 
 // update produect
-export const reqUpdateProduect = ({ product }) =>
+export const reqUpdateProduct = (product) =>
   ajax(BASE + "/manage/product/update", { product }, "POST");
 
 // update produect status
