@@ -77,7 +77,6 @@ const ProductAddUpdate = () => {
   };
 
   const onFinish = async (values) => {
-    console.log("Success:", values, imgsRef.current);
     const { name, desc, price, category } = values;
     const imgs = imgsRef.current?.fileList.map((item) => item.name);
     const status = product?.status || "1";
@@ -106,7 +105,7 @@ const ProductAddUpdate = () => {
       message.success(`Product ${text} successfully!`);
       navigate("/product");
     } else {
-      message.error(`Product ${text} failed!`);
+      message.error(`Product ${text} failed! ${result.msg}`);
     }
   };
 

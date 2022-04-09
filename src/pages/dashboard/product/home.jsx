@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Card, Select, Input, Button, Table, message, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import LinkButton from "components/ui/LinkButton";
+import { useNavigate } from "react-router-dom";
 import {
   reqProducts,
   reqSearchProduects,
   reqUpdateProduectStatus,
 } from "api/index";
-import { useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "utils/constants";
+import LinkButton from "components/ui/LinkButton";
+import ProductOption from "components/product/ProductOption";
 
 const ProductHome = () => {
   const [produces, setProduces] = useState();
@@ -18,14 +19,6 @@ const ProductHome = () => {
   const columnsRef = useRef();
   const pageNumRef = useRef(1);
   const [form] = Form.useForm();
-
-  const showDetial = (product) => {
-    // pass product to Detail page
-    navigate("detail", { replace: true, state: { product } });
-  };
-  const showUpdate = (product) => {
-    navigate("addupdate", { replace: true, state: { product } });
-  };
 
   const Option = Select.Option;
   const Search = Input.Search;
@@ -124,14 +117,10 @@ const ProductHome = () => {
       title: "Option",
       width: 50,
       render: (product) => (
-        <>
-          <div>
-            <LinkButton onClick={() => showDetial(product)}>Detail</LinkButton>
-          </div>
-          <div>
-            <LinkButton onClick={() => showUpdate(product)}>Update</LinkButton>
-          </div>
-        </>
+        <ProductOption
+          product={product}
+          onBack={() => getProducts(pageNumRef.current)}
+        />
       ),
     },
   ];

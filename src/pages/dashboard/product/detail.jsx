@@ -62,7 +62,7 @@ const ProductDetail = () => {
         </Item>
         <Item>
           <h2>Product Price</h2>
-          <span>{product.price}</span>
+          <span>${product.price}</span>
         </Item>
         <Item>
           <h2>Category</h2>

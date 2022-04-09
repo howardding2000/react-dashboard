@@ -50,6 +50,10 @@ export const reqAddProduct = (product) =>
 export const reqUpdateProduct = (product) =>
   ajax(BASE + "/manage/product/update", { product }, "POST");
 
+// delete product
+export const reqDelProduct = (productId) =>
+  ajax(BASE + "/manage/product/delete", { productId }, "POST");
+
 // update produect status
 export const reqUpdateProduectStatus = (productId, status) =>
   ajax(BASE + "/manage/product/updateStatus", { productId, status }, "POST");
