@@ -4,18 +4,21 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
 import { useNavigate, useLocation } from "react-router-dom";
 import PicturesWall from "components/product/PicturesWall";
-import CategoryStaticOptions from "components/product/CategoryStaticOptions";
+
 import { reqAddProduct, reqUpdateProduct } from "api";
+import CategoryStaticOptions from "components/product/CategoryStaticOptions";
+import RichTextEditor from "components/product/RichTextEditor";
 
 const ProductAddUpdate = () => {
+  // initialize the values for update page
+  const location = useLocation();
+  const product = location.state?.product;
+
   const { Item } = Form;
   const { TextArea } = Input;
   const navigate = useNavigate();
   const imgsRef = useRef();
-
-  // initialize the values for update page
-  const location = useLocation();
-  const product = location.state?.product;
+  const editorRef = useRef({ getDetial: {}, detail: product?.detail });
 
   let initialValues = {
     name: product?.name,
@@ -45,6 +48,26 @@ const ProductAddUpdate = () => {
     },
   };
 
+  const RichTextLayout = {
+    labelCol: { xl: { span: 3 }, md: { span: 5 }, span: 7 },
+    wrapperCol: {
+      xxl: { span: 12 },
+      xl: { span: 14 },
+      md: { span: 16 },
+      span: 16,
+    },
+  };
+
+  const SubmitButtonLayout = {
+    wrapperCol: {
+      xxl: { offset: 3, span: 12 },
+      xl: { offset: 3, span: 14 },
+      md: { offset: 5, span: 16 },
+      sm: { offset: 7, span: 16 },
+      span: 16,
+    },
+  };
+
   const validatePrice = (rule, value) => {
     if (value > 0) {
       return Promise.resolve();
@@ -58,10 +81,12 @@ const ProductAddUpdate = () => {
     const { name, desc, price, category } = values;
     const imgs = imgsRef.current?.fileList.map((item) => item.name);
     const status = product?.status || "1";
+    const detail = editorRef.current.getDetail();
+
     const updatedProduct = {
       categoryId: category[1],
       desc,
-      detail: "",
+      detail,
       imgs,
       name,
       pCategoryId: category[0],
@@ -144,20 +169,17 @@ const ProductAddUpdate = () => {
           <CategoryStaticOptions />
         </Item>
         <Item name='image' label='Image'>
-          <PicturesWall ref={imgsRef} imgs={product?.imgs}/>
+          <PicturesWall ref={imgsRef} imgs={product?.imgs} />
         </Item>
-        {/* <Item name='detail' label='Detail'>
-        </Item> */}
         <Item
-          wrapperCol={{
-            xxl: { span: 8 },
-            xl: { offset: 3, span: 10 },
-            md: { offset: 5, span: 12 },
-            sm: { offset: 7 },
-            // offset: 7,
-            span: 16,
-          }}
+          name='detail'
+          label='Detail'
+          labelCol={RichTextLayout.labelCol}
+          wrapperCol={RichTextLayout.wrapperCol}
         >
+          <RichTextEditor editorRef={editorRef} detail={product?.detail} />
+        </Item>
+        <Item wrapperCol={SubmitButtonLayout.wrapperCol}>
           <Button
             type='primary'
             htmlType='submit'

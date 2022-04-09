@@ -28,7 +28,6 @@ const PicturesWall = React.forwardRef(({ imgs }, ref) => {
     }));
   }
   
-  console.log(initFileList);
   const [fileList, setFileList] = useState(initFileList);
 
   const uploadButton = (

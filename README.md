@@ -51,6 +51,8 @@ It will be split into two parts, client side and server side.
 - [`react-router-dom` v6.2.2](https://reactrouter.com/)
 - [`antd` v4.19.2](https://ant.design/)
 - [Axio v0.26.1](https://axios-http.com/)
+- react-draft-wysiwyg
+- OpenWeatherMap
 - ES6
 - Webpack
 
