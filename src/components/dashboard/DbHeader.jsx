@@ -7,7 +7,7 @@ import TimeAndWeather from "./TimeAndWeather";
 
 import "./DbHeader.less";
 const DbHeader = ({ title }) => {
-  const { loggedInUser, onLogout } = useContext(AuthContext);
+  const { loggedInUser, logout } = useContext(AuthContext);
   const { confirm } = Modal;
 
   const logoutHander = () => {
@@ -17,7 +17,7 @@ const DbHeader = ({ title }) => {
       // content: "Some descriptions",
       centered: true,
       onOk() {
-        onLogout();
+        logout();
       },
       onCancel() {
         // console.log('Cancel');

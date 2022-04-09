@@ -17,13 +17,12 @@ import ProductDetail from "./pages/dashboard/product/detail";
 import ProductAddUpdate from "./pages/dashboard/product/add-update";
 
 const App = () => {
-  const { loggedInUser } = useContext(AuthContext);
-
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <>
       <Routes>
         <Route path='/login' element={<Login />} />
-        {loggedInUser && (
+        {isLoggedIn && (
           <Route path='/*' element={<Dashboard />}>
             <Route path='home' element={<Home />} />
             <Route path='category' element={<Category />} />
@@ -40,7 +39,7 @@ const App = () => {
             <Route path='*' element={<Home />} />
           </Route>
         )}
-        {!loggedInUser && <Route path='/*' element={<Login />} />}
+        {!isLoggedIn && <Route path='/*' element={<Login />} />}
       </Routes>
     </>
   );

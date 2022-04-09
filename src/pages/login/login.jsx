@@ -7,7 +7,7 @@ import { reqLogin } from "../../api/index";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { loggedInUser, onLogin } = useContext(AuthContext);
+  const { loggedInUser, login } = useContext(AuthContext);
 
   const onFinish = async ({ username, password }) => {
     /**
@@ -28,12 +28,14 @@ const Login = () => {
     
     if (withoutProxy) {
       message.success("Login successful!");
-      onLogin(username);
+      login(username);
     } else {
       const result = await reqLogin(username, password);
       if (result.status === 0) {
         message.success("Login successful!");
-        onLogin(username);
+        const user = result.data;
+        // expirationTime:ms
+        login(user);
       }
       if (result.status === 1) {
         message.error(result.msg);
