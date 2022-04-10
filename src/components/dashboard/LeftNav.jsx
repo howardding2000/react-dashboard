@@ -9,14 +9,9 @@ const LeftNav = ({ broken, setTitle }) => {
   const { SubMenu } = Menu;
   const { pathname } = useLocation();
 
-  //get top path from full path
-  const re = /(\/\w*)/;
-  const rootPathname = pathname.split(re).filter((item) => item)[0];
-
   const activedKeyRef = useRef({
     openKey: null,
     selectedKey: null,
-    rootPathname: rootPathname,
   });
 
   const titleMapRef = useRef(new Map());
@@ -25,14 +20,25 @@ const LeftNav = ({ broken, setTitle }) => {
 
   useEffect(() => {
     // change title according to the path,
-    setTitle(titleMapRef.current.get(rootPathname) || "Home");
-  }, [setTitle, rootPathname]);
+    let title = titleMapRef.current.get(pathname);
+    if (title) {
+      setTitle(title || "Home");
+    } else {
+      titleMapRef.current.forEach((value, key) => {
+        if (pathname.indexOf(key) !== -1) {
+          title = value;
+        }
+      });
+      setTitle(title || "Home");
+    }
+  }, [setTitle, pathname]);
 
   const getMenuNodes = useCallback((menuList) => {
+    // Obtain `openKey` and `selectedKey` by matching pathname and menu item's key, and store in `activedKeyRef`
     return menuList.map((item) => {
       if (item.children) {
         const cItem = item.children.find(
-          (cItem) => cItem.key === activedKeyRef.current.rootPathname
+          (cItem) => pathname.indexOf(cItem.key) !== -1
         );
         if (cItem) {
           activedKeyRef.current.openKey = item.key;
@@ -45,7 +51,7 @@ const LeftNav = ({ broken, setTitle }) => {
       } else {
         titleMapRef.current.set(item.key, item.title);
 
-        if (item.key === activedKeyRef.current.rootPathname) {
+        if (pathname.indexOf(item.key) !== -1) {
           activedKeyRef.current.selectedKey = item.key;
         }
         return (
@@ -59,6 +65,7 @@ const LeftNav = ({ broken, setTitle }) => {
 
   //
   const currentMenuList = useMemo(() => getMenuNodes(menuList), [getMenuNodes]);
+
   return (
     <div className='left__nav'>
       <header className='left__nav__header'>
