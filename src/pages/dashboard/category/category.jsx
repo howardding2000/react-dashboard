@@ -29,7 +29,7 @@ const Category = () => {
   const [showModalStatus, setShowModalStatus] = useState(0);
   const selectedCategory = useRef();
   const columnsRef = useRef();
-  const formRef = React.createRef();
+  const formRef = useRef();
 
   // show first level category list
   const showCategories = () => {

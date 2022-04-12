@@ -61,7 +61,7 @@ const LeftNav = ({ broken, setTitle }) => {
         );
       }
     });
-  }, []);
+  }, [pathname]);
 
   //
   const currentMenuList = useMemo(() => getMenuNodes(menuList), [getMenuNodes]);

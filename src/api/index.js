@@ -75,6 +75,9 @@ export const reqSearchProduects = ({
 export const reqDeleteImage = (name) =>
   ajax(BASE + "/manage/img/delete", { name }, "POST");
 
+// get all roles
+export const reqRoles = () => ajax(BASE + "/manage/role/list");
+
 /**
  * fetch weather information from OpenWeatherMap
  * @param {*} city : The name of the city whose weather needs to be displayed

@@ -91,9 +91,11 @@ const ProductHome = () => {
     {
       title: "Price",
       dataIndex: "price",
+      width: 100,
       // sorter: (a, b) => a.price - b.price,
       render: (price) => `$ ${price}`,
       // key: "price",
+      align: 'right',
     },
     {
       title: "Status",

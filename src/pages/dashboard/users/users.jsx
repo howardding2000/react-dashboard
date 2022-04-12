@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
+import { Card, Button, Table } from "antd";
+
+import "./users.less";
 
 const Users = () => {
-  return (
-    <div>Users</div>
-  )
-}
+  return <Card>users</Card>;
+};
 
-export default Users
+export default Users;
