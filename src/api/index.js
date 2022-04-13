@@ -35,7 +35,7 @@ export const reqUpdateCategory = ({ categoryId, categoryName }) =>
   ajax(BASE + "/manage/category/update", { categoryId, categoryName }, "POST");
 
 // delete category
-export const reqDelCategory = (categoryId) =>
+export const reqDeleteCategory = (categoryId) =>
   ajax(BASE + "/manage/category/delete", { categoryId }, "POST");
 
 // get products
@@ -51,7 +51,7 @@ export const reqUpdateProduct = (product) =>
   ajax(BASE + "/manage/product/update", { product }, "POST");
 
 // delete product
-export const reqDelProduct = (productId) =>
+export const reqDeleteProduct = (productId) =>
   ajax(BASE + "/manage/product/delete", { productId }, "POST");
 
 // update produect status
@@ -71,12 +71,24 @@ export const reqSearchProduects = ({
     [searchType]: searchName,
   });
 
-// delete image
+// delete image by name
 export const reqDeleteImage = (name) =>
   ajax(BASE + "/manage/img/delete", { name }, "POST");
 
 // get all roles
 export const reqRoles = () => ajax(BASE + "/manage/role/list");
+
+// add role
+export const reqAddRole = (roleName, authName) =>
+  ajax(BASE + "/manage/role/add", { roleName, authName }, "POST");
+
+// update role
+export const reqUpdateRole = (role) =>
+  ajax(BASE + "/manage/role/update", { role }, "POST");
+
+// delete role by Id
+export const reqDeleteRole = (roleId) =>
+  ajax(BASE + "/manage/role/delete", { roleId }, "POST");
 
 /**
  * fetch weather information from OpenWeatherMap

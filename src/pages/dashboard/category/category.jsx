@@ -12,7 +12,7 @@ import {
   reqCategories,
   reqUpdateCategory,
   reqAddCategory,
-  reqDelCategory,
+  reqDeleteCategory,
 } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
 import "./category.less";
@@ -129,7 +129,7 @@ const Category = () => {
   // delete category and it's sub categories by id
   const deleteCategory = useCallback(
     async (id) => {
-      const result = await reqDelCategory(id);
+      const result = await reqDeleteCategory(id);
       if (result.status === 0) {
         message.success("Delete successfully!");
         getCategory(parentId);

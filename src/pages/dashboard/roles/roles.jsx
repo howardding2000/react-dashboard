@@ -1,18 +1,19 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { Card, Button, Table, message, Modal } from "antd";
 import { PAGE_SIZE } from "utils/constants";
-import { reqRoles } from "api";
+import { reqRoles, reqAddRole, reqUpdateRole } from "api";
 import AddRoleForm from "components/roles/AddRoleForm";
-import UpdateRoleForm from "components/roles/UpdateRoleForm";
+import SetRoleForm from "components/roles/SetRoleForm";
+import { AuthContext } from "store/auth-context";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
   const [role, setRole] = useState({});
   // showModalStatus: 1=> add role, 2=> update role
   const [showModalStatus, setShowModalStatus] = useState(0);
-  // const [isLoading, setIsLoading] = useState(false);
   const columnsRef = useRef();
   const formRef = useRef();
+  const authCtx = useContext(AuthContext);
 
   const title = (
     <span className='users__title'>
@@ -29,53 +30,66 @@ const Roles = () => {
     </span>
   );
 
-  // handle Modal cancel event
-  const handleCancel = () => {
-    setShowModalStatus(0);
+  const getRoles = async () => {
+    const result = await reqRoles();
+    if (result.status === 0) {
+      setRoles(result.data);
+    } else {
+      message.error("Get roles failed.");
+    }
   };
 
   const addRole = () => {
     formRef.current
-    .validateFields()
-    .then(async (values) => {
-      setShowModalStatus(0);
-      
-      const { roleName } = values;
-      console.log("addRole",roleName);
+      .validateFields()
+      .then(async (values) => {
+        const { roleName } = values;
 
-        // const result = await reqAddCategory(categoryName, storedParentId);
-        // if (result.status === 0) {
-        //   message.success("Add successfully!");
-        //   //refresh categories
-        //   if (storedParentId === parentId) {
-        //     getCategory(parentId);
-        //   }
-        // }
+        const result = await reqAddRole(roleName);
+
+        if (result.status === 0) {
+          message.success("Add successfully!");
+          //go back to roles
+          setShowModalStatus(0);
+          setRoles((preRoles) => [...preRoles, result.data]);
+        }
       })
       .catch((err) => {});
   };
+
   const updateRole = () => {
-    console.log("UpdateRole");
     formRef.current
-    .validateFields()
-    .then(async (values) => {
-      setShowModalStatus(0);
-      
-      const { roleName } = values;
-      console.log("updateRole",roleName);
+      .validateFields()
+      .then(async (values) => {
+        const authName = authCtx.loggedInUser;
+        const updatedRole = {
+          ...role,
+          menus: values.roleOptions,
+          auth_name: authName,
+        };
 
-        // const result = await reqAddCategory(categoryName, storedParentId);
-        // if (result.status === 0) {
-        //   message.success("Add successfully!");
-        //   //refresh categories
-        //   if (storedParentId === parentId) {
-        //     getCategory(parentId);
-        //   }
-        // }
+        const result = await reqUpdateRole(updatedRole);
+        if (result.status === 0) {
+          message.success("Update role successfully!");
+          //go back to roles
+          const newRole = result.data;
+          setShowModalStatus(0);
+          setRole(newRole);
+          setRoles((preRoles) =>
+            preRoles.map((role) => (role._id === newRole._id ? newRole : role))
+          );
+        } else {
+          message.success("Update role fialed!");
+        }
       })
       .catch((err) => {});
-
   };
+
+  // handle Modal cancel event
+  const modalCancel = () => {
+    setShowModalStatus(0);
+  };
+
   const rowSelection = {
     type: "radio",
     selectedRowKeys: [role._id],
@@ -84,7 +98,6 @@ const Roles = () => {
   const onRow = (role, rowIndex) => {
     return {
       onClick: (event) => {
-        console.log("row click", role);
         setRole(role);
       },
     };
@@ -111,8 +124,13 @@ const Roles = () => {
         key: "auth_time",
         dataIndex: "auth_time",
         render: (time) => {
-          const date = new Date(time);
-          return <span>{date.toDateString()}</span>;
+          if (time) {
+            const date = new Date(time);
+            return <span>{date.toDateString()}</span>;
+          } else {
+            // Roles who are not yet authorized are shown 'waiting for authorization'
+            return <span>Waiting for Authorization</span>;
+          }
         },
       },
       {
@@ -121,15 +139,6 @@ const Roles = () => {
         dataIndex: "auth_name",
       },
     ];
-
-    const getRoles = async () => {
-      const result = await reqRoles();
-      if (result.status === 0) {
-        setRoles(result.data);
-      } else {
-        message.error("Get roles failed.");
-      }
-    };
 
     getRoles();
   }, []);
@@ -150,7 +159,7 @@ const Roles = () => {
         title='Add Role'
         visible={showModalStatus === 1}
         onOk={addRole}
-        onCancel={handleCancel}
+        onCancel={modalCancel}
         destroyOnClose={true}
       >
         <AddRoleForm ref={formRef} />
@@ -160,10 +169,10 @@ const Roles = () => {
         title='Set Role'
         visible={showModalStatus === 2}
         onOk={updateRole}
-        onCancel={handleCancel}
+        onCancel={modalCancel}
         destroyOnClose={true}
       >
-        <UpdateRoleForm ref={formRef} roleName={role?.name} />
+        <SetRoleForm ref={formRef} role={role} />
       </Modal>
     </Card>
   );

@@ -3,7 +3,7 @@ import { message, Modal } from "antd";
 import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import LinkButton from "components/ui/LinkButton";
-import { reqDelProduct, reqDeleteImage } from "api";
+import { reqDeleteProduct, reqDeleteImage } from "api";
 
 import "./productOption.less";
 
@@ -17,7 +17,7 @@ const ProductOption = ({ product, onBack }) => {
     
 
     // delete the product
-    const result = await reqDelProduct(productId);
+    const result = await reqDeleteProduct(productId);
     if (result.status === 0) {
       // delete the images after delete the product
       if (imgs && imgs.length > 0) {
