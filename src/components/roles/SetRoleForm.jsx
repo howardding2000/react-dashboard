@@ -14,10 +14,8 @@ const SetRoleForm = React.forwardRef(({ role }, ref) => {
       children: menuList,
     },
   ]);
-  const checkedKeysRef = useRef(role.menus);
 
   const checkHandler = (checkedKeys, e) => {
-    checkedKeysRef.current = checkedKeys;
     form.setFieldsValue({ roleOptions: checkedKeys });
   };
 
@@ -30,7 +28,7 @@ const SetRoleForm = React.forwardRef(({ role }, ref) => {
         <Tree
           checkable
           defaultExpandAll='false'
-          defaultCheckedKeys={checkedKeysRef.current}
+          defaultCheckedKeys={role.menus}
           onCheck={checkHandler}
           treeData={roleOptionsRef.current}
         />
