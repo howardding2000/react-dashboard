@@ -52,5 +52,5 @@
     "less-loader": "^7.3.0",
     "react-app-rewired": "^2.2.1"
   },
-  "proxy": "http://107.171.212.121:5003"
+  "proxy": "http://buding2021.synology.me:5003"
 }
