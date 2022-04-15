@@ -6,7 +6,7 @@ import axios from "axios";
  * ! use service address directly will cause 'Cross-domain problem'
  * * use proxy is the right way, confige in package.json
  * */
-const BASE = 'http://buding2021.synology.me:5003';
+// const BASE = 'http://localhost:5000';
 
 // const BASE = "";
 
