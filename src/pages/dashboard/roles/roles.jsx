@@ -92,6 +92,7 @@ const Roles = () => {
 
   const rowSelection = {
     type: "radio",
+    onChange: (selectedRowKeys, selectedRows) => setRole(selectedRows[0]),
     selectedRowKeys: [role._id],
   };
 
@@ -172,7 +173,7 @@ const Roles = () => {
         onCancel={modalCancel}
         destroyOnClose={true}
       >
-        <SetRoleForm ref={formRef} role={role} />
+        <SetRoleForm ref={formRef} role={role} onBack={() => getRoles()} />
       </Modal>
     </Card>
   );

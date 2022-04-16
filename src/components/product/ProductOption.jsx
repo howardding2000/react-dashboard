@@ -18,6 +18,7 @@ const ProductOption = ({ product, onBack }) => {
 
     // delete the product
     const result = await reqDeleteProduct(productId);
+    
     if (result.status === 0) {
       // delete the images after delete the product
       if (imgs && imgs.length > 0) {

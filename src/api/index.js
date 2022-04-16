@@ -8,7 +8,7 @@ import axios from "axios";
  * */
 // const BASE = 'http://localhost:5000';
 
-// const BASE = "";
+const BASE = "";
 
 // login
 export const reqLogin = (username, password) =>
@@ -85,6 +85,10 @@ export const reqAddRole = (roleName, authName) =>
 // update role
 export const reqUpdateRole = (role) =>
   ajax(BASE + "/manage/role/update", { role }, "POST");
+
+// get users by roleId
+export const reqUserByRoleId = (roleId) =>
+  ajax(BASE + "/manage/role/users", { roleId });
 
 // delete role by Id
 export const reqDeleteRole = (roleId) =>
