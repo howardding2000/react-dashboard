@@ -7,19 +7,19 @@
  *      1.3 If fail, do not call reject(reason) but alert error message.
  */
 
-import axios from 'axios';
-import { message } from 'antd';
+import axios from "axios";
+import { message } from "antd";
 
-export default function ajax(url, data = {}, method = 'GET') {
+export default function ajax(url, data = {}, method = "GET") {
   return new Promise((resolve, isRejected) => {
     let promise;
     // 1.1 Execute ajax request
-    if (method === 'GET') {
+    if (method === "GET") {
       promise = axios.get(url, {
         params: data,
       });
-    } else if (method === 'POST') {
-      promise = axios.post(url, data);
+    } else if (method === "POST") {
+      promise = axios.post(url, data, headers);
     }
 
     promise
@@ -29,7 +29,7 @@ export default function ajax(url, data = {}, method = 'GET') {
       })
       .catch((error) => {
         // 1.3 If fail, do not call reject(reason) but alert error message.
-        message.error('request error:' + error.message);
+        message.error("request error:" + error.message);
       });
   });
 }

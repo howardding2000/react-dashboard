@@ -8,7 +8,7 @@ import {
   reqUpdateProduectStatus,
 } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
-import { debounce } from "utils/utils";
+import Utils from "utils/utils";
 import LinkButton from "components/ui/LinkButton";
 import ProductOption from "components/product/ProductOption";
 
@@ -42,7 +42,7 @@ const ProductHome = () => {
   }, []);
 
   //use debounce method to save resources
-  const searchProduct = debounce(async () => {
+  const searchProduct = Utils.debounce(async () => {
     const { searchType, searchName } = form.getFieldsValue();
 
     setIsLoading(true);
