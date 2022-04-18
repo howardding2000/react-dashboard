@@ -8,6 +8,7 @@ import {
   reqUpdateProduectStatus,
 } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
+import { debounce } from "utils/utils";
 import LinkButton from "components/ui/LinkButton";
 import ProductOption from "components/product/ProductOption";
 
@@ -40,7 +41,8 @@ const ProductHome = () => {
     }
   }, []);
 
-  const searchProduct = async () => {
+  //use debounce method to save resources
+  const searchProduct = debounce(async () => {
     const { searchType, searchName } = form.getFieldsValue();
 
     setIsLoading(true);
@@ -60,7 +62,7 @@ const ProductHome = () => {
     } else {
       message.error("Search products fail!");
     }
-  };
+  }, 500);
 
   const updateProductStatus = async (productId, status) => {
     const newStatus = status === 1 ? 2 : 1;
@@ -95,7 +97,7 @@ const ProductHome = () => {
       // sorter: (a, b) => a.price - b.price,
       render: (price) => `$ ${price}`,
       // key: "price",
-      align: 'right',
+      align: "right",
     },
     {
       title: "Status",
