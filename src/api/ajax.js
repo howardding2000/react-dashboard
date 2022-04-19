@@ -19,7 +19,7 @@ export default function ajax(url, data = {}, method = "GET") {
         params: data,
       });
     } else if (method === "POST") {
-      promise = axios.post(url, data, headers);
+      promise = axios.post(url, data);
     }
 
     promise
