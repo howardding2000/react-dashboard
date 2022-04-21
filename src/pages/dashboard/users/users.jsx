@@ -14,31 +14,75 @@ const Users = () => {
   const [showModalStatus, setShowModalStatus] = useState(0);
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
-  // const rolesRef = useRef(new Map());
-  const [rolesMap, setRolesMap] = useState(new Map());
+  const rolesRef = useRef(new Map());
+  // const [rolesMap, setRolesMap] = useState(new Map());
+  const userRef = userRef();
   const columnsRef = useRef();
   const formRef = useRef();
 
-  const initRoles = useCallback(
-    (roles) => {
-      if (rolesMap.size === 0) {
-        const rolesMap = roles.reduce(
-          (pre, role) => pre.set(role._id, role.name),
-          new Map()
-        );
-        // console.log(rolesMap);
-        setRolesMap(rolesMap);
-      }
-    },
-    [rolesMap.size]
-  );
+  const initColumn = () => {
+    // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
+    columnsRef.current = [
+      {
+        title: "Name",
+        dataIndex: "username",
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+      },
+      {
+        title: "Phone",
+        dataIndex: "phone",
+      },
+      {
+        title: "Create Time",
+        dataIndex: "create_time",
+        render: formatDate,
+      },
+      {
+        title: "Role",
+        dataIndex: "role_id",
+        render: (roleId) => {
+          // console.log(rolesMap);
+          return rolesRef.current.get(roleId);
+        },
+      },
+      {
+        title: "Option",
+        render: (user) => (
+          <span>
+            <LinkButton onClick={() => openUpdateModal(user)}>
+              Update
+            </LinkButton>
+            {` `}
+            <LinkButton onClick={() => showDeleteUserConfirm(user)}>
+              Delete
+            </LinkButton>
+          </span>
+        ),
+      },
+    ];
+  };
+
+  const initRoles = useCallback((roles) => {
+    if (rolesRef.current.size === 0) {
+      const rolesMap = roles.reduce(
+        (pre, role) => pre.set(role._id, role.name),
+        new Map()
+      );
+      // console.log(rolesMap);
+      rolesRef.current = rolesMap;
+    }
+  }, []);
 
   const getUsers = useCallback(async () => {
     const result = await reqUsers();
     if (result.status === 0) {
       const { users, roles } = result.data;
-      setUsers(users);
       initRoles(roles);
+      initColumn();
+      setUsers(users);
     } else {
       message.error("Failed to get user, please try later.");
     }
@@ -50,7 +94,6 @@ const Users = () => {
     setShowModalStatus(1);
   };
   const openUpdateModal = (user) => {
-    console.log(user);
     setUser(user);
     setShowModalStatus(2);
   };
@@ -81,12 +124,6 @@ const Users = () => {
     [confirm, getUsers]
   );
 
-  const title = (
-    <Button type='primary' onClick={openAddModal}>
-      Add User
-    </Button>
-  );
-
   // handle Modal cancel event
   const handleCancel = () => {
     setShowModalStatus(0);
@@ -99,50 +136,14 @@ const Users = () => {
 
   // load Category data and Initialize the Table
   useEffect(() => {
-    // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
-    columnsRef.current = [
-      {
-        title: "Name",
-        dataIndex: "username",
-      },
-      {
-        title: "Email",
-        dataIndex: "email",
-      },
-      {
-        title: "Phone",
-        dataIndex: "phone",
-      },
-      {
-        title: "Create Time",
-        dataIndex: "create_time",
-        render: formatDate,
-      },
-      {
-        title: "Role",
-        dataIndex: "role_id",
-        render: (roleId) => {
-          // console.log(rolesMap);
-          return rolesMap.get(roleId);
-        },
-      },
-      {
-        title: "Option",
-        render: (user) => (
-          <span>
-            <LinkButton onClick={() => openUpdateModal(user)}>
-              Update
-            </LinkButton>
-            {` `}
-            <LinkButton onClick={() => showDeleteUserConfirm(user)}>
-              Delete
-            </LinkButton>
-          </span>
-        ),
-      },
-    ];
     getUsers();
-  }, [getUsers, showDeleteUserConfirm, rolesMap]);
+  }, [getUsers]);
+
+  const title = (
+    <Button type='primary' onClick={openAddModal}>
+      Add User
+    </Button>
+  );
 
   return (
     <Card title={title}>
@@ -163,7 +164,11 @@ const Users = () => {
         destroyOnClose={true}
         centered
       >
-        <AddOrUpdateUserForm user={user} rolesMap={rolesMap}ref={formRef} />
+        <AddOrUpdateUserForm
+          user={user}
+          rolesMap={rolesRef.current}
+          ref={formRef}
+        />
       </Modal>
     </Card>
   );
