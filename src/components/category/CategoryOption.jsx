@@ -89,7 +89,11 @@ const CategoryOption = ({ category, setParent, getCategory }) => {
   };
 
   return (
-    <Space size='middle' align='center'>
+    <Space
+      size='middle'
+      align='center'
+      style={{ width: "100%", justifyContent: "space-evenly" }}
+    >
       {/* how to pass param to event function */}
       {/* only show 'Sub category' in First Level */}
       {category.parentId === "0" && (

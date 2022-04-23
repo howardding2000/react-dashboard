@@ -170,7 +170,7 @@ const ProductHome = () => {
   );
 
   return (
-    <Card title={title} extra={extra}>
+    <Card title={title} extra={extra} style={{ height: "100%" }}>
       <Table
         dataSource={produces?.list}
         columns={columnsRef.current}

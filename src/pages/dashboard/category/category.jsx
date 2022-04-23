@@ -11,7 +11,6 @@ import {
   reqAddCategory,
 } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
-import "./category.less";
 import CategoryOption from "components/category/CategoryOption";
 
 const Category = () => {
@@ -149,7 +148,7 @@ const Category = () => {
   );
 
   return (
-    <Card title={title} extra={extra}>
+    <Card title={title} extra={extra} style={{ height: "100%" }}>
       <Table
         dataSource={parentId === "0" ? categories : subCategories}
         columns={columnsRef.current}

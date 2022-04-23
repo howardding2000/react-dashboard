@@ -68,7 +68,14 @@ const ProductOption = ({ product, onBack }) => {
   };
 
   return (
-    <Space size='middle' align="center">
+    <Space
+      size='middle'
+      align='center'
+      style={{
+        width: "100%",
+        justifyContent: "space-evenly",
+      }}
+    >
       <LinkButton onClick={() => showDetail(product)}>
         <FileTextOutlined style={{ fontSize: "1rem" }} />
       </LinkButton>

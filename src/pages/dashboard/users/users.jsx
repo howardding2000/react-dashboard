@@ -10,7 +10,6 @@ import { formatDate } from "utils/utils";
 import LinkButton from "components/ui/LinkButton";
 import { reqUsers, reqDeleteUser, reqAddUser, reqUpdateUser } from "api";
 import AddOrUpdateUserForm from "components/user/AddOrUpdateUserForm";
-import "./users.less";
 
 const Users = () => {
   const { confirm } = Modal;
@@ -112,7 +111,7 @@ const Users = () => {
       {
         title: "Option",
         render: (user) => (
-          <Space size='middle' align="center">
+          <Space size='middle' align='center'>
             <LinkButton onClick={() => openUpdateModal(user)}>
               <EditOutlined style={{ fontSize: "1rem" }} />
             </LinkButton>
@@ -186,14 +185,14 @@ const Users = () => {
   );
 
   return (
-    <Card title={title}>
+    <Card title={title} style={{ height: "100%" }}>
       <Table
         dataSource={users}
         columns={columnsRef.current}
         loading={isLoading}
         rowKey='_id'
         bordered
-        pagination={{ defaultPageSize: PAGE_SIZE, showQuickJumper: true }}
+        pagination={{ defaultPageSize: PAGE_SIZE, showQuickJumper: true }}        
       />
 
       <Modal
