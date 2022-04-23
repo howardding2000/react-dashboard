@@ -3,7 +3,7 @@ import store from "store";
 
 export const AuthContext = React.createContext({
   token: "",
-  loggedInUser: "",
+  loggedInUser: null,
   isLoggedIn: false,
   onLogout: () => {},
   onLogin: (username) => {},
@@ -22,9 +22,13 @@ const calculateRemainingTime = (expirationTime) => {
 
 const retrieveStoredToken = () => {
   const storedToken = store.get("token");
-  const storedLoggedInUser = store.get("loggedInUser");
+  const storedLoggedInUser =
+    !!store.get("loggedInUser") && JSON.parse(store.get("loggedInUser"));
   const storedExpirationDate = store.get("expirationTime");
   const remainingTime = calculateRemainingTime(storedExpirationDate);
+
+  console.log(storedLoggedInUser);
+  console.log(storedToken);
 
   if (!storedToken) {
     return null;
@@ -50,25 +54,30 @@ const AuthContextProvider = (props) => {
   const [loggedInUser, setLoggedInUser] = useState(tokenData?.loggedInUser);
   const isLoggedIn = !!token;
 
-  const loginHandler = ({ username: loggedInUser, _id: token, expirationTime }) => {
-    setToken(token);
-    setLoggedInUser(loggedInUser);
-    store.set("token", token);
-    store.set("loggedInUser", loggedInUser);
-    store.set("expirationTime", expirationTime);
-    const remainingTime = calculateRemainingTime(expirationTime);
+  const loginHandler = (user) => {
+    console.log(user);
+    console.log(user._id);
+    const { username, role } = user;
+    const menus = role.menus;
+    const userInfo = { username, menus };
+    store.set("token", user._id);
+    store.set("loggedInUser", JSON.stringify(userInfo));
+    store.set("expirationTime", user.expirationTime);
+    const remainingTime = calculateRemainingTime(user.expirationTime);
     logoutTimer = setTimeout(logoutHandler, remainingTime);
+    setToken(user._id);
+    setLoggedInUser(userInfo);
   };
 
   const logoutHandler = useCallback(() => {
-    setToken(null);
-    setLoggedInUser(null);
     store.remove("token");
     store.remove("loggedInUser");
     store.remove("expirationTime");
     if (logoutTimer) {
       clearTimeout(logoutTimer);
     }
+    setToken(null);
+    setLoggedInUser(null);
   }, []);
 
   useEffect(() => {
