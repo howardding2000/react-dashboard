@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import store from "store";
 
 export const AuthContext = React.createContext({
@@ -45,51 +45,75 @@ const retrieveStoredToken = () => {
     token: storedToken,
     loggedInUser: storedLoggedInUser,
     duration: remainingTime,
+    isLoggedIn: !!storedToken,
   };
 };
 
+const defaultUserState = {
+  token: "",
+  loggedInUser: null,
+  isLoggedIn: false,
+};
+
+const userReducer = (state, action) => {
+  switch (action.type) {
+    case "LOGIN": {
+      console.log(action.user);
+      const user = action.user;
+      const { username, role } = user;
+      const menus = role.menus;
+      const userInfo = { username, menus };
+      store.set("token", user._id);
+      store.set("loggedInUser", JSON.stringify(userInfo));
+      store.set("expirationTime", user.expirationTime);
+      return {
+        token: user._id,
+        loggedInUser: userInfo,
+        isLoggedIn: true,
+      };
+    }
+    case "LOGOUT": {
+      store.remove("token");
+      store.remove("loggedInUser");
+      store.remove("expirationTime");
+      if (logoutTimer) {
+        clearTimeout(logoutTimer);
+      }
+      return defaultUserState;
+    }
+    default:
+      return defaultUserState;
+  }
+};
+
 const AuthContextProvider = (props) => {
-  const tokenData = retrieveStoredToken();
-  const [token, setToken] = useState(tokenData?.token);
-  const [loggedInUser, setLoggedInUser] = useState(tokenData?.loggedInUser);
-  const isLoggedIn = !!token;
+  const defaultUserState = retrieveStoredToken();
+
+  const [userState, dispatchUserState] = useReducer(
+    userReducer,
+    defaultUserState
+  );
 
   const loginHandler = (user) => {
-    console.log(user);
-    console.log(user._id);
-    const { username, role } = user;
-    const menus = role.menus;
-    const userInfo = { username, menus };
-    store.set("token", user._id);
-    store.set("loggedInUser", JSON.stringify(userInfo));
-    store.set("expirationTime", user.expirationTime);
+    dispatchUserState({ type: "LOGIN", user: user });
     const remainingTime = calculateRemainingTime(user.expirationTime);
     logoutTimer = setTimeout(logoutHandler, remainingTime);
-    setToken(user._id);
-    setLoggedInUser(userInfo);
   };
 
   const logoutHandler = useCallback(() => {
-    store.remove("token");
-    store.remove("loggedInUser");
-    store.remove("expirationTime");
-    if (logoutTimer) {
-      clearTimeout(logoutTimer);
-    }
-    setToken(null);
-    setLoggedInUser(null);
+    dispatchUserState({ type: "LOGOUT" });
   }, []);
 
   useEffect(() => {
-    if (tokenData) {
-      logoutTimer = setTimeout(logoutHandler, tokenData.duration);
+    if (defaultUserState?.duration) {
+      logoutTimer = setTimeout(logoutHandler, defaultUserState?.duration);
     }
-  }, [logoutHandler, tokenData]);
+  }, [logoutHandler, defaultUserState]);
 
   const contextValue = {
-    token,
-    isLoggedIn,
-    loggedInUser,
+    token: userState?.token,
+    isLoggedIn: userState?.isLoggedIn,
+    loggedInUser: userState?.loggedInUser,
     logout: logoutHandler,
     login: loginHandler,
   };

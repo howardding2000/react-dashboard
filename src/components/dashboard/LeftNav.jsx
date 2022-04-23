@@ -1,14 +1,24 @@
+import React, {
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+  useContext,
+} from "react";
 import { Menu } from "antd";
-import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import menuList from "config/menu-config";
 import "./LeftNav.less";
+import { AuthContext } from "store/auth-context";
 
 const LeftNav = ({ broken, setTitle }) => {
   const { SubMenu } = Menu;
   const { pathname } = useLocation();
+  const { loggedInUser } = useContext(AuthContext);
+  console.log(loggedInUser);
 
+  const { menus: authMenus } = loggedInUser;
   const activedKeyRef = useRef({
     openKey: null,
     selectedKey: null,
@@ -17,6 +27,10 @@ const LeftNav = ({ broken, setTitle }) => {
   const titleMapRef = useRef(new Map());
 
   const handleClick = (e) => {};
+
+  const hasAuth = (item) => {
+    return authMenus.some((menu) => menu === item.key);
+  };
 
   useEffect(() => {
     // change title according to the path,
@@ -33,35 +47,43 @@ const LeftNav = ({ broken, setTitle }) => {
     }
   }, [setTitle, pathname]);
 
-  const getMenuNodes = useCallback((menuList) => {
-    // Obtain `openKey` and `selectedKey` by matching pathname and menu item's key, and store in `activedKeyRef`
-    return menuList.map((item) => {
-      if (item.children) {
-        const cItem = item.children.find(
-          (cItem) => pathname.indexOf(cItem.key) !== -1
-        );
-        if (cItem) {
-          activedKeyRef.current.openKey = item.key;
-        }
-        return (
-          <SubMenu key={item.key} icon={item.icon} title={item.title}>
-            {getMenuNodes(item.children)}
-          </SubMenu>
-        );
-      } else {
-        titleMapRef.current.set(item.key, item.title);
+  // Obtain `openKey` and `selectedKey` by matching pathname and menu item's key, and store in `activedKeyRef`
+  const getMenuNodes = useCallback(
+    (menuList) => {
+      console.log("getMenuNodes");
+      return menuList.map((item) => {
+        if (hasAuth(item)) {
+          if (item.children) {
+            const cItem = item.children.find(
+              (cItem) => pathname.indexOf(cItem.key) !== -1
+            );
+            if (cItem) {
+              activedKeyRef.current.openKey = item.key;
+            }
+            return (
+              <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                {getMenuNodes(item.children)}
+              </SubMenu>
+            );
+          } else {
+            titleMapRef.current.set(item.key, item.title);
 
-        if (pathname.indexOf(item.key) !== -1) {
-          activedKeyRef.current.selectedKey = item.key;
+            if (pathname.indexOf(item.key) !== -1) {
+              activedKeyRef.current.selectedKey = item.key;
+            }
+            return (
+              <Menu.Item key={item.key} icon={item.icon}>
+                <Link to={item.key}>{item.title}</Link>
+              </Menu.Item>
+            );
+          }
+        } else {
+          return null;
         }
-        return (
-          <Menu.Item key={item.key} icon={item.icon}>
-            <Link to={item.key}>{item.title}</Link>
-          </Menu.Item>
-        );
-      }
-    });
-  }, [pathname]);
+      });
+    },
+    [pathname]
+  );
 
   //
   const currentMenuList = useMemo(() => getMenuNodes(menuList), [getMenuNodes]);

@@ -7,7 +7,7 @@ import { reqLogin } from "../../api/index";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { loggedInUser, login } = useContext(AuthContext);
+  const { token, login } = useContext(AuthContext);
 
   const onFinish = async ({ username, password }) => {
     /**
@@ -17,29 +17,15 @@ const Login = () => {
      * 3. position of async: The left side of the function definition where the await is used.
      */
 
-    /**
-     * ! For developement without service: 
-     *   1. set withoutService to true; 
-     *   2. remove "proxy": "http://localhost:5000" in package.json
-     *  
-     * */ 
-
-    const withoutProxy = false;
-    
-    if (withoutProxy) {
+    const result = await reqLogin(username, password);
+    if (result.status === 0) {
       message.success("Login successful!");
-      login(username);
-    } else {
-      const result = await reqLogin(username, password);
-      if (result.status === 0) {
-        message.success("Login successful!");
-        const user = result.data;
-        // expirationTime:ms
-        login(user);
-      }
-      if (result.status === 1) {
-        message.error(result.msg);
-      }
+      const user = result.data;
+      // expirationTime:ms
+      login(user);
+    }
+    if (result.status === 1) {
+      message.error(result.msg);
     }
   };
 
@@ -71,7 +57,7 @@ const Login = () => {
 
   return (
     <>
-      {loggedInUser && <Navigate to='/' />}
+      {!!token && <Navigate to='/' />}
       <div className={classes.login}>
         <header className={classes.header}>
           <div className={classes.logo}>

@@ -8,6 +8,7 @@ import TimeAndWeather from "./TimeAndWeather";
 import "./DbHeader.less";
 const DbHeader = ({ title }) => {
   const { loggedInUser, logout } = useContext(AuthContext);
+
   const { confirm } = Modal;
 
   const logoutHander = () => {
@@ -29,7 +30,7 @@ const DbHeader = ({ title }) => {
     <div className='db__header'>
       <div className='db__header__top'>
         <div className='db__header__top__welcome'>
-          <span>Welcome, {loggedInUser} !</span>
+          <span>Welcome, {loggedInUser.username} !</span>
           <LinkButton onClick={logoutHander}>Logout</LinkButton>
         </div>
       </div>
