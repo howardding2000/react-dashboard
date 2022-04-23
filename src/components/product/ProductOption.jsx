@@ -1,24 +1,25 @@
 import React from "react";
-import { message, Modal } from "antd";
-import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { message, Modal, Space } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  FileTextOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import LinkButton from "components/ui/LinkButton";
 import { reqDeleteProduct, reqDeleteImage } from "api";
-
-import "./productOption.less";
 
 const ProductOption = ({ product, onBack }) => {
   const navigate = useNavigate();
   const { confirm } = Modal;
 
   const delelteProduct = async (product) => {
-
     const { _id: productId, imgs } = product;
-    
 
     // delete the product
     const result = await reqDeleteProduct(productId);
-    
+
     if (result.status === 0) {
       // delete the images after delete the product
       if (imgs && imgs.length > 0) {
@@ -38,7 +39,7 @@ const ProductOption = ({ product, onBack }) => {
       onBack();
     }
     if (result.status !== 0) {
-      console.log(result)
+      console.log(result);
       message.error(`Delete product failed! ${result.msg}`);
     }
   };
@@ -67,21 +68,17 @@ const ProductOption = ({ product, onBack }) => {
   };
 
   return (
-    <div className='product__option'>
-      <div className='product__detail_update'>
-        <div>
-          <LinkButton onClick={() => showDetail(product)}>Detail</LinkButton>
-        </div>
-        <div>
-          <LinkButton onClick={() => showUpdate(product)}>Update</LinkButton>
-        </div>
-      </div>
-      <div className='product__delete'>
-        <LinkButton onClick={() => showDelete(product)}>
-          <DeleteOutlined />
-        </LinkButton>
-      </div>
-    </div>
+    <Space size='middle' align="center">
+      <LinkButton onClick={() => showDetail(product)}>
+        <FileTextOutlined style={{ fontSize: "1rem" }} />
+      </LinkButton>
+      <LinkButton onClick={() => showUpdate(product)}>
+        <EditOutlined style={{ fontSize: "1rem" }} />
+      </LinkButton>
+      <LinkButton onClick={() => showDelete(product)}>
+        <DeleteOutlined style={{ fontSize: "1rem" }} />
+      </LinkButton>
+    </Space>
   );
 };
 

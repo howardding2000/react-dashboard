@@ -4,9 +4,9 @@ import { useForm } from "antd/lib/form/Form";
 
 const AddOrUpdateUserForm = React.forwardRef(
   ({ user, rolesMap, onSubmit }, ref) => {
+    const { Item } = Form;
     const [form] = useForm();
     ref.current = form;
-    const { Item } = Form;
 
     const formItemLayout = {
       labelCol: { span: 7 },
@@ -16,19 +16,16 @@ const AddOrUpdateUserForm = React.forwardRef(
     };
 
     const options = [];
-    rolesMap.forEach((value, key, map) => {
+    rolesMap.forEach((value, key) => {
       options.push({ label: value, value: key });
     });
 
     const onFinish = (values) => {
-      console.log("onFinish");
       onSubmit();
       return true;
     };
 
-    const onFinishFailed = (errorInfo) => {
-      console.log("onFinishFailed");
-    };
+    const onFinishFailed = (errorInfo) => {};
 
     return (
       <Form
@@ -41,9 +38,13 @@ const AddOrUpdateUserForm = React.forwardRef(
         <Item
           name='username'
           label='Name'
-          rules={[{ required: true, message: "Please input your Username!" }]}
+          rules={[{ required: true, message: "Please input your username!" }]}
         >
-          <Input type='text' disabled={!!user} />
+          <Input
+            type='text'
+            disabled={!!user}
+            placeholder='Please input username'
+          />
         </Item>
         <Item
           name='email'
@@ -59,7 +60,7 @@ const AddOrUpdateUserForm = React.forwardRef(
             },
           ]}
         >
-          <Input type='text' />
+          <Input type='text' placeholder='Please input your email' />
         </Item>
         <Item
           name='phone'
@@ -79,21 +80,29 @@ const AddOrUpdateUserForm = React.forwardRef(
             },
           ]}
         >
-          <Input type='text' maxLength={10} />
+          <Input
+            type='text'
+            maxLength={10}
+            placeholder='Please input your phone number'
+          />
         </Item>
         <Item
           name='role_id'
           label='role'
           rules={[{ required: true, message: "Please select the role." }]}
         >
-          <Select options={options}></Select>
+          <Select options={options} placeholder='Please select a role'></Select>
         </Item>
         <Item
           name='password'
           label='Password'
           rules={[{ required: true, message: "Please input your Password." }]}
         >
-          <Input type='password' disabled={!!user} />
+          <Input
+            type='password'
+            disabled={!!user}
+            placeholder='Please input your password'
+          />
         </Item>
         <Item
           name='confirm_password'
@@ -117,7 +126,11 @@ const AddOrUpdateUserForm = React.forwardRef(
             }),
           ]}
         >
-          <Input type='password' disabled={!!user} />
+          <Input
+            type='password'
+            disabled={!!user}
+            placeholder={!user ? "Please input your password agen" : ""}
+          />
         </Item>
       </Form>
     );

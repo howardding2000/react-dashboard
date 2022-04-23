@@ -2,71 +2,70 @@ import React, { useState, useEffect } from "react";
 import { Cascader } from "antd";
 import { reqCategories } from "api";
 
-
-// Dynamic loading options
-const CategoryOptions = (props) => {
-  const [categoryOptions, setCategoryOptions] = useState();
+// Dynamic loading selects
+const CategorySelects = (props) => {
+  const [categorySelects, setCategorySelects] = useState();
   const product = props?.product;
 
-  const getSubOption = async (targetOption) => {
+  const getSubSelect = async (targetSelect) => {
     // fetch sub categories
 
-    const result = await reqCategories(targetOption.value);
+    const result = await reqCategories(targetSelect.value);
 
     if (result.status === 0) {
       const subCategories = result.data;
 
       if (subCategories && subCategories.length > 0) {
-        const subOptions = subCategories.map((c) => ({
+        const subSelects = subCategories.map((c) => ({
           value: c._id,
           label: c.name,
           isLeaf: true,
         }));
-        return subOptions;
+        return subSelects;
       } else {
         return null;
       }
     }
   };
 
-  // load sub options
-  const onLoadData = async (selectedOptions) => {
-    const targetOption = selectedOptions[0];
-    targetOption.loading = true;
+  // load sub selects
+  const onLoadData = async (selectedSelects) => {
+    const targetSelect = selectedSelects[0];
+    targetSelect.loading = true;
 
-    const subOptions = await getSubOption(targetOption);
+    const subSelects = await getSubSelect(targetSelect);
 
-    if (subOptions) {
-      targetOption.children = subOptions;
-      targetOption.loading = false;
+    if (subSelects) {
+      targetSelect.children = subSelects;
+      targetSelect.loading = false;
     } else {
-      targetOption.isLeaf = true;
+      targetSelect.isLeaf = true;
     }
 
-    setCategoryOptions([...categoryOptions]);
+    setCategorySelects([...categorySelects]);
   };
 
   useEffect(() => {
-    // set top options
-    const initOptions = async (categories) => {
-      // turn categories to options
-      const options = categories.map((c) => ({
+    // set top selects
+    const initSelects = async (categories) => {
+      // turn categories to selects
+      const selects = categories.map((c) => ({
         value: c._id,
         label: c.name,
         isLeaf: false,
       }));
 
       if (product && product.pCategoryId !== 0) {
-        const targetOption = options.find(
+        const targetSelect = selects.find(
           (o) => o.value === product.pCategoryId
         );
 
-        const subOptions = await getSubOption(targetOption);
-        if (subOptions) {
-          targetOption.children = subOptions;
+        const subSelects = await getSubSelect(targetSelect);
+        if (subSelects) {
+          targetSelect.children = subSelects;
         }
       }
-      setCategoryOptions(options);
+      setCategorySelects(selects);
     };
 
     const getCategories = async (parentId) => {
@@ -76,7 +75,7 @@ const CategoryOptions = (props) => {
         const categories = result.data;
         if (parentId === "0") {
           // setup top categories
-          initOptions(categories);
+          initSelects(categories);
         } else {
           // return sub categories
           return categories;
@@ -90,7 +89,7 @@ const CategoryOptions = (props) => {
   return (
     <Cascader
       {...props}
-      options={categoryOptions}
+      options={categorySelects}
       loadData={onLoadData}
       placeholder='Please select'
       changeOnSelect
@@ -98,4 +97,4 @@ const CategoryOptions = (props) => {
   );
 };
 
-export default CategoryOptions;
+export default CategorySelects;

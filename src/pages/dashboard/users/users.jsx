@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Card, Button, Table, Modal, message } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Card, Button, Table, Modal, message, Space } from "antd";
+import {
+  ExclamationCircleOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { PAGE_SIZE } from "utils/constants";
 import { formatDate } from "utils/utils";
 import LinkButton from "components/ui/LinkButton";
@@ -19,6 +23,9 @@ const Users = () => {
   const columnsRef = useRef();
   const formRef = useRef();
 
+  /**
+   * fetch users from database,statue:0=sccusse, status:1=fail
+   */
   const getUsers = useCallback(async () => {
     setIsLoading(true);
     const result = await reqUsers();
@@ -39,6 +46,7 @@ const Users = () => {
     }
   }, []);
 
+  //Show delete confirm Modal. If OK, delete user from database;
   const showDeleteUserConfirm = useCallback(
     (user) => {
       confirm({
@@ -65,17 +73,18 @@ const Users = () => {
             message.error("Failed to delete user, please try agan.");
           }
         },
-        onCancel() {
-          console.log("Cancel");
-        },
+        onCancel() {},
       });
     },
     [confirm]
   );
 
+  /**
+   * Initialize columns of <Table>, and stroe it into a Ref.
+   * Because it will remain constant throughout the life of the component
+   */
   const initColumn = useCallback(() => {
-    // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
-    columnsRef.current = [
+    return (columnsRef.current = [
       {
         title: "Name",
         dataIndex: "username",
@@ -97,28 +106,26 @@ const Users = () => {
         title: "Role",
         dataIndex: "role_id",
         render: (roleId) => {
-          // console.log(rolesMap);
           return rolesRef.current.get(roleId);
         },
       },
       {
         title: "Option",
         render: (user) => (
-          <span>
+          <Space size='middle' align="center">
             <LinkButton onClick={() => openUpdateModal(user)}>
-              Update
+              <EditOutlined style={{ fontSize: "1rem" }} />
             </LinkButton>
-            {` `}
             <LinkButton onClick={() => showDeleteUserConfirm(user)}>
-              Delete
+              <DeleteOutlined style={{ fontSize: "1rem" }} />
             </LinkButton>
-          </span>
+          </Space>
         ),
       },
-    ];
+    ]);
   }, [showDeleteUserConfirm]);
 
-  // Modal handler
+  // Add and update user modal handler
   const openAddModal = () => {
     userRef.current = null;
     setShowModalStatus(1);
@@ -136,6 +143,11 @@ const Users = () => {
     formRef.current.submit();
   };
 
+  /**
+   * Add or update user to database.
+   * If userRef.current has value, it's a update request.
+   * If not, it's an add request.
+   */
   const addOrUptateUser = async () => {
     console.log(formRef.current.getFieldsValue());
 
@@ -164,7 +176,6 @@ const Users = () => {
   // load Category data and Initialize the Table
   useEffect(() => {
     initColumn();
-
     getUsers();
   }, [initColumn, getUsers]);
 
