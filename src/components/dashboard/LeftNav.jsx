@@ -16,7 +16,6 @@ const LeftNav = ({ broken, setTitle }) => {
   const { SubMenu } = Menu;
   const { pathname } = useLocation();
   const { loggedInUser } = useContext(AuthContext);
-  console.log(loggedInUser);
 
   const { menus: authMenus } = loggedInUser;
   const activedKeyRef = useRef({
@@ -50,7 +49,6 @@ const LeftNav = ({ broken, setTitle }) => {
   // Obtain `openKey` and `selectedKey` by matching pathname and menu item's key, and store in `activedKeyRef`
   const getMenuNodes = useCallback(
     (menuList) => {
-      console.log("getMenuNodes");
       return menuList.map((item) => {
         if (hasAuth(item)) {
           if (item.children) {
