@@ -41,14 +41,14 @@ It will be split into two parts, client side and server side.
 - Engineering
 
 ## User Interface
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
+
+<div style={display:'grid', girdTemplateColumns:'repeat(3,1fr)'}>
+  <img src='readme/login.png' alt='login' height='300px'/>
+  <img src='readme/homepage.png' alt='homepage' height='300px'/>
+  <img src='readme/Category.png' alt='category' height='300px'/>
+  <img src='readme/category_add.png' alt='category add'  height='300px'/>
+</div>
+
 ## Router
 
 ## Frontend framework
