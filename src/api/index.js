@@ -14,10 +14,6 @@ const BASE = "";
 export const reqLogin = (username, password) =>
   ajax(BASE + "/login", { username, password }, "POST");
 
-// add user
-export const reqAddUser = (user) =>
-  ajax(BASE + "/manage/user/add", user, "POST");
-
 // get categories or sub categories
 export const reqCategories = (parentId) =>
   ajax(BASE + "/manage/category/list", { parentId });
@@ -86,9 +82,28 @@ export const reqAddRole = (roleName, authName) =>
 export const reqUpdateRole = (role) =>
   ajax(BASE + "/manage/role/update", { role }, "POST");
 
+// get users by roleId
+export const reqUserByRoleId = (roleId) =>
+  ajax(BASE + "/manage/role/users", { roleId });
+
 // delete role by Id
 export const reqDeleteRole = (roleId) =>
   ajax(BASE + "/manage/role/delete", { roleId }, "POST");
+
+// get all users
+export const reqUsers = () => ajax(BASE + "/manage/user/list");
+
+// add user
+export const reqAddUser = (user) =>
+  ajax(BASE + "/manage/user/add", { user }, "POST");
+
+// update user
+export const reqUpdateUser = (user) =>
+  ajax(BASE + "/manage/user/update", { user }, "POST");
+
+// delete user by Id
+export const reqDeleteUser = (userId) =>
+  ajax(BASE + "/manage/user/delete", { userId }, "POST");
 
 /**
  * fetch weather information from OpenWeatherMap

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { Card, Button, Table, message, Modal } from "antd";
+import { Card, Button, Table, message, Modal, Space } from "antd";
 import { PAGE_SIZE } from "utils/constants";
 import { reqRoles, reqAddRole, reqUpdateRole } from "api";
 import AddRoleForm from "components/roles/AddRoleForm";
@@ -16,7 +16,7 @@ const Roles = () => {
   const authCtx = useContext(AuthContext);
 
   const title = (
-    <span className='users__title'>
+    <Space className='users__title'>
       <Button type='primary' onClick={() => setShowModalStatus(1)}>
         Add Role
       </Button>
@@ -27,7 +27,7 @@ const Roles = () => {
       >
         Set Role
       </Button>
-    </span>
+    </Space>
   );
 
   const getRoles = async () => {
@@ -61,7 +61,7 @@ const Roles = () => {
     formRef.current
       .validateFields()
       .then(async (values) => {
-        const authName = authCtx.loggedInUser;
+        const authName = authCtx.loggedInUser.username;
         const updatedRole = {
           ...role,
           menus: values.roleOptions,
@@ -69,6 +69,7 @@ const Roles = () => {
         };
 
         const result = await reqUpdateRole(updatedRole);
+
         if (result.status === 0) {
           message.success("Update role successfully!");
           //go back to roles
@@ -79,7 +80,7 @@ const Roles = () => {
             preRoles.map((role) => (role._id === newRole._id ? newRole : role))
           );
         } else {
-          message.success("Update role fialed!");
+          message.error("Update role fialed!");
         }
       })
       .catch((err) => {});
@@ -92,6 +93,7 @@ const Roles = () => {
 
   const rowSelection = {
     type: "radio",
+    onSelect: (role) => setRole(role),
     selectedRowKeys: [role._id],
   };
 
@@ -172,7 +174,7 @@ const Roles = () => {
         onCancel={modalCancel}
         destroyOnClose={true}
       >
-        <SetRoleForm ref={formRef} role={role} />
+        <SetRoleForm ref={formRef} role={role} onBack={() => getRoles()} />
       </Modal>
     </Card>
   );

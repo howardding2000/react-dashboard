@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import PicturesWall from "components/product/PicturesWall";
 
 import { reqAddProduct, reqUpdateProduct } from "api";
-import CategoryStaticOptions from "components/product/CategoryStaticOptions";
+import CategoryStaticSelects from "components/product/CategoryStaticSelects";
 import RichTextEditor from "components/product/RichTextEditor";
 
 const ProductAddUpdate = () => {
@@ -165,7 +165,7 @@ const ProductAddUpdate = () => {
           required
           rules={[{ required: true, message: "Category can not be empty." }]}
         >
-          <CategoryStaticOptions />
+          <CategoryStaticSelects />
         </Item>
         <Item name='image' label='Image'>
           <PicturesWall ref={imgsRef} imgs={product?.imgs} />

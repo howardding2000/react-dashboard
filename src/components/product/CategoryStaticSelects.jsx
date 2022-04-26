@@ -2,26 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Cascader } from "antd";
 import { reqCategories } from "api";
 
-// Static loading options
-const CategoryStaticOptions = (props) => {
-  const [categoryOptions, setCategoryOptions] = useState();
+// Static loading selects
+const CategoryStaticSelects = (props) => {
+  const [categorySelects, setCategorySelects] = useState();
 
   const optonsFilter = (inputValue, path) => {
     return path.some(
-      (option) =>
-        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+      (select) =>
+        select.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
   };
 
   useEffect(() => {
-
     //find and put parent's children into its children[] property
-    const findChildren = (parent, optionList) => {
-      if (optionList && optionList.length > 0) {
+    const findChildren = (parent, selectList) => {
+      if (selectList && selectList.length > 0) {
         parent.children = [];
-        optionList.forEach((item) => {
+        selectList.forEach((item) => {
           if (parent.value === item.pValue) {
-            parent.children.push(findChildren(item, optionList));
+            parent.children.push(findChildren(item, selectList));
           }
         });
         if (parent.children.length === 0) {
@@ -31,25 +30,25 @@ const CategoryStaticOptions = (props) => {
       }
     };
 
-    // turn the categories to the options tree
-    const initOptions = categories  => {
-      // turn all categories to options list
-      const optionList = categories.map((c) => ({
+    // turn the categories to the selects tree
+    const initSelects = (categories) => {
+      // turn all categories to selects list
+      const selectList = categories.map((c) => ({
         value: c._id,
         label: c.name,
         pValue: c.parentId,
       }));
 
-      //create a temporary root option for storing the optins tree.
-      const tempRootOption = {
+      //create a temporary root select for storing the optins tree.
+      const tempRootSelect = {
         value: "0",
         label: "root",
         pValue: "-1",
       };
 
-      const updatedTempRootOption = findChildren(tempRootOption, optionList);
+      const updatedTempRootSelect = findChildren(tempRootSelect, selectList);
 
-      return [...updatedTempRootOption.children];
+      return [...updatedTempRootSelect.children];
     };
 
     const getAllCategories = async () => {
@@ -58,8 +57,9 @@ const CategoryStaticOptions = (props) => {
 
       if (result.status === 0) {
         const categories = result.data;
-        const options = initOptions(categories);
-        setCategoryOptions(options)
+        const selects = initSelects(categories);
+        console.log(selects);
+        setCategorySelects(selects);
       }
     };
 
@@ -69,7 +69,7 @@ const CategoryStaticOptions = (props) => {
   return (
     <Cascader
       {...props}
-      options={categoryOptions}
+      options={categorySelects}
       showSearch={optonsFilter}
       placeholder='Please select'
       changeOnSelect
@@ -77,4 +77,4 @@ const CategoryStaticOptions = (props) => {
   );
 };
 
-export default CategoryStaticOptions;
+export default CategoryStaticSelects;

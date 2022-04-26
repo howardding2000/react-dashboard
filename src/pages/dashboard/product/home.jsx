@@ -40,6 +40,7 @@ const ProductHome = () => {
     }
   }, []);
 
+  //use debounce method to save resources
   const searchProduct = async () => {
     const { searchType, searchName } = form.getFieldsValue();
 
@@ -95,7 +96,7 @@ const ProductHome = () => {
       // sorter: (a, b) => a.price - b.price,
       render: (price) => `$ ${price}`,
       // key: "price",
-      align: 'right',
+      align: "right",
     },
     {
       title: "Status",
@@ -169,7 +170,7 @@ const ProductHome = () => {
   );
 
   return (
-    <Card title={title} extra={extra}>
+    <Card title={title} extra={extra} style={{ height: "100%" }}>
       <Table
         dataSource={produces?.list}
         columns={columnsRef.current}
