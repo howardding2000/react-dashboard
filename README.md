@@ -42,7 +42,7 @@ It will be split into two parts, client side and server side.
 
 ## User Interface
 
-<div style={display:'grid', girdTemplateColumns:'repeat(3,1fr)'}>
+<div style={display:'grid', gridTemplateColumns:'repeat(3,1fr)'}>
   <img src='readme/login.png' alt='login' height='300px'/>
   <img src='readme/homepage.png' alt='homepage' height='300px'/>
   <img src='readme/Category.png' alt='category' height='300px'/>
