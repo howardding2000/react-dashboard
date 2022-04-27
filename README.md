@@ -42,16 +42,33 @@ It will be split into two parts, client side and server side.
 
 ## User Interface
 
+### Login 
+<img src='readme/login.png' alt='login' width='30%'/>
+
+### home
+<img src='readme/home.png' alt='home' width='30%' />
+
+### Category 
 <div style={display:'grid', gridTemplateColumns:'repeat(3,3fr)'}>
-  <img src='readme/login.png' alt='login' width='30%'/>
-  <img src='readme/homepage.png' alt='homepage' width='30%' />
   <img src='readme/Category.png' alt='category' width='30%'/>
-  <img src='readme/category_add.png' alt='category add' width='30%'/>
+  <img src='readme/category_add.png' alt='category_add' width='30%'/>
+</div>
+
+### Product
+<div style={display:'grid', gridTemplateColumns:'repeat(3,3fr)'}>
   <img src='readme/product.png' alt='product' width='30%'/>
-  <img src='readme/product_detail.png' alt='product detail' width='30%'/>
-  <img src='readme/product_update.png' alt='product update' width='30%'/>
+  <img src='readme/product_detail.png' alt='product_detail' width='30%'/>
+  <img src='readme/product_update.png' alt='product_update' width='30%'/>
+</div>
+
+### Users & Roles
+<div style={display:'grid', gridTemplateColumns:'repeat(3,3fr)'}>
   <img src='readme/users.png' alt='users' width='30%'/>
   <img src='readme/user_update.png' alt='user_update' width='30%'/>
+</div>
+
+### Roles
+<div style={display:'grid', gridTemplateColumns:'repeat(3,3fr)'}>
   <img src='readme/roles.png' alt='roles' width='30%'/>
   <img src='readme/role_update.png' alt='role_update' width='30%'/>
 </div>
