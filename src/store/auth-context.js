@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useReducer } from "react";
+import React, { useEffect, useCallback, useReducer } from "react";
 import store from "store";
 
 export const AuthContext = React.createContext({
@@ -85,7 +85,7 @@ const AuthContextProvider = (props) => {
     defaultUserState
   );
 
-  const userIsLoggedIn = !!token;
+  const userIsLoggedIn = !!userState?.token;
   
   const loginHandler = (user) => {
     dispatchUserState({ type: "LOGIN", user: user });

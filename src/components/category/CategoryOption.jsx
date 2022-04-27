@@ -10,13 +10,44 @@ import { reqCategories, reqDeleteCategory, reqUpdateCategory } from "api/index";
 
 import UpdateCategoryForm from "./UpdateCategoryForm";
 
-const CategoryOption = ({ category, setParent, getCategory }) => {
+const CategoryOption = ({
+  category,
+  setParent,
+  setSubCategories,
+  setCategories,
+}) => {
   // showModalStatus: 0 = not show ,1 = show 'Add Category',2 = show 'Update Category'
   const [showModal, setShowModal] = useState(false);
   const formRef = useRef();
-  const showUpate = () => {
-    // store category id and name for updating Modal
-    setShowModal(true);
+
+  //update categories state after update the datebase
+  const updateCategories = (cat, action) => {
+    if (cat.parentId === "0") {
+      setCategories((preCats) => {
+        const updatedCats = [...preCats];
+        const index = updatedCats.findIndex((item) => item._id === cat._id);
+        if (action === "UPDATE") {
+          updatedCats.splice(index, 1, cat);
+        }
+        if (action === "DELETE") {
+          updatedCats.splice(index, 1);
+        }
+        return updatedCats;
+      });
+    }
+    if (cat.parentId !== "0") {
+      setSubCategories((preCats) => {
+        const updateCats = [...preCats];
+        const index = updateCats.findIndex((item) => item._id === cat._id);
+        if (action === "UPDATE") {
+          updateCats.splice(index, 1, cat);
+        }
+        if (action === "DELETE") {
+          updateCats.splice(index, 1);
+        }
+        return updateCats;
+      });
+    }
   };
 
   // show sub category list
@@ -25,16 +56,13 @@ const CategoryOption = ({ category, setParent, getCategory }) => {
     setParent({ parentId: category._id, parentName: category.name });
   };
 
-  // handle Modal cancel event
-  const handleCancel = () => {
-    setShowModal(false);
-  };
   // delete category and it's sub categories by id
-  const deleteCategory = async (id) => {
-    const result = await reqDeleteCategory(id);
+  const deleteCategory = async (category) => {
+    const result = await reqDeleteCategory(category._id);
     if (result.status === 0) {
       message.success("Delete successfully!");
-      getCategory(category.parentId);
+      //update categories state
+      updateCategories(category, "DELETE");
     } else {
     }
   };
@@ -51,10 +79,13 @@ const CategoryOption = ({ category, setParent, getCategory }) => {
         const { categoryName } = values;
 
         const result = await reqUpdateCategory({ categoryId, categoryName });
+
         if (result.status === 0) {
           message.success("Update successfully!");
-          //reflesh categories
-          getCategory(category.parentId);
+          //update categories state
+          const updateCat = { ...category, name: categoryName };
+          //update categories state
+          updateCategories(updateCat, "UPDATE");
         }
       })
       .catch((err) => {});
@@ -80,7 +111,7 @@ const CategoryOption = ({ category, setParent, getCategory }) => {
           icon: <ExclamationCircleOutlined />,
           content: content,
           onOk() {
-            deleteCategory(id);
+            deleteCategory(category);
           },
           onCancel() {},
         });
@@ -102,18 +133,18 @@ const CategoryOption = ({ category, setParent, getCategory }) => {
           {/* <FileTextOutlined /> */}
         </LinkButton>
       )}
-      <LinkButton onClick={() => showUpate(category)}>
+      <LinkButton onClick={() => setShowModal(true)}>
         <EditOutlined style={{ fontSize: "1rem" }} />
       </LinkButton>
-      <LinkButton onClick={() => showDelete(category._id)}>
+      <LinkButton onClick={() => showDelete(category._id, category.parentId)}>
         <DeleteOutlined style={{ fontSize: "1rem" }} />
       </LinkButton>
 
       <Modal
         title='Update Category'
         visible={showModal}
-        onOk={updateCategory}
-        onCancel={handleCancel}
+        onOk={() => updateCategory(category)}
+        onCancel={() => setShowModal(false)}
         destroyOnClose={true}
       >
         <UpdateCategoryForm ref={formRef} categoryName={category.name} />

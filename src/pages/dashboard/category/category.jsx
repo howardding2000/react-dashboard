@@ -1,36 +1,52 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+  // useReducer,
+} from "react";
 import { Card, Button, Table, message, Modal } from "antd";
-import {
-  ArrowRightOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { ArrowRightOutlined, PlusOutlined } from "@ant-design/icons";
 import LinkButton from "components/ui/LinkButton";
 import AddCategoryForm from "components/category/AddCategoryForm";
-import {
-  reqCategories,
-  reqAddCategory,
-} from "api/index";
+import { reqCategories, reqAddCategory } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
 import CategoryOption from "components/category/CategoryOption";
+
+// const initCategoryState = {
+//   categories: [],
+//   subCategories: [],
+//   showModalStatus: 0,
+//   isLoading: false,
+//   parentId: "0",
+//   parentName: "",
+// };
+
+// const categoryReducer =(state,action)=>{
+//   switch(action.type){
+
+//     default:
+//       return initCategoryState;
+//   }
+// }
 
 const Category = () => {
   const [categories, setCategories] = useState();
   const [subCategories, setSubCategories] = useState();
-  const [showModalStatus, setShowModalStatus] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [{ parentId, parentName }, setParent] = useState({
     parentId: "0",
     parentName: "",
   });
 
+  // const [categoryState, dispatchCategory] = useReducer(
+  //   categoryReducer,
+  //   initCategoryState
+  // );
+
   const columnsRef = useRef();
   const formRef = useRef();
-
-  // show first level category list
-  const showCategories = () => {
-    // update state
-    setParent({ parentId: "0", parentName: "" });
-  };
 
   // fetch category list
   const getCategory = useCallback(
@@ -47,20 +63,10 @@ const Category = () => {
 
         // store first level category list
         if (id === "0") {
-          setCategories(
-            categories.map((item) => {
-              item.key = item._id;
-              return { ...item, key: item._id };
-            })
-          );
+          setCategories(categories);
         } else {
           // store sub category list
-          setSubCategories(
-            categories.map((item) => {
-              item.key = item._id;
-              return { ...item, key: item._id };
-            })
-          );
+          setSubCategories(categories);
         }
       } else {
         message.error("Fetch categories error!");
@@ -70,7 +76,7 @@ const Category = () => {
   );
 
   // Modal handler
-  const openAddModal = () => setShowModalStatus(1);
+  const openAddModal = () => setShowModal(true);
 
   // add Category to Parent
   const addCategory = () => {
@@ -78,7 +84,7 @@ const Category = () => {
     formRef.current
       .validateFields()
       .then(async (values) => {
-        setShowModalStatus(0);
+        setShowModal(false);
 
         const { categoryName, parentId: storedParentId } = values;
 
@@ -94,10 +100,9 @@ const Category = () => {
       .catch((err) => {});
   };
 
-
   // handle Modal cancel event
   const handleCancel = () => {
-    setShowModalStatus(0);
+    setShowModal(false);
   };
 
   // load Category data and Initialize the Table
@@ -117,7 +122,8 @@ const Category = () => {
           <CategoryOption
             category={category}
             setParent={setParent}
-            getCategory={getCategory}
+            setCategories={setCategories}
+            setSubCategories={setSubCategories}
           />
         ),
       },
@@ -129,7 +135,7 @@ const Category = () => {
   // Card title and extra setup
   const title = parentName ? (
     <>
-      <LinkButton onClick={showCategories}>
+      <LinkButton onClick={() => setParent({ parentId: "0", parentName: "" })}>
         First level category list
       </LinkButton>{" "}
       <ArrowRightOutlined style={{ fontSize: "0.8rem", margin: "2px 2px" }} />
@@ -153,12 +159,13 @@ const Category = () => {
         dataSource={parentId === "0" ? categories : subCategories}
         columns={columnsRef.current}
         loading={isLoading}
+        rowKey='_id'
         bordered
         pagination={{ defaultPageSize: PAGE_SIZE, showQuickJumper: true }}
       />
       <Modal
         title='Add Category'
-        visible={showModalStatus === 1}
+        visible={showModal}
         onOk={addCategory}
         onCancel={handleCancel}
         destroyOnClose={true}
@@ -169,7 +176,6 @@ const Category = () => {
           parentId={parentId}
         />
       </Modal>
-
     </Card>
   );
 };

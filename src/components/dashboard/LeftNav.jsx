@@ -27,10 +27,6 @@ const LeftNav = ({ broken, setTitle }) => {
 
   const handleClick = (e) => {};
 
-  const hasAuth = (item) => {
-    return authMenus.some((menu) => menu === item.key);
-  };
-
   useEffect(() => {
     // change title according to the path,
     let title = titleMapRef.current.get(pathname);
@@ -50,7 +46,8 @@ const LeftNav = ({ broken, setTitle }) => {
   const getMenuNodes = useCallback(
     (menuList) => {
       return menuList.map((item) => {
-        if (hasAuth(item)) {
+        const isAuth = authMenus.some((menu) => menu === item.key);
+        if (isAuth) {
           if (item.children) {
             const cItem = item.children.find(
               (cItem) => pathname.indexOf(cItem.key) !== -1
@@ -80,7 +77,7 @@ const LeftNav = ({ broken, setTitle }) => {
         }
       });
     },
-    [pathname]
+    [pathname, authMenus]
   );
 
   //
