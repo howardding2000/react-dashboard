@@ -33,6 +33,10 @@ It will be split into two parts, client side and server side.
 - react-dashboard: client side
 - react-dashboard-server: server side
 
+## Demo
+
+[React-Dashboard](https://buding2021.myds.me:8003/)
+
 ## Features
 
 - Front and background separation
