@@ -60,10 +60,11 @@ const CategoryOption = ({
   const deleteCategory = async (category) => {
     const result = await reqDeleteCategory(category._id);
     if (result.status === 0) {
-      message.success("Delete successfully!");
+      message.success("Delete category successfully!");
       //update categories state
       updateCategories(category, "DELETE");
     } else {
+      message.error("Delete category successfully!");
     }
   };
 
@@ -73,22 +74,23 @@ const CategoryOption = ({
     formRef.current
       .validateFields()
       .then(async (values) => {
-        setShowModal(false);
-
-        const categoryId = category._id;
         const { categoryName } = values;
+        const categoryId = category._id;
 
         const result = await reqUpdateCategory({ categoryId, categoryName });
 
         if (result.status === 0) {
-          message.success("Update successfully!");
+          setShowModal(false);
+          message.success("Update category's name successfully!");
           //update categories state
           const updateCat = { ...category, name: categoryName };
           //update categories state
           updateCategories(updateCat, "UPDATE");
+        } else {
+          message.error("Update category's name failed, please try again");
         }
       })
-      .catch((err) => {});
+      .catch((errorInfo) => {});
   };
 
   const showDelete = async (id) => {

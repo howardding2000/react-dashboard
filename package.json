@@ -52,5 +52,5 @@
     "less-loader": "^7.3.0",
     "react-app-rewired": "^2.2.1"
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "https://buding2021.myds.me:8008"
 }
