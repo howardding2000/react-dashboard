@@ -42,11 +42,18 @@ It will be split into two parts, client side and server side.
 
 ## User Interface
 
-<div style={display:'grid', gridTemplateColumns:'repeat(3,1fr)'}>
-  <img src='readme/login.png' alt='login' height='300px'/>
-  <img src='readme/homepage.png' alt='homepage' height='300px'/>
-  <img src='readme/Category.png' alt='category' height='300px'/>
-  <img src='readme/category_add.png' alt='category add'  height='300px'/>
+<div style={display:'grid', gridTemplateColumns:'repeat(3,3fr)'}>
+  <img src='readme/login.png' alt='login' width='30%'/>
+  <img src='readme/homepage.png' alt='homepage' width='30%' />
+  <img src='readme/Category.png' alt='category' width='30%'/>
+  <img src='readme/category_add.png' alt='category add' width='30%'/>
+  <img src='readme/product.png' alt='product' width='30%'/>
+  <img src='readme/product_detail.png' alt='product detail' width='30%'/>
+  <img src='readme/product_update.png' alt='product update' width='30%'/>
+  <img src='readme/users.png' alt='users' width='30%'/>
+  <img src='readme/user_update.png' alt='user_update' width='30%'/>
+  <img src='readme/roles.png' alt='roles' width='30%'/>
+  <img src='readme/role_update.png' alt='role_update' width='30%'/>
 </div>
 
 ## Router
