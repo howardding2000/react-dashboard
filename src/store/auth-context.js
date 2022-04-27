@@ -27,9 +27,6 @@ const retrieveStoredToken = () => {
   const storedExpirationDate = store.get("expirationTime");
   const remainingTime = calculateRemainingTime(storedExpirationDate);
 
-  console.log(storedLoggedInUser);
-  console.log(storedToken);
-
   if (!storedToken) {
     return null;
   }
@@ -45,31 +42,25 @@ const retrieveStoredToken = () => {
     token: storedToken,
     loggedInUser: storedLoggedInUser,
     duration: remainingTime,
-    isLoggedIn: !!storedToken,
   };
 };
 
 const defaultUserState = {
   token: "",
   loggedInUser: null,
-  isLoggedIn: false,
 };
 
 const userReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN": {
-      console.log(action.user);
       const user = action.user;
-      const { username, role } = user;
-      const menus = role.menus;
-      const userInfo = { username, menus };
+      const userInfo = { username:user.username, menus:user.role.menus };
       store.set("token", user._id);
       store.set("loggedInUser", JSON.stringify(userInfo));
       store.set("expirationTime", user.expirationTime);
       return {
         token: user._id,
         loggedInUser: userInfo,
-        isLoggedIn: true,
       };
     }
     case "LOGOUT": {
@@ -94,6 +85,8 @@ const AuthContextProvider = (props) => {
     defaultUserState
   );
 
+  const userIsLoggedIn = !!token;
+  
   const loginHandler = (user) => {
     dispatchUserState({ type: "LOGIN", user: user });
     const remainingTime = calculateRemainingTime(user.expirationTime);
@@ -112,7 +105,7 @@ const AuthContextProvider = (props) => {
 
   const contextValue = {
     token: userState?.token,
-    isLoggedIn: userState?.isLoggedIn,
+    isLoggedIn: userIsLoggedIn,
     loggedInUser: userState?.loggedInUser,
     logout: logoutHandler,
     login: loginHandler,
