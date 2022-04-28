@@ -13,7 +13,6 @@ import { reqDeleteProduct, reqDeleteImage, reqCategories } from "api";
 const ProductOption = ({ product, onBack }) => {
   const navigate = useNavigate();
   const { confirm } = Modal;
-
   const categorySelectsRef = useRef();
 
   const delelteProduct = async (product) => {
@@ -40,6 +39,7 @@ const ProductOption = ({ product, onBack }) => {
       message.success("Delete product successfully!");
       onBack();
     }
+
     if (result.status !== 0) {
       console.log(result);
       message.error(`Delete product failed! ${result.msg}`);
@@ -62,6 +62,7 @@ const ProductOption = ({ product, onBack }) => {
         return parent;
       }
     };
+
     // turn the categories to the selects tree
     const initSelects = (categories) => {
       // turn all categories to selects list
@@ -92,6 +93,7 @@ const ProductOption = ({ product, onBack }) => {
 
     getAllCategories();
   }, []);
+
   const showDetail = (product) => {
     // pass product to Detail page
     navigate("detail", {
@@ -99,6 +101,7 @@ const ProductOption = ({ product, onBack }) => {
       state: { product, selects: categorySelectsRef.current },
     });
   };
+
   const showUpdate = (product) => {
     navigate("addupdate", {
       replace: true,

@@ -13,7 +13,6 @@ const ProductAddUpdate = () => {
   // initialize the values for update page
   const location = useLocation();
   const { product, selects } = location.state;
-  console.log(selects);
   const { Item } = Form;
   const { TextArea } = Input;
   const navigate = useNavigate();
@@ -110,7 +109,7 @@ const ProductAddUpdate = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // console.log("Failed:", errorInfo);
   };
 
   return (
