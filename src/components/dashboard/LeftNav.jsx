@@ -88,8 +88,6 @@ const LeftNav = ({ broken, setTitle }) => {
     [getMenuNodes]
   );
 
-  console.log(currentMenuItems);
-
   return (
     <div className='left__nav'>
       <header className='left__nav__header'>
