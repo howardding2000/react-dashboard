@@ -1,45 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card, List } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import LinkButton from "components/ui/LinkButton";
 import { BASE_IMG_URL } from "utils/constants";
-import { reqCategory } from "api/index";
 
 import "./detail.less";
 
 const ProductDetail = () => {
   const Item = List.Item;
   const navigate = useNavigate();
-  const [categoryName, setCategoryName] = useState({});
 
   // get product from location.state
   const location = useLocation();
-  const { product } = location.state;
+  const { product, selects } = location.state;
 
-  useEffect(() => {
-    const getCategoryInfo = async () => {
-      const results = await Promise.all([
-        reqCategory(product.pCategoryId),
-        reqCategory(product.categoryId),
-      ]);
+  const pCategory = selects.find((item) => item.value === product.pCategoryId);
+  const category =
+    pCategory &&
+    pCategory.children.find((item) => item.value === product.categoryId);
 
-      const [pCategory, category] = results;
-
-      if (pCategory.status === 0 && category.status === 0) {
-        const pCategoryName = pCategory.data?.name;
-        const categoryName = category.data?.name;
-        setCategoryName({
-          pCategoryName,
-          categoryName,
-        });
-      }
-    };
-
-    getCategoryInfo();
-  }, [product.pCategoryId, product.categoryId]);
-
-  // useEffect(() => {}, []);
   const title = (
     <span>
       <LinkButton onClick={() => navigate("/product")}>
@@ -67,9 +47,8 @@ const ProductDetail = () => {
         <Item>
           <h2>Category</h2>
           <span>
-            {categoryName.pCategoryName}{" "}
-            {categoryName.categoryName && <ArrowRightOutlined />}{" "}
-            {categoryName.categoryName}
+            {pCategory.label} {category.label && <ArrowRightOutlined />}{" "}
+            {category.label}
           </span>
         </Item>
         <Item>

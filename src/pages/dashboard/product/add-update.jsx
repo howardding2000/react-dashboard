@@ -12,8 +12,8 @@ import RichTextEditor from "components/product/RichTextEditor";
 const ProductAddUpdate = () => {
   // initialize the values for update page
   const location = useLocation();
-  const product = location.state?.product;
-
+  const { product, selects } = location.state;
+  console.log(selects);
   const { Item } = Form;
   const { TextArea } = Input;
   const navigate = useNavigate();
@@ -165,7 +165,7 @@ const ProductAddUpdate = () => {
           required
           rules={[{ required: true, message: "Category can not be empty." }]}
         >
-          <CategoryStaticSelects />
+          <CategoryStaticSelects selects={selects} />
         </Item>
         <Item name='image' label='Image'>
           <PicturesWall ref={imgsRef} imgs={product?.imgs} />

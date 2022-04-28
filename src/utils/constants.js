@@ -1,2 +1,2 @@
 export const PAGE_SIZE = 10;
-export const BASE_IMG_URL = 'http://localhost:5000/upload/';
+export const BASE_IMG_URL = 'https://buding2021.myds.me:8008/upload/';

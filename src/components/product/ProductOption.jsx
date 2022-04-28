@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { message, Modal, Space } from "antd";
 import {
   DeleteOutlined,
@@ -8,11 +8,13 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import LinkButton from "components/ui/LinkButton";
-import { reqDeleteProduct, reqDeleteImage } from "api";
+import { reqDeleteProduct, reqDeleteImage, reqCategories } from "api";
 
 const ProductOption = ({ product, onBack }) => {
   const navigate = useNavigate();
   const { confirm } = Modal;
+
+  const categorySelectsRef = useRef();
 
   const delelteProduct = async (product) => {
     const { _id: productId, imgs } = product;
@@ -44,12 +46,64 @@ const ProductOption = ({ product, onBack }) => {
     }
   };
 
+  useEffect(() => {
+    //find and put parent's children into its children[] property
+    const findChildren = (parent, selectList) => {
+      if (selectList && selectList.length > 0) {
+        parent.children = [];
+        selectList.forEach((item) => {
+          if (parent.value === item.pValue) {
+            parent.children.push(findChildren(item, selectList));
+          }
+        });
+        if (parent.children.length === 0) {
+          delete parent.children;
+        }
+        return parent;
+      }
+    };
+    // turn the categories to the selects tree
+    const initSelects = (categories) => {
+      // turn all categories to selects list
+      const selectList = categories.map((c) => ({
+        value: c._id,
+        label: c.name,
+        pValue: c.parentId,
+      }));
+      //create a temporary root select for storing the optins tree.
+      const tempRootSelect = {
+        value: "0",
+        label: "root",
+        pValue: "-1",
+      };
+      const updatedTempRootSelect = findChildren(tempRootSelect, selectList);
+      return [...updatedTempRootSelect.children];
+    };
+
+    const getAllCategories = async () => {
+      // -1:fetch all categories
+      const result = await reqCategories("-1");
+      if (result.status === 0) {
+        const categories = result.data;
+        const selects = initSelects(categories);
+        categorySelectsRef.current = selects;
+      }
+    };
+
+    getAllCategories();
+  }, []);
   const showDetail = (product) => {
     // pass product to Detail page
-    navigate("detail", { replace: true, state: { product } });
+    navigate("detail", {
+      replace: true,
+      state: { product, selects: categorySelectsRef.current },
+    });
   };
   const showUpdate = (product) => {
-    navigate("addupdate", { replace: true, state: { product } });
+    navigate("addupdate", {
+      replace: true,
+      state: { product, selects: categorySelectsRef.current },
+    });
   };
 
   const showDelete = (product) => {

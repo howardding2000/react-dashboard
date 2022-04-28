@@ -4,7 +4,7 @@ import App from "./App";
 import AuthContextProvider from "store/auth-context";
 import "./index.less";
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 
 ReactDOM.render(
   <BrowserRouter>
