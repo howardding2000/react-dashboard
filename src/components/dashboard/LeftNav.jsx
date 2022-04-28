@@ -6,14 +6,14 @@ import React, {
   useContext,
 } from "react";
 import { Menu } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import menuList from "config/menu-config";
 import "./LeftNav.less";
 import { AuthContext } from "store/auth-context";
 
 const LeftNav = ({ broken, setTitle }) => {
-  const { SubMenu } = Menu;
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { loggedInUser } = useContext(AuthContext);
 
@@ -25,7 +25,9 @@ const LeftNav = ({ broken, setTitle }) => {
 
   const titleMapRef = useRef(new Map());
 
-  const handleClick = (e) => {};
+  const handleClick = ({key}) => {
+    navigate(key);
+  };
 
   useEffect(() => {
     // change title according to the path,
@@ -55,22 +57,23 @@ const LeftNav = ({ broken, setTitle }) => {
             if (cItem) {
               activedKeyRef.current.openKey = item.key;
             }
-            return (
-              <SubMenu key={item.key} icon={item.icon} title={item.title}>
-                {getMenuNodes(item.children)}
-              </SubMenu>
-            );
+            return {
+              key: item.key,
+              icon: item.icon,
+              label: item.title,
+              children: getMenuNodes(item.children),
+            };
           } else {
             titleMapRef.current.set(item.key, item.title);
 
             if (pathname.indexOf(item.key) !== -1) {
               activedKeyRef.current.selectedKey = item.key;
             }
-            return (
-              <Menu.Item key={item.key} icon={item.icon}>
-                <Link to={item.key}>{item.title}</Link>
-              </Menu.Item>
-            );
+            return {
+              key: item.key,
+              icon: item.icon,
+              label: item.title,
+            };
           }
         } else {
           return null;
@@ -80,8 +83,10 @@ const LeftNav = ({ broken, setTitle }) => {
     [pathname, authMenus]
   );
 
-  //
-  const currentMenuList = useMemo(() => getMenuNodes(menuList), [getMenuNodes]);
+  const currentMenuItems = useMemo(
+    () => getMenuNodes(menuList),
+    [getMenuNodes]
+  );
 
   return (
     <div className='left__nav'>
@@ -98,8 +103,8 @@ const LeftNav = ({ broken, setTitle }) => {
         defaultSelectedKeys={[activedKeyRef.current.selectedKey]}
         mode='inline'
         theme='light'
+        items={currentMenuItems}
       >
-        {currentMenuList}
       </Menu>
     </div>
   );

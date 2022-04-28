@@ -41,7 +41,6 @@ const ProductOption = ({ product, onBack }) => {
     }
 
     if (result.status !== 0) {
-      console.log(result);
       message.error(`Delete product failed! ${result.msg}`);
     }
   };

@@ -16,6 +16,7 @@ const CategoryOption = ({
   setSubCategories,
   setCategories,
 }) => {
+  
   // showModalStatus: 0 = not show ,1 = show 'Add Category',2 = show 'Update Category'
   const [showModal, setShowModal] = useState(false);
   const formRef = useRef();
