@@ -25,7 +25,7 @@ const LeftNav = ({ broken, setTitle }) => {
 
   const titleMapRef = useRef(new Map());
 
-  const handleClick = ({key}) => {
+  const handleClick = ({ key }) => {
     navigate(key);
   };
 
@@ -88,6 +88,8 @@ const LeftNav = ({ broken, setTitle }) => {
     [getMenuNodes]
   );
 
+  console.log(currentMenuItems);
+
   return (
     <div className='left__nav'>
       <header className='left__nav__header'>
@@ -104,8 +106,7 @@ const LeftNav = ({ broken, setTitle }) => {
         mode='inline'
         theme='light'
         items={currentMenuItems}
-      >
-      </Menu>
+      />
     </div>
   );
 };
