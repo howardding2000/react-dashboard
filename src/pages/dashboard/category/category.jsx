@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useState,
   useRef,
-  // useReducer,
+  useReducer,
 } from "react";
 import { Card, Button, Table, message, Modal } from "antd";
 import { ArrowRightOutlined, PlusOutlined } from "@ant-design/icons";
@@ -13,37 +13,40 @@ import { reqCategories, reqAddCategory } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
 import CategoryOption from "components/category/CategoryOption";
 
-// const initCategoryState = {
-//   categories: [],
-//   subCategories: [],
-//   showModalStatus: 0,
-//   isLoading: false,
-//   parentId: "0",
-//   parentName: "",
-// };
+const initCategoryState = {
+  categories: [],
+  subCategories: [],
+  parentId: "0",
+  parentName: "",
+};
 
-// const categoryReducer =(state,action)=>{
-//   switch(action.type){
+const categoryReducer = (state, action) => {
+  switch (action.type) {
+    case "CATEGORIES":
 
-//     default:
-//       return initCategoryState;
-//   }
-// }
+    case "SUB_CATEGORIES":
+
+    case "PARENT":
+
+    default:
+      return initCategoryState;
+  }
+};
 
 const Category = () => {
   const [categories, setCategories] = useState();
   const [subCategories, setSubCategories] = useState();
-  const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [{ parentId, parentName }, setParent] = useState({
     parentId: "0",
     parentName: "",
   });
 
-  // const [categoryState, dispatchCategory] = useReducer(
-  //   categoryReducer,
-  //   initCategoryState
-  // );
+  const [categoryState, dispatchCategory] = useReducer(
+    categoryReducer,
+    initCategoryState
+  );
 
   const columnsRef = useRef();
   const formRef = useRef();
@@ -107,7 +110,10 @@ const Category = () => {
 
   // load Category data and Initialize the Table
   useEffect(() => {
-    // Initialize columns of <Table>, and stroe it into a Ref. Because it will remain constant throughout the life of the component
+    /**
+     * Initialize columns of <Table>, and stroe it into a Ref. 
+     * Because it will remain constant throughout the life of the component
+    */
     columnsRef.current = [
       {
         title: "Name",

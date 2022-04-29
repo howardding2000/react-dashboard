@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Form, Input, Checkbox, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import store from "store";
 import classes from "./login.module.less";
 import { AuthContext } from "../../store/auth-context";
 import { reqLogin } from "../../api/index";
@@ -9,18 +10,25 @@ import { Navigate } from "react-router-dom";
 const Login = () => {
   const { token, login } = useContext(AuthContext);
 
-  const onFinish = async ({ username, password }) => {
+  const onFinish = async ({ username, password, remenber }) => {
     /**
      * * async & await
      * 1. purpose: simplify promise usage, not need to use then() *then() will trigger a callback*, sync way to implement async process.
      * 2. position of await: The left side of the promise expression. use to wait and receive a result(response) but not a promise.
      * 3. position of async: The left side of the function definition where the await is used.
      */
-
+    console.log(remenber);
     const result = await reqLogin(username, password);
     if (result.status === 0) {
       message.success("Login successful!");
       const user = result.data;
+      if (remenber) {
+        store.set("username_holder", username);
+        store.set("isRemenbered", "true");
+      } else {
+        store.remove("username_holder");
+        store.remove("isRemenbered");
+      }
       // expirationTime:ms
       login(user);
     }
@@ -51,7 +59,6 @@ const Login = () => {
         new Error('Password must contain only "a-z","A-Z" and "_"')
       );
     }
-
     return Promise.resolve();
   };
 
@@ -70,11 +77,14 @@ const Login = () => {
             // form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+            initialValues={{
+              username: store.get("username_holder"),
+              remenber: store.get("isRemenbered") ? "checked" : "",
+            }}
           >
             <div className={classes.login__form__fixHeight}>
               <Form.Item
                 name='username'
-                initialValue='admin'
                 // Declarative validation
                 rules={[
                   { required: true, message: "Please input your username!" },

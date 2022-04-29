@@ -8,7 +8,7 @@ import axios from "axios";
  * */
 // const BASE = 'http://localhost:5000';
 
-const BASE = "";
+const BASE = "/api";
 
 // login
 export const reqLogin = (username, password) =>
