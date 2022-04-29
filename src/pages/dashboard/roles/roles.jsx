@@ -174,7 +174,14 @@ const Roles = () => {
         onCancel={modalCancel}
         destroyOnClose={true}
       >
-        <SetRoleForm ref={formRef} role={role} onBack={() => getRoles()} />
+        <SetRoleForm
+          ref={formRef}
+          role={role}
+          onBack={() => {
+            getRoles();
+            setShowModalStatus(0);
+          }}
+        />
       </Modal>
     </Card>
   );

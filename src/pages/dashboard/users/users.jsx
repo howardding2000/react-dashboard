@@ -9,7 +9,7 @@ import { PAGE_SIZE } from "utils/constants";
 import { formatDate } from "utils/utils";
 import LinkButton from "components/ui/LinkButton";
 import { reqUsers, reqDeleteUser, reqAddUser, reqUpdateUser } from "api";
-import AddOrUpdateUserForm from "components/user/AddOrUpdateUserForm";
+import AddOrUpdateUserForm from "components/users/AddOrUpdateUserForm";
 
 const Users = () => {
   const { confirm } = Modal;
