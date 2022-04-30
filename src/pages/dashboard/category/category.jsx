@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  useReducer,
 } from "react";
 import { Card, Button, Table, message, Modal } from "antd";
 import { ArrowRightOutlined, PlusOutlined } from "@ant-design/icons";
