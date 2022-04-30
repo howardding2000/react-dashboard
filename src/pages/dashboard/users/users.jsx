@@ -5,16 +5,10 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Card, Button, Table, Modal, message, Space } from "antd";
-import {
-  ExclamationCircleOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { Card, Button, Table, Modal, message } from "antd";
 import { PAGE_SIZE } from "utils/constants";
 import { formatDate } from "utils/utils";
-import LinkButton from "components/ui/LinkButton";
-import { reqUsers, reqDeleteUser, reqAddUser, reqUpdateUser } from "api";
+import { reqUsers, reqAddUser, reqUpdateUser } from "api";
 import AddOrUpdateUserForm from "components/users/AddOrUpdateUserForm";
 import UserOption from "components/users/UserOption";
 
