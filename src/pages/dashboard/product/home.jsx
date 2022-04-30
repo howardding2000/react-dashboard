@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { Card, Select, Input, Button, Table, message, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -63,70 +69,78 @@ const ProductHome = () => {
     }
   };
 
-  const updateProductStatus = async (productId, status) => {
-    const newStatus = status === 1 ? 2 : 1;
-    const result = await reqUpdateProduectStatus(productId, newStatus);
+  const updateProductStatus = useCallback(
+    async (productId, status) => {
+      const newStatus = status === 1 ? 2 : 1;
+      const result = await reqUpdateProduectStatus(productId, newStatus);
 
-    if (result.status === 0) {
-      message.success("Prodect Status updated!");
-      getProducts(pageNumRef.current);
-    }
-  };
+      if (result.status === 0) {
+        message.success("Prodect Status updated!");
+        getProducts(pageNumRef.current);
+      }
+    },
+    [getProducts]
+  );
 
   const backToProduct = () => {
     getProducts(1);
     setShowReturn(false);
   };
 
-  columnsRef.current = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      // key: "name",
-    },
-    {
-      title: "Description",
-      dataIndex: "desc",
-      // key: "desc",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      width: 100,
-      // sorter: (a, b) => a.price - b.price,
-      render: (price) => `$ ${price}`,
-      // key: "price",
-      align: "right",
-    },
-    {
-      title: "Status",
-      // dataIndex: "status",
-      width: 100,
-      align: "center",
-      render: (product) => {
-        // status : 1=> On Sale, 2=> Sold Out
-        const { status, _id } = product;
-        return (
-          <>
-            <Button onClick={() => updateProductStatus(_id, status)}>
-              {status === 1 ? "Sold Out" : "On Sale"}
-            </Button>
-            <span>{status === 1 ? "On Sale" : "Sold Out"}</span>
-          </>
-        );
+  columnsRef.current = useMemo(
+    () => ([
+      {
+        title: "Name",
+        dataIndex: "name",
+        // key: "name",
       },
-    },
-    {
-      title: "Option",
-      width: 50,
-      render: (product) => (
-        <ProductOption
-          product={product}
-          onBack={() => getProducts(pageNumRef.current)}
-        />
-      ),
-    },
-  ];
+      {
+        title: "Description",
+        dataIndex: "desc",
+        responsive: ["md"],
+        // key: "desc",
+      },
+      {
+        title: "Price",
+        dataIndex: "price",
+        responsive: ["sm"],
+        width: 100,
+        // sorter: (a, b) => a.price - b.price,
+        render: (price) => `$ ${price}`,
+        // key: "price",
+        align: "right",
+      },
+      {
+        title: "Status",
+        // dataIndex: "status",
+        width: 100,
+        align: "center",
+        render: (product) => {
+          // status : 1=> On Sale, 2=> Sold Out
+          const { status, _id } = product;
+          return (
+            <>
+              <Button onClick={() => updateProductStatus(_id, status)}>
+                {status === 1 ? "Sold Out" : "On Sale"}
+              </Button>
+              <span>{status === 1 ? "On Sale" : "Sold Out"}</span>
+            </>
+          );
+        },
+      },
+      {
+        title: "Option",
+        width: 50,
+        render: (product) => (
+          <ProductOption
+            product={product}
+            onBack={() => getProducts(pageNumRef.current)}
+          />
+        ),
+      },
+    ]),
+    [getProducts, updateProductStatus]
+  );
 
   useEffect(() => {
     getProducts(1);

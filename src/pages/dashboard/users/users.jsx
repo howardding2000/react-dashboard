@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { Card, Button, Table, Modal, message, Space } from "antd";
 import {
   ExclamationCircleOutlined,
@@ -10,10 +16,9 @@ import { formatDate } from "utils/utils";
 import LinkButton from "components/ui/LinkButton";
 import { reqUsers, reqDeleteUser, reqAddUser, reqUpdateUser } from "api";
 import AddOrUpdateUserForm from "components/users/AddOrUpdateUserForm";
+import UserOption from "components/users/UserOption";
 
 const Users = () => {
-  const { confirm } = Modal;
-
   const [showModalStatus, setShowModalStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -45,45 +50,12 @@ const Users = () => {
     }
   }, []);
 
-  //Show delete confirm Modal. If OK, delete user from database;
-  const showDeleteUserConfirm = useCallback(
-    (user) => {
-      confirm({
-        title: `Are you sure delete user: [${user.username}] ?`,
-        icon: <ExclamationCircleOutlined />,
-        okText: "Yes",
-        okType: "danger",
-        destroyOnClose: "true",
-        cancelText: "No",
-        async onOk() {
-          const result = await reqDeleteUser(user._id);
-          if (result.status === 0) {
-            message.success("User was successfully deleted.");
-            setUsers((preUsers) => {
-              const index = preUsers.findIndex((item) => item._id === user._id);
-              if (index === -1) {
-                return preUsers;
-              }
-              const users = [...preUsers];
-              users.splice(index, 1);
-              return users;
-            });
-          } else {
-            message.error("Failed to delete user, please try agan.");
-          }
-        },
-        onCancel() {},
-      });
-    },
-    [confirm]
-  );
-
   /**
    * Initialize columns of <Table>, and stroe it into a Ref.
    * Because it will remain constant throughout the life of the component
    */
-  const initColumn = useCallback(() => {
-    return (columnsRef.current = [
+  columnsRef.current = useMemo(
+    () => [
       {
         title: "Name",
         dataIndex: "username",
@@ -91,14 +63,17 @@ const Users = () => {
       {
         title: "Email",
         dataIndex: "email",
+        responsive: ["sm"],
       },
       {
         title: "Phone",
         dataIndex: "phone",
+        responsive: ["md"],
       },
       {
         title: "Create Time",
         dataIndex: "create_time",
+        responsive: ["lg"],
         render: formatDate,
       },
       {
@@ -111,18 +86,16 @@ const Users = () => {
       {
         title: "Option",
         render: (user) => (
-          <Space size='middle' align='center'>
-            <LinkButton onClick={() => openUpdateModal(user)}>
-              <EditOutlined style={{ fontSize: "1rem" }} />
-            </LinkButton>
-            <LinkButton onClick={() => showDeleteUserConfirm(user)}>
-              <DeleteOutlined style={{ fontSize: "1rem" }} />
-            </LinkButton>
-          </Space>
+          <UserOption
+            user={user}
+            setUsers={setUsers}
+            openUpdateModal={openUpdateModal}
+          />
         ),
       },
-    ]);
-  }, [showDeleteUserConfirm]);
+    ],
+    []
+  );
 
   // Add and update user modal handler
   const openAddModal = () => {
@@ -174,9 +147,8 @@ const Users = () => {
 
   // load Category data and Initialize the Table
   useEffect(() => {
-    initColumn();
     getUsers();
-  }, [initColumn, getUsers]);
+  }, [getUsers]);
 
   const title = (
     <Button type='primary' onClick={openAddModal}>
@@ -192,7 +164,7 @@ const Users = () => {
         loading={isLoading}
         rowKey='_id'
         bordered
-        pagination={{ defaultPageSize: PAGE_SIZE, showQuickJumper: true }}        
+        pagination={{ defaultPageSize: PAGE_SIZE, showQuickJumper: true }}
       />
 
       <Modal

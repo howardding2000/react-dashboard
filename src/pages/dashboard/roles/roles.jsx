@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext, useMemo } from "react";
 import { Card, Button, Table, message, Modal, Space } from "antd";
 import { PAGE_SIZE } from "utils/constants";
 import { reqRoles, reqAddRole, reqUpdateRole } from "api";
@@ -105,43 +105,45 @@ const Roles = () => {
     };
   };
 
-  useEffect(() => {
-    columnsRef.current = [
-      {
-        title: "Name",
-        key: "name",
-        dataIndex: "name",
+  columnsRef.current = useMemo(()=>([
+    {
+      title: "Name",
+      key: "name",
+      dataIndex: "name",
+    },
+    {
+      title: "Creation time",
+      key: "create_time",
+      dataIndex: "create_time",
+      responsive: ["md"],
+      render: (time) => {
+        const date = new Date(time);
+        return <span>{date.toDateString()}</span>;
       },
-      {
-        title: "Creation time",
-        key: "create_time",
-        dataIndex: "create_time",
-        render: (time) => {
+    },
+    {
+      title: "Authorization time",
+      key: "auth_time",
+      dataIndex: "auth_time",
+      responsive: ["sm"],
+      render: (time) => {
+        if (time) {
           const date = new Date(time);
           return <span>{date.toDateString()}</span>;
-        },
+        } else {
+          // Roles who are not yet authorized are shown 'waiting for authorization'
+          return <span>Waiting for Authorization</span>;
+        }
       },
-      {
-        title: "Authorization time",
-        key: "auth_time",
-        dataIndex: "auth_time",
-        render: (time) => {
-          if (time) {
-            const date = new Date(time);
-            return <span>{date.toDateString()}</span>;
-          } else {
-            // Roles who are not yet authorized are shown 'waiting for authorization'
-            return <span>Waiting for Authorization</span>;
-          }
-        },
-      },
-      {
-        title: "Authorizer",
-        key: "auth_name",
-        dataIndex: "auth_name",
-      },
-    ];
+    },
+    {
+      title: "Authorizer",
+      key: "auth_name",
+      dataIndex: "auth_name",
+    },
+  ]),[]);
 
+  useEffect(() => {
     getRoles();
   }, []);
   return (

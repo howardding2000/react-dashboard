@@ -13,26 +13,6 @@ import { reqCategories, reqAddCategory } from "api/index";
 import { PAGE_SIZE } from "utils/constants";
 import CategoryOption from "components/category/CategoryOption";
 
-const initCategoryState = {
-  categories: [],
-  subCategories: [],
-  parentId: "0",
-  parentName: "",
-};
-
-const categoryReducer = (state, action) => {
-  switch (action.type) {
-    case "CATEGORIES":
-
-    case "SUB_CATEGORIES":
-
-    case "PARENT":
-
-    default:
-      return initCategoryState;
-  }
-};
-
 const Category = () => {
   const [categories, setCategories] = useState();
   const [subCategories, setSubCategories] = useState();
@@ -42,11 +22,6 @@ const Category = () => {
     parentId: "0",
     parentName: "",
   });
-
-  const [categoryState, dispatchCategory] = useReducer(
-    categoryReducer,
-    initCategoryState
-  );
 
   const columnsRef = useRef();
   const formRef = useRef();
