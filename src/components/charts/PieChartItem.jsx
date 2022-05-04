@@ -87,7 +87,7 @@ const PieChartItem = ({ data, isCurrency = false }) => {
   };
 
   return (
-    <PieChart width={500} height={400}>
+    <PieChart width={450} height={300}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}

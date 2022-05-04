@@ -9,7 +9,14 @@ const RePieChart = () => {
 
   return (
     <Card title={title} style={{ height: "100%" }}>
-      <Center style={{ display: "flex", flexDirection: "row" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          flexWrap: "wrap",
+        }}
+      >
         <Center>
           <PieChartItem data={salesTotal} />
           <h2>Sales</h2>
@@ -18,7 +25,7 @@ const RePieChart = () => {
           <PieChartItem data={salesVolumeTotal} isCurrency={true} />
           <h2>Sales Volume($)</h2>
         </Center>
-      </Center>
+      </div>
     </Card>
   );
 };
