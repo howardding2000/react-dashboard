@@ -3,7 +3,6 @@ import { Card } from "antd";
 import Center from "components/ui/Center";
 import { salesData, salesVolumeData } from "config/chart-config";
 import LienChartItem from "components/charts/LineChartItem";
-import { Repeat } from "immutable";
 
 const ReLineChart = () => {
   const title = "2021-2022 Sales Report";

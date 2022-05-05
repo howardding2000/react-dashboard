@@ -32,7 +32,7 @@ const Home = () => {
       >
         <Center className='welcome_img' style={{ gridColumn: "1/2" }}>
           <img src={dashboard} alt='dashboard' />
-          <p>Welcome to React-Dashboard</p>
+          {/* <p>Welcome to React-Dashboard</p> */}
         </Center>
         <Center style={{ gridColumn: "2/5" }}>
           <LineChartItem data={salesData} />
