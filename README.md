@@ -82,7 +82,7 @@ It will be split into two parts, client side and server side.
 ## Frontend framework
 
 - [`react` v17.0.2](https://reactjs.org/)
-- [`react-redux` v7.2.6 `@reduxjs/toolkit` v1.8.0](https://react-redux.js.org/)
+<!-- - [`react-redux` v7.2.6 `@reduxjs/toolkit` v1.8.0](https://react-redux.js.org/) -->
 - [`react-router-dom` v6.2.2](https://reactrouter.com/)
 - [`antd` v4.19.2](https://ant.design/)
 - [Axio v0.26.1](https://axios-http.com/)
