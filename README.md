@@ -35,7 +35,7 @@ It will be split into two parts, client side and server side.
 
 ## Demo
 
-[React-Dashboard](https://buding2021.myds.me:8003/)
+Go to see the demo [React-Dashboard](https://buding2021.myds.me:8003/), username: admin, password: admin.
 
 ## Features
 
