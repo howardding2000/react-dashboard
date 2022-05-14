@@ -1,14 +1,25 @@
-import React, { useContext } from "react";
-import { Form, Input, Checkbox, Button, message } from "antd";
+import React, { useContext, useState, useRef, useEffect } from "react";
+import { Form, Input, Checkbox, Button, message, Modal } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Navigate } from "react-router-dom";
 import store from "store";
+
 import classes from "./login.module.less";
+
 import { AuthContext } from "../../store/auth-context";
 import { reqLogin } from "../../api/index";
-import { Navigate } from "react-router-dom";
+import { reqAddUser, reqRoles } from "api";
+import AddOrUpdateUserForm from "components/users/AddOrUpdateUserForm";
 
 const Login = () => {
+  const [showModalStatus, setShowModalStatus] = useState(false);
   const { token, login } = useContext(AuthContext);
+  const formRef = useRef();
+  const rolesRef = useRef(new Map());
+
+  const tailLayout = {
+    // wrapperCol: { offset: 8, span: 16 },
+  };
 
   const onFinish = async ({ username, password, remenber }) => {
     /**
@@ -17,7 +28,6 @@ const Login = () => {
      * 2. position of await: The left side of the promise expression. use to wait and receive a result(response) but not a promise.
      * 3. position of async: The left side of the function definition where the await is used.
      */
-    console.log(remenber);
     const result = await reqLogin(username, password);
     if (result.status === 0) {
       message.success("Login successful!");
@@ -42,6 +52,48 @@ const Login = () => {
     //   .map((element) => element.errors)
     //   .join('\n');
     // message.error(errorMessage, 5);
+  };
+
+  const onRegister = () => {
+    setShowModalStatus(true);
+  };
+
+  useEffect(() => {
+    const getRoles = async () => {
+      const result = await reqRoles();
+      if (result.status === 0) {
+        const roles = result.data;
+        rolesRef.current = roles.reduce(
+          (pre, role) => pre.set(role._id, role.name),
+          new Map()
+        );
+      } else {
+        message.error("Get roles failed.");
+      }
+    };
+
+    getRoles();
+  }, []);
+
+  const registerUser = async () => {
+    const user = formRef.current.getFieldsValue();
+
+    const result = await reqAddUser(user);
+
+    if (result.status === 0) {
+      message.success("Register user successfully.");
+      setShowModalStatus(false);
+    } else {
+      message.error(`Register user failed. ${result.msg}`);
+    }
+  };
+
+  // handle Modal cancel event
+  const handleCancel = () => {
+    setShowModalStatus(false);
+  };
+  const onOK = () => {
+    formRef.current.submit();
   };
 
   // Custom validation for password
@@ -124,11 +176,8 @@ const Login = () => {
                 />
               </Form.Item>
             </div>
-            <Form.Item name='remenber' valuePropName='checked'>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
 
-            <Form.Item>
+            <Form.Item {...tailLayout} noStyle>
               <Button
                 type='primary'
                 htmlType='submit'
@@ -136,8 +185,28 @@ const Login = () => {
               >
                 Submit
               </Button>
+              <Button type='link' htmlType='button' onClick={onRegister}>
+                Register
+              </Button>
+            </Form.Item>
+            <Form.Item name='remenber' valuePropName='checked' noStyle>
+              <Checkbox>Remember me</Checkbox>
             </Form.Item>
           </Form>
+          <Modal
+            title={"User Register"}
+            visible={showModalStatus}
+            onOk={onOK}
+            onCancel={handleCancel}
+            destroyOnClose={true}
+            centered
+          >
+            <AddOrUpdateUserForm
+              onSubmit={registerUser}
+              rolesMap={rolesRef.current}
+              ref={formRef}
+            />
+          </Modal>
         </div>
       </div>
     </>
